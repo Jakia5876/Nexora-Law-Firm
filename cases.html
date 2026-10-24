@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Management & Client Vault | Nexora Law Firm</title>
+  <meta name="description" content="Secure case management, isolated client document vaults, and profile directory for Nexora Law Firm.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+            geist: ['Geist', 'sans-serif'],
+          },
+          colors: {
+            burgundy: {
+              DEFAULT: '#800020',
+              dark: '#580016',
+              light: '#9e1b32',
+              soft: '#fbf0f2'
+            },
+            gold: {
+              DEFAULT: '#D4AF37',
+              dark: '#AA820A',
+              light: '#F3E5AB'
+            },
+            dark: {
+              900: '#0B0B0D',
+              850: '#111115',
+              800: '#17171C',
+              700: '#23232A'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Supabase JS Client CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    .glass-panel {
+      background: rgba(17, 17, 21, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(17, 17, 21, 0.6);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(212, 175, 55, 0.25);
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(212, 175, 55, 0.5);
+    }
+    .avatar-preview-ring {
+      box-shadow: 0 0 0 2px #800020, 0 0 0 4px rgba(212, 175, 55, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 antialiased selection:bg-burgundy selection:text-white font-sans min-h-screen flex flex-col">
+
+  <!-- TOP SUITE SWITCHER BAR -->
+  <aside aria-label="Template switcher" class="fixed top-0 inset-x-0 z-[60] h-10 bg-neutral-950/95 text-white backdrop-blur-md border-b border-neutral-800 text-xs px-3 sm:px-6 flex items-center justify-between overflow-x-auto scrollbar-none whitespace-nowrap">
+    <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+      <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-burgundy text-white font-medium text-[10px] sm:text-[11px] uppercase tracking-wider shadow-sm">
+        <i data-lucide="scale" class="w-3.5 h-3.5 text-gold"></i> Nexora Law Firm
+      </span>
+      <span class="hidden md:inline text-neutral-400">Portal:</span>
+      <strong class="text-neutral-200 hidden sm:inline text-xs">Case &amp; Client Document Vault</strong>
+    </div>
+    <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+      <a href="index.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">Main Site</a>
+      <a href="cases.html" class="px-2 sm:px-2.5 py-1 rounded bg-burgundy text-white font-semibold text-[10px] sm:text-xs transition-all">Case Portal</a>
+      <a href="service-terms.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">Terms</a>
+      <a href="privacy.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">Privacy</a>
+    </div>
+  </aside>
+
+  <!-- NAVBAR -->
+  <header class="fixed top-10 inset-x-0 h-16 sm:h-20 z-50 transition-all duration-300 backdrop-blur-xl bg-dark-900/90 border-b border-neutral-800/80">
+    <div class="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 group min-w-0">
+        <div class="relative w-9 h-9 sm:w-11 sm:h-11 rounded-full border border-gold/40 shadow-md bg-gradient-to-br from-neutral-900 via-neutral-950 to-burgundy flex-shrink-0 flex items-center justify-center ring-1 ring-gold/20 group-hover:border-gold transition-all">
+          <span class="font-serif font-extrabold text-gold text-base sm:text-lg tracking-wider">N</span>
+        </div>
+        <div class="flex flex-col min-w-0">
+          <span class="font-serif font-bold tracking-tight text-sm sm:text-base lg:text-xl leading-tight transition-colors truncate">
+            Nexora Law Firm
+          </span>
+          <span class="text-[9px] sm:text-[10px] lg:text-[11px] tracking-wider uppercase opacity-80 font-medium text-gold truncate">Advocates &amp; Legal Vault</span>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Supabase Status Pill / Settings button -->
+        <button id="supabase-config-btn" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-800/90 hover:bg-neutral-700 border border-neutral-700 text-[11px] font-medium transition-all text-neutral-300">
+          <span id="supabase-status-dot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+          <span id="supabase-status-text" class="hidden sm:inline">Supabase: Local Ready</span>
+          <i data-lucide="database" class="w-3.5 h-3.5 text-gold"></i>
+        </button>
+
+        <!-- Add New Case Button -->
+        <button id="open-new-case-modal" class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full bg-burgundy hover:bg-burgundy-light text-white text-xs uppercase tracking-wider font-semibold shadow-lg hover:shadow-burgundy/30 transition-all flex-shrink-0">
+          <i data-lucide="user-plus" class="w-4 h-4 text-gold"></i>
+          <span>Add New Case</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-1 pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+
+    <!-- HERO / TITLE & STATS -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 border-b border-neutral-800 pb-6">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-burgundy/20 border border-burgundy/40 text-gold text-xs uppercase tracking-widest mb-3">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Strict Isolation Client Vault
+        </div>
+        <h1 class="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight">
+          Client &amp; Case Document Directory
+        </h1>
+        <p class="text-neutral-400 text-xs sm:text-sm mt-1 max-w-2xl">
+          Every client profile is maintained serial-wise with dedicated customer pictures, case milestones, and private document archives. Documents are strictly isolated per client.
+        </p>
+      </div>
+
+      <!-- Quick Summary Stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full md:w-auto">
+        <div class="glass-panel p-3 rounded-xl border border-neutral-800 text-center">
+          <span class="text-xs text-neutral-400 uppercase tracking-wider block">Total Cases</span>
+          <strong id="stat-total-cases" class="text-lg font-bold text-gold font-serif">0</strong>
+        </div>
+        <div class="glass-panel p-3 rounded-xl border border-neutral-800 text-center">
+          <span class="text-xs text-neutral-400 uppercase tracking-wider block">In Court</span>
+          <strong id="stat-in-court" class="text-lg font-bold text-emerald-400 font-serif">0</strong>
+        </div>
+        <div class="glass-panel p-3 rounded-xl border border-neutral-800 text-center">
+          <span class="text-xs text-neutral-400 uppercase tracking-wider block">Under Review</span>
+          <strong id="stat-under-review" class="text-lg font-bold text-amber-400 font-serif">0</strong>
+        </div>
+        <div class="glass-panel p-3 rounded-xl border border-neutral-800 text-center">
+          <span class="text-xs text-neutral-400 uppercase tracking-wider block">Documents</span>
+          <strong id="stat-total-docs" class="text-lg font-bold text-white font-serif">0</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEARCH & FILTER TOOLBAR -->
+    <div class="glass-panel rounded-2xl p-4 mb-6 border border-neutral-800 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="relative w-full md:w-96">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400"></i>
+        <input type="text" id="case-search-input" placeholder="Search by Client Name, Phone, Serial #, or Case..." 
+               class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-neutral-900/90 border border-neutral-700/80 text-white text-xs sm:text-sm placeholder-neutral-500 focus:outline-none focus:border-gold transition-colors">
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3 w-full md:w-auto overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+        <!-- Category Filter -->
+        <select id="filter-category" class="px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-neutral-300 text-xs focus:outline-none focus:border-gold">
+          <option value="ALL">All Practice Areas</option>
+          <option value="Corporate & M&A">Corporate &amp; M&amp;A</option>
+          <option value="Criminal Defense">Criminal Defense</option>
+          <option value="Family & Custody">Family &amp; Custody</option>
+          <option value="Real Estate & Title">Real Estate &amp; Title</option>
+          <option value="Civil Litigation">Civil Litigation</option>
+          <option value="Intellectual Property">Intellectual Property</option>
+          <option value="Immigration Law">Immigration Law</option>
+        </select>
+
+        <!-- Status Filter -->
+        <select id="filter-status" class="px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-neutral-300 text-xs focus:outline-none focus:border-gold">
+          <option value="ALL">All Statuses</option>
+          <option value="In Trial">In Trial</option>
+          <option value="Active Counsel">Active Counsel</option>
+          <option value="Under Review">Under Review</option>
+          <option value="Hearing Scheduled">Hearing Scheduled</option>
+          <option value="Settled / Closed">Settled / Closed</option>
+        </select>
+
+        <!-- Sort Option -->
+        <select id="sort-order" class="px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-neutral-300 text-xs focus:outline-none focus:border-gold">
+          <option value="serial-asc">Serial (001 → Asc)</option>
+          <option value="serial-desc">Serial (Desc)</option>
+          <option value="name-asc">Name (A → Z)</option>
+          <option value="docs-desc">Most Documents</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- CASES LIST TABLE / CONTAINER -->
+    <div class="glass-panel rounded-2xl border border-neutral-800 overflow-hidden shadow-2xl">
+      <div class="overflow-x-auto custom-scrollbar">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-neutral-950/80 border-b border-neutral-800 text-[11px] uppercase tracking-wider text-neutral-400 font-medium">
+              <th class="py-3.5 px-4 w-24">Serial #</th>
+              <th class="py-3.5 px-4 min-w-[220px]">Client (Picture &amp; Contact)</th>
+              <th class="py-3.5 px-4 min-w-[200px]">Case Matter &amp; Area</th>
+              <th class="py-3.5 px-4 min-w-[130px]">Status</th>
+              <th class="py-3.5 px-4 min-w-[150px]">Documents Vault</th>
+              <th class="py-3.5 px-4 text-right min-w-[140px]">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="cases-table-body" class="divide-y divide-neutral-800/60 text-xs">
+            <!-- Dynamic rows rendered here via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty state when no cases found -->
+      <div id="no-cases-state" class="hidden py-16 px-4 text-center">
+        <div class="w-16 h-16 rounded-full bg-neutral-900 border border-neutral-700 flex items-center justify-center mx-auto mb-4 text-gold">
+          <i data-lucide="folder-search" class="w-8 h-8"></i>
+        </div>
+        <h3 class="font-serif text-lg font-bold text-white mb-1">No Client Records Found</h3>
+        <p class="text-neutral-400 text-xs max-w-sm mx-auto mb-4">Try adjusting your search criteria or register a new client case into the system.</p>
+        <button onclick="document.getElementById('open-new-case-modal').click()" class="px-4 py-2 rounded-full bg-burgundy hover:bg-burgundy-light text-white text-xs uppercase tracking-wider font-semibold transition-all">
+          Add New Client Now
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 1: ADD NEW CLIENT & CASE (WITH PICTURE BOX & DOCUMENTS) -->
+  <!-- ========================================================================= -->
+  <div id="new-case-modal" class="fixed inset-0 z-[70] hidden overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6">
+    <div class="relative w-full max-w-3xl glass-panel bg-neutral-950/95 border border-gold/30 rounded-3xl p-5 sm:p-8 shadow-2xl custom-scrollbar max-h-[92vh] overflow-y-auto">
+      
+      <!-- Close button -->
+      <button id="close-new-case-modal" class="absolute top-5 right-5 p-2 rounded-full bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-white transition-colors">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="mb-6 border-b border-neutral-800 pb-4">
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-burgundy text-gold font-medium text-[10px] uppercase tracking-wider mb-2">
+          <i data-lucide="scale" class="w-3 h-3"></i> Client Intake Registry
+        </div>
+        <h2 class="font-serif text-xl sm:text-2xl font-bold text-white">Register New Client &amp; Case Matter</h2>
+        <p class="text-neutral-400 text-xs mt-0.5">Fill in the serial client information, customer picture, case details, and initial documents.</p>
+      </div>
+
+      <form id="new-case-form" class="space-y-6">
+        
+        <!-- SECTION A: CLIENT PERSONAL DETAILS & PICTURE BOX -->
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-gold mb-3 flex items-center gap-2">
+            <i data-lucide="user" class="w-3.5 h-3.5"></i> 1. Client Identity &amp; Picture Box
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <!-- Picture Box Container -->
+            <div class="flex flex-col items-center justify-center p-4 rounded-2xl bg-neutral-900/90 border border-neutral-800 border-dashed text-center group hover:border-gold/50 transition-colors">
+              <div class="relative w-28 h-28 rounded-2xl overflow-hidden bg-neutral-950 border-2 border-neutral-700 flex items-center justify-center mb-3 shadow-inner">
+                <img id="avatar-preview-img" src="" alt="Client Photo" class="hidden w-full h-full object-cover">
+                <div id="avatar-placeholder" class="flex flex-col items-center justify-center text-neutral-500">
+                  <i data-lucide="camera" class="w-8 h-8 text-neutral-600 mb-1 group-hover:text-gold transition-colors"></i>
+                  <span class="text-[10px] uppercase tracking-wider font-semibold">Customer Photo</span>
+                </div>
+              </div>
+
+              <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-burgundy hover:bg-burgundy-light text-white text-[11px] font-medium tracking-wide transition-all shadow">
+                <span>Upload Picture</span>
+                <input type="file" id="client-avatar-input" accept="image/*" class="hidden">
+              </label>
+              <span class="text-[10px] text-neutral-500 mt-1">PNG, JPG, or WebP</span>
+            </div>
+
+            <!-- Client Info Fields -->
+            <div class="md:col-span-2 space-y-3">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-[11px] font-medium text-neutral-300 mb-1">Serial Number (Auto/Custom)</label>
+                  <input type="text" id="client-serial" required readonly
+                         class="w-full px-3 py-2 rounded-xl bg-neutral-950 border border-neutral-800 text-gold font-mono text-xs focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-medium text-neutral-300 mb-1">Full Legal Name *</label>
+                  <input type="text" id="client-name" required placeholder="e.g. Maria Santos Villanueva"
+                         class="w-full px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-white text-xs focus:outline-none focus:border-gold">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-[11px] font-medium text-neutral-300 mb-1">Phone Number *</label>
+                  <input type="tel" id="client-phone" required placeholder="+63 917 555 1234"
+                         class="w-full px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-white text-xs focus:outline-none focus:border-gold">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-medium text-neutral-300 mb-1">Email Address</label>
+                  <input type="email" id="client-email" placeholder="client@example.com"
+                         class="w-full px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-white text-xs focus:outline-none focus:border-gold">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-medium text-neutral-300 mb-1">Complete Physical Address *</label>
+                <input type="text" id="client-address" required placeholder="Unit / Street, Barangay, City, Province"
+                       class="w-full px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-white text-xs focus:outline-none focus:border-gold">
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- SECTION B: CASE PARTICULARS -->
+        <div class="border-t border-neutral-800 pt-4">
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-gold mb-3 flex items-center gap-2">
+            <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> 2. Case Details &amp; Matter Information
+          </h3>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+            <div>
+              <label class="block text-[11px] font-medium text-neutral-300 mb-1">Case Title / Matter Subject *</label>
+              <input type="text" id="case-title" required placeholder="e.g. Estate Dispute & Asset Partition"
+                     class="w-full px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-white text-xs focus:outline-none focus:border-gold">
+            </div>
+            <div>
+              <label class="block text-[11px] font-medium text-neutral-300 mb-1">Practice Area *</label>
+              <select id="case-category" required class="w-full px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-white text-xs focus:outline-none focus:border-gold">
+                <option value="Corporate & M&A">Corporate &amp; M&amp;A</option>
+                <option value="Criminal Defense">Criminal Defense</option>
+                <option value="Family & Custody">Family &amp; Custody</option>
+                <option value="Real Estate & Title">Real Estate &amp; Title</option>
+                <option value="Civil Litigation">Civil Litigation</option>
+                <option value="Intellectual Property">Intellectual Property</option>
+                <option value="Immigration Law">Immigration Law</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+            <div>
+              <label class="block text-[11px] font-medium text-neutral-300 mb-1">Initial Status</label>
+              <select id="case-status" class="w-full px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-white text-xs focus:outline-none focus:border-gold">
+                <option value="Under Review">Under Review</option>
+                <option value="Active Counsel">Active Counsel</option>
+                <option value="Hearing Scheduled">Hearing Scheduled</option>
+                <option value="In Trial">In Trial</option>
+                <option value="Settled / Closed">Settled / Closed</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-medium text-neutral-300 mb-1">Assigned Senior Counsel</label>
+              <input type="text" id="case-attorney" placeholder="Atty. Nexora Partner"
+                     class="w-full px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-white text-xs focus:outline-none focus:border-gold">
+            </div>
+            <div>
+              <label class="block text-[11px] font-medium text-neutral-300 mb-1">Next Hearing / Milestone Date</label>
+              <input type="date" id="case-hearing-date"
+                     class="w-full px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-white text-xs focus:outline-none focus:border-gold">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-medium text-neutral-300 mb-1">Case Brief &amp; Confidential Notes</label>
+            <textarea id="case-description" rows="3" placeholder="Provide background summary, filing court branch, opposing party, or legal strategy..."
+                      class="w-full px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-white text-xs focus:outline-none focus:border-gold"></textarea>
+          </div>
+        </div>
+
+        <!-- SECTION C: INITIAL DOCUMENTS VAULT (BOUND SPECIFICALLY TO THIS PERSON) -->
+        <div class="border-t border-neutral-800 pt-4">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-gold flex items-center gap-2">
+              <i data-lucide="files" class="w-3.5 h-3.5"></i> 3. Client's Private Documents Vault
+            </h3>
+            <span class="text-[10px] text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-2 py-0.5 rounded-full flex items-center gap-1">
+              <i data-lucide="lock" class="w-2.5 h-2.5"></i> 100% Isolated to this client
+            </span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-neutral-900/60 border border-neutral-800 space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+              <div class="sm:col-span-5">
+                <input type="text" id="temp-doc-title" placeholder="Document Title (e.g. National ID / Affidavit)" 
+                       class="w-full px-3 py-2 rounded-lg bg-neutral-950 border border-neutral-700 text-xs text-white focus:outline-none focus:border-gold">
+              </div>
+              <div class="sm:col-span-4">
+                <select id="temp-doc-category" class="w-full px-3 py-2 rounded-lg bg-neutral-950 border border-neutral-700 text-xs text-neutral-300 focus:outline-none focus:border-gold">
+                  <option value="Identification">Identification (ID / Passport)</option>
+                  <option value="Retainer & Contract">Retainer &amp; Contract</option>
+                  <option value="Evidence & Affidavit">Evidence &amp; Affidavit</option>
+                  <option value="Court Order">Court Order / Resolution</option>
+                  <option value="Title & Deed">Title, Deed &amp; Property</option>
+                  <option value="Financial Document">Financial Document</option>
+                </select>
+              </div>
+              <div class="sm:col-span-3 flex gap-1">
+                <label class="cursor-pointer flex-1 px-2.5 py-2 rounded-lg bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-200 text-center text-xs transition-colors truncate">
+                  <span id="temp-file-chosen-text">Choose File</span>
+                  <input type="file" id="temp-doc-file-input" class="hidden">
+                </label>
+                <button type="button" id="btn-add-temp-doc" class="px-3 py-2 rounded-lg bg-gold hover:bg-gold-light text-neutral-950 font-bold text-xs transition-all">
+                  + Add
+                </button>
+              </div>
+            </div>
+
+            <!-- Staged Documents Table for New Person -->
+            <div id="staged-docs-container" class="space-y-1.5 mt-2">
+              <p class="text-[11px] text-neutral-500 italic">No initial documents attached yet. You can attach documents here now or upload them inside the client's private vault later.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORM ACTION BUTTONS -->
+        <div class="border-t border-neutral-800 pt-5 flex items-center justify-end gap-3">
+          <button type="button" id="cancel-new-case-modal" class="px-5 py-2.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-xs font-semibold transition-colors">
+            Cancel
+          </button>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-burgundy hover:bg-burgundy-light text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg hover:shadow-burgundy/40 flex items-center gap-2">
+            <i data-lucide="check-circle" class="w-4 h-4 text-gold"></i>
+            <span>Register &amp; Save Client Vault</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 2: CLIENT DOSSIER & DEDICATED DOCUMENT VAULT (STRICT ISOLATION) -->
+  <!-- ========================================================================= -->
+  <div id="vault-modal" class="fixed inset-0 z-[70] hidden overflow-y-auto bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6">
+    <div class="relative w-full max-w-4xl glass-panel bg-neutral-950/98 border border-gold/40 rounded-3xl p-5 sm:p-8 shadow-2xl custom-scrollbar max-h-[94vh] overflow-y-auto">
+      
+      <!-- Close button -->
+      <button id="close-vault-modal" class="absolute top-5 right-5 p-2 rounded-full bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-white transition-colors">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Client Header Banner -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-neutral-800 pb-5 mb-6">
+        <div class="flex items-center gap-4">
+          <!-- Client Avatar Image -->
+          <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-neutral-900 border-2 border-gold/50 shadow-lg flex-shrink-0">
+            <img id="vault-client-photo" src="" alt="Client Photo" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span id="vault-client-serial" class="font-mono text-xs text-gold font-bold bg-neutral-900 px-2.5 py-0.5 rounded-md border border-neutral-700">NX-000</span>
+              <span id="vault-client-status-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-burgundy text-white">Status</span>
+            </div>
+            <h2 id="vault-client-name" class="font-serif text-xl sm:text-2xl font-bold text-white">Client Name</h2>
+            <p id="vault-case-title" class="text-xs text-neutral-300 font-medium mt-0.5">Case Title Matter</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+          <button id="vault-print-btn" class="px-3 py-1.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-300 border border-neutral-700 text-xs flex items-center gap-1.5 transition-colors">
+            <i data-lucide="printer" class="w-3.5 h-3.5 text-gold"></i> Print Dossier
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid: Client Bio vs Case Milestones -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <!-- Client Contact & Residence -->
+        <div class="p-4 rounded-2xl bg-neutral-900/60 border border-neutral-800 text-xs space-y-2">
+          <h4 class="text-neutral-400 font-semibold uppercase tracking-wider text-[10px] mb-2 flex items-center gap-1.5">
+            <i data-lucide="id-card" class="w-3.5 h-3.5 text-gold"></i> Client Contact Information
+          </h4>
+          <div class="flex justify-between border-b border-neutral-800/80 pb-1.5">
+            <span class="text-neutral-500">Phone Number:</span>
+            <strong id="vault-client-phone" class="text-white font-mono">+63 000 000 0000</strong>
+          </div>
+          <div class="flex justify-between border-b border-neutral-800/80 pb-1.5">
+            <span class="text-neutral-500">Email:</span>
+            <span id="vault-client-email" class="text-neutral-300">client@example.com</span>
+          </div>
+          <div class="flex justify-between pt-0.5">
+            <span class="text-neutral-500">Physical Address:</span>
+            <span id="vault-client-address" class="text-neutral-200 text-right max-w-[200px] truncate">123 Street</span>
+          </div>
+        </div>
+
+        <!-- Case Milestones -->
+        <div class="p-4 rounded-2xl bg-neutral-900/60 border border-neutral-800 text-xs space-y-2">
+          <h4 class="text-neutral-400 font-semibold uppercase tracking-wider text-[10px] mb-2 flex items-center gap-1.5">
+            <i data-lucide="calendar" class="w-3.5 h-3.5 text-gold"></i> Matter Particulars
+          </h4>
+          <div class="flex justify-between border-b border-neutral-800/80 pb-1.5">
+            <span class="text-neutral-500">Practice Area:</span>
+            <strong id="vault-case-category" class="text-gold">Corporate Law</strong>
+          </div>
+          <div class="flex justify-between border-b border-neutral-800/80 pb-1.5">
+            <span class="text-neutral-500">Assigned Advocate:</span>
+            <span id="vault-case-attorney" class="text-white">Atty. Nexora</span>
+          </div>
+          <div class="flex justify-between pt-0.5">
+            <span class="text-neutral-500">Next Hearing Date:</span>
+            <span id="vault-case-hearing" class="text-amber-400 font-semibold">TBD</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confidential Notes -->
+      <div class="p-3.5 rounded-2xl bg-neutral-900/40 border border-neutral-800/80 mb-6 text-xs">
+        <span class="text-neutral-500 uppercase tracking-wider font-semibold text-[10px] block mb-1">Confidential Case Notes</span>
+        <p id="vault-case-notes" class="text-neutral-300 leading-relaxed italic">No notes recorded.</p>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- EXCLUSIVE DOCUMENT VAULT SECTION (STRICTLY FOR THIS PERSON) -->
+      <!-- ========================================================= -->
+      <div class="border-t border-neutral-800 pt-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-serif text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="folder-lock" class="w-5 h-5 text-gold"></i>
+                <span>Private Document Vault</span>
+              </h3>
+              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-950/70 border border-emerald-700/60 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                <i data-lucide="shield" class="w-3 h-3"></i> Strictly Bound to <span id="vault-strict-owner-name">Client</span>
+              </span>
+            </div>
+            <p class="text-neutral-400 text-xs mt-0.5">All files here belong strictly to this client's case file.</p>
+          </div>
+
+          <!-- Add Document to this specific client button -->
+          <button id="toggle-add-vault-doc-btn" class="px-3.5 py-1.5 rounded-xl bg-burgundy hover:bg-burgundy-light text-white font-semibold text-xs transition-all flex items-center gap-1.5 self-start sm:self-auto shadow">
+            <i data-lucide="file-plus" class="w-3.5 h-3.5 text-gold"></i>
+            <span>Add Document to this Client</span>
+          </button>
+        </div>
+
+        <!-- Hidden / Expandable Upload Form for this Specific Client -->
+        <div id="add-vault-doc-form-wrapper" class="hidden p-4 rounded-2xl bg-neutral-900 border border-gold/30 mb-5 space-y-3">
+          <h4 class="text-xs font-bold text-gold uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="upload" class="w-3.5 h-3.5"></i> Attach Document to this Specific Client's Vault
+          </h4>
+          <form id="vault-add-document-form" class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+            <div class="sm:col-span-5">
+              <label class="block text-[10px] text-neutral-400 mb-1">Document Title *</label>
+              <input type="text" id="vault-doc-title-input" required placeholder="e.g. Court Resolution Sept 2025" 
+                     class="w-full px-3 py-2 rounded-lg bg-neutral-950 border border-neutral-700 text-xs text-white focus:outline-none focus:border-gold">
+            </div>
+            <div class="sm:col-span-3">
+              <label class="block text-[10px] text-neutral-400 mb-1">Document Category</label>
+              <select id="vault-doc-category-input" class="w-full px-3 py-2 rounded-lg bg-neutral-950 border border-neutral-700 text-xs text-neutral-300 focus:outline-none focus:border-gold">
+                <option value="Identification">Identification (ID / Passport)</option>
+                <option value="Retainer & Contract">Retainer &amp; Contract</option>
+                <option value="Evidence & Affidavit">Evidence &amp; Affidavit</option>
+                <option value="Court Order">Court Order / Resolution</option>
+                <option value="Title & Deed">Title, Deed &amp; Property</option>
+                <option value="Financial Document">Financial Document</option>
+              </select>
+            </div>
+            <div class="sm:col-span-4 flex items-end gap-2">
+              <div class="flex-1">
+                <label class="block text-[10px] text-neutral-400 mb-1">Select File *</label>
+                <label class="cursor-pointer block px-3 py-2 rounded-lg bg-neutral-950 border border-neutral-700 text-neutral-300 text-xs truncate hover:border-gold transition-colors">
+                  <span id="vault-file-chosen-text">Choose File...</span>
+                  <input type="file" id="vault-doc-file-input" required class="hidden">
+                </label>
+              </div>
+              <button type="submit" class="px-4 py-2 rounded-lg bg-burgundy hover:bg-burgundy-light text-white font-bold text-xs uppercase tracking-wider transition-all h-[38px] flex items-center justify-center">
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Client Document Vault List -->
+        <div id="vault-documents-list" class="space-y-2">
+          <!-- Documents for this person rendered dynamically here -->
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 3: SUPABASE CONFIGURATION MODAL (FOR WHEN USER BRINGS KEYS) -->
+  <!-- ========================================================================= -->
+  <div id="supabase-config-modal" class="fixed inset-0 z-[80] hidden overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="relative w-full max-w-lg glass-panel bg-neutral-950/95 border border-gold/40 rounded-3xl p-6 sm:p-7 shadow-2xl">
+      <button id="close-supabase-modal" class="absolute top-5 right-5 p-2 rounded-full bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-white transition-colors">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-burgundy/30 border border-burgundy flex items-center justify-center text-gold">
+          <i data-lucide="database" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="font-serif text-lg font-bold text-white">Supabase Cloud Database Sync</h3>
+          <p class="text-neutral-400 text-xs">Connect your Supabase project to sync cases and document storage in real-time.</p>
+        </div>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-neutral-900/80 border border-neutral-800 text-xs text-neutral-300 mb-4 space-y-1">
+        <div class="flex items-center gap-2 text-emerald-400 font-semibold">
+          <i data-lucide="check" class="w-4 h-4"></i> Local Vault is Active &amp; Ready
+        </div>
+        <p class="text-neutral-400 text-[11px]">
+          You can use this portal completely right now with full client profiles, customer picture uploads, and isolated document vaults. When you have your Supabase credentials, paste them below to enable cloud persistence.
+        </p>
+      </div>
+
+      <form id="supabase-config-form" class="space-y-3.5">
+        <div>
+          <label class="block text-[11px] font-medium text-neutral-300 mb-1">Supabase Project URL</label>
+          <input type="url" id="supabase-url-input" placeholder="https://your-project-id.supabase.co" 
+                 class="w-full px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-white text-xs font-mono focus:outline-none focus:border-gold">
+        </div>
+        <div>
+          <label class="block text-[11px] font-medium text-neutral-300 mb-1">Supabase Anon Key (Public API Key)</label>
+          <input type="password" id="supabase-key-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." 
+                 class="w-full px-3 py-2 rounded-xl bg-neutral-900 border border-neutral-700 text-white text-xs font-mono focus:outline-none focus:border-gold">
+        </div>
+
+        <div class="pt-2 flex items-center justify-between">
+          <button type="button" id="btn-clear-supabase" class="text-xs text-red-400 hover:text-red-300 underline">
+            Reset to Local Mode
+          </button>
+          <div class="flex gap-2">
+            <button type="button" id="close-supabase-modal-2" class="px-4 py-2 rounded-xl bg-neutral-900 text-neutral-300 text-xs font-semibold">
+              Close
+            </button>
+            <button type="submit" class="px-5 py-2 rounded-xl bg-burgundy hover:bg-burgundy-light text-white font-bold text-xs uppercase tracking-wider transition-all shadow">
+              Connect Supabase
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-neutral-950 text-neutral-400 text-xs border-t border-neutral-800 py-10 px-6 mt-auto">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full border border-gold/40 flex-shrink-0 bg-neutral-900 flex items-center justify-center">
+          <span class="font-serif font-extrabold text-gold text-sm">N</span>
+        </div>
+        <span class="font-serif font-bold text-neutral-200 text-sm">Nexora Law Firm Case &amp; Client Vault</span>
+      </div>
+      <span class="text-[11px] text-neutral-500">
+        © 2025 Nexora Law Firm. All client records and documents are strictly confidential &amp; isolated.
+      </span>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT APPLICATION LOGIC: CLIENT INTAKE, ISOLATION & STORAGE -->
+  <!-- ========================================================================= -->
+  <script>
+    // Initial Icons
+    lucide.createIcons();
+
+    // Default Seed Data (Rich demo cases showcasing serials, pictures, and strictly isolated documents)
+    const DEFAULT_CASES = [
+      {
+        id: "case-001",
+        serialNo: "NX-2025-001",
+        name: "Hon. Rafael Del Rosario",
+        phone: "+63 917 842 9910",
+        email: "rafael.delrosario@manilacorp.ph",
+        address: "Penthouse B, One Serendra, Bonifacio Global City, Taguig",
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop",
+        title: "Cross-Border Acquisition & Joint Venture Structuring",
+        category: "Corporate & M&A",
+        status: "Active Counsel",
+        attorney: "Atty. Nexora Corporate Lead",
+        hearingDate: "2025-11-15",
+        description: "Advising foreign conglomerate on full asset takeover, SEC regulatory filings, and dual-jurisdiction antitrust clearance in the Philippines.",
+        documents: [
+          {
+            id: "doc-101",
+            title: "Securities & Exchange Commission Certificate",
+            category: "Retainer & Contract",
+            fileName: "SEC_Registration_DelRosario.pdf",
+            fileSize: "2.4 MB",
+            uploadDate: "2025-10-10",
+            dataUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+          },
+          {
+            id: "doc-102",
+            title: "Certified Articles of Incorporation & Bylaws",
+            category: "Evidence & Affidavit",
+            fileName: "AOI_Bylaws_Approved.pdf",
+            fileSize: "4.1 MB",
+            uploadDate: "2025-10-12",
+            dataUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+          },
+          {
+            id: "doc-103",
+            title: "Client Valid Passport & Proof of Billing",
+            category: "Identification",
+            fileName: "Passport_DelRosario_Verified.pdf",
+            fileSize: "1.1 MB",
+            uploadDate: "2025-10-15",
+            dataUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+          }
+        ]
+      },
+      {
+        id: "case-002",
+        serialNo: "NX-2025-002",
+        name: "Dr. Elena Mendoza-Soriano",
+        phone: "+63 918 334 7821",
+        email: "elena.mendoza@medicalsurgery.com",
+        address: "74 Cambridge Circle, Forbes Park, Makati City",
+        avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop",
+        title: "Medical Practice Licensing & Hospital Consortium Arbitration",
+        category: "Civil Litigation",
+        status: "In Trial",
+        attorney: "Atty. Nexora Litigation Partner",
+        hearingDate: "2025-11-04",
+        description: "Defending specialist surgeon in exclusive medical privileges dispute before the Philippine Chamber of Commerce and Industry Arbitration tribunal.",
+        documents: [
+          {
+            id: "doc-201",
+            title: "PRC Professional Medical Board License",
+            category: "Identification",
+            fileName: "PRC_License_ElenaMendoza.pdf",
+            fileSize: "1.8 MB",
+            uploadDate: "2025-09-28",
+            dataUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+          },
+          {
+            id: "doc-202",
+            title: "Formal Arbitration Claim & Pleadings",
+            category: "Court Order",
+            fileName: "Arbitration_Brief_Final.pdf",
+            fileSize: "5.7 MB",
+            uploadDate: "2025-10-02",
+            dataUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+          }
+        ]
+      },
+      {
+        id: "case-003",
+        serialNo: "NX-2025-003",
+        name: "Engr. Mateo Gabriel Alcantara",
+        phone: "+63 920 901 4452",
+        email: "mateo.alcantara@apexinfra.ph",
+        address: "Lot 14 Block 7, Hillsborough Alabang, Muntinlupa City",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop",
+        title: "High-Rise Commercial Land Title & Zoning Dispute",
+        category: "Real Estate & Title",
+        status: "Hearing Scheduled",
+        attorney: "Atty. Real Estate Specialist",
+        hearingDate: "2025-11-20",
+        description: "Quieting of land title and defense of transfer certificates against overlapping claims on prime commercial corner lot.",
+        documents: [
+          {
+            id: "doc-301",
+            title: "Transfer Certificate of Title (TCT No. 98412)",
+            category: "Title & Deed",
+            fileName: "TCT_Alabang_Official_Copy.pdf",
+            fileSize: "3.2 MB",
+            uploadDate: "2025-10-18",
+            dataUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+          },
+          {
+            id: "doc-302",
+            title: "Surveyor Geodetic Plan & DENR Approval",
+            category: "Evidence & Affidavit",
+            fileName: "Geodetic_Survey_Approved.pdf",
+            fileSize: "8.4 MB",
+            uploadDate: "2025-10-20",
+            dataUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+          }
+        ]
+      }
+    ];
+
+    // Local Storage Keys
+    const STORAGE_KEY_CASES = 'nexora_law_cases_v1';
+    const STORAGE_KEY_SUPABASE = 'nexora_supabase_config_v1';
+
+    // State
+    let cases = [];
+    let activeVaultCaseId = null;
+    let tempStagedDocs = [];
+    let currentNewAvatarDataUrl = '';
+
+    // Initialize Data
+    function initDatabase() {
+      const stored = localStorage.getItem(STORAGE_KEY_CASES);
+      if (stored) {
+        try {
+          cases = JSON.parse(stored);
+        } catch (e) {
+          cases = DEFAULT_CASES;
+        }
+      } else {
+        cases = DEFAULT_CASES;
+        saveCases();
+      }
+      renderStats();
+      renderCasesTable();
+      updateSupabaseStatusDisplay();
+    }
+
+    function saveCases() {
+      localStorage.setItem(STORAGE_KEY_CASES, JSON.stringify(cases));
+      renderStats();
+    }
+
+    // Helper: Generate next sequential serial code (e.g. NX-2025-004)
+    function generateNextSerial() {
+      let maxNum = 0;
+      cases.forEach(c => {
+        if (c.serialNo && c.serialNo.includes('-')) {
+          const parts = c.serialNo.split('-');
+          const num = parseInt(parts[parts.length - 1], 10);
+          if (!isNaN(num) && num > maxNum) maxNum = num;
+        }
+      });
+      const nextNum = String(maxNum + 1).padStart(3, '0');
+      return `NX-2025-${nextNum}`;
+    }
+
+    // Render Stats
+    function renderStats() {
+      document.getElementById('stat-total-cases').textContent = cases.length;
+      document.getElementById('stat-in-court').textContent = cases.filter(c => c.status === 'In Trial').length;
+      document.getElementById('stat-under-review').textContent = cases.filter(c => c.status === 'Under Review').length;
+      
+      let docCount = 0;
+      cases.forEach(c => {
+        if (Array.isArray(c.documents)) docCount += c.documents.length;
+      });
+      document.getElementById('stat-total-docs').textContent = docCount;
+    }
+
+    // Status Badge Styler
+    function getStatusBadge(status) {
+      switch (status) {
+        case 'In Trial':
+          return `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-red-950/80 text-red-400 border border-red-800/60 inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse"></span> In Trial</span>`;
+        case 'Active Counsel':
+          return `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active</span>`;
+        case 'Hearing Scheduled':
+          return `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-950/80 text-amber-400 border border-amber-800/60 inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Hearing</span>`;
+        case 'Settled / Closed':
+          return `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-neutral-800 text-neutral-400 border border-neutral-700">Closed</span>`;
+        default:
+          return `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-950/80 text-blue-300 border border-blue-800/60">Review</span>`;
+      }
+    }
+
+    // Render Table
+    function renderCasesTable() {
+      const tbody = document.getElementById('cases-table-body');
+      const emptyState = document.getElementById('no-cases-state');
+      const searchTerm = document.getElementById('case-search-input').value.trim().toLowerCase();
+      const filterCategory = document.getElementById('filter-category').value;
+      const filterStatus = document.getElementById('filter-status').value;
+      const sortOrder = document.getElementById('sort-order').value;
+
+      // Filter
+      let filtered = cases.filter(c => {
+        const matchesSearch = !searchTerm || 
+          (c.name && c.name.toLowerCase().includes(searchTerm)) ||
+          (c.serialNo && c.serialNo.toLowerCase().includes(searchTerm)) ||
+          (c.phone && c.phone.toLowerCase().includes(searchTerm)) ||
+          (c.title && c.title.toLowerCase().includes(searchTerm)) ||
+          (c.address && c.address.toLowerCase().includes(searchTerm));
+
+        const matchesCat = filterCategory === 'ALL' || c.category === filterCategory;
+        const matchesStatus = filterStatus === 'ALL' || c.status === filterStatus;
+
+        return matchesSearch && matchesCat && matchesStatus;
+      });
+
+      // Sort
+      filtered.sort((a, b) => {
+        if (sortOrder === 'serial-asc') {
+          return a.serialNo.localeCompare(b.serialNo);
+        } else if (sortOrder === 'serial-desc') {
+          return b.serialNo.localeCompare(a.serialNo);
+        } else if (sortOrder === 'name-asc') {
+          return a.name.localeCompare(b.name);
+        } else if (sortOrder === 'docs-desc') {
+          return (b.documents ? b.documents.length : 0) - (a.documents ? a.documents.length : 0);
+        }
+        return 0;
+      });
+
+      tbody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        emptyState.classList.remove('hidden');
+        return;
+      } else {
+        emptyState.classList.add('hidden');
+      }
+
+      filtered.forEach((c) => {
+        const docCount = c.documents ? c.documents.length : 0;
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-neutral-800/40 transition-colors group';
+
+        const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(c.name)}&background=800020&color=D4AF37&bold=true`;
+        const avatarSrc = c.avatar || defaultAvatar;
+
+        tr.innerHTML = `
+          <!-- Serial # -->
+          <td class="py-4 px-4 font-mono font-bold text-gold text-xs">
+            <span class="px-2 py-1 rounded bg-neutral-900 border border-neutral-700/80 inline-block">${c.serialNo}</span>
+          </td>
+
+          <!-- Client Picture & Info -->
+          <td class="py-4 px-4">
+            <div class="flex items-center gap-3">
+              <div class="relative w-11 h-11 rounded-xl overflow-hidden bg-neutral-900 border border-gold/30 flex-shrink-0">
+                <img src="${avatarSrc}" alt="${c.name}" class="w-full h-full object-cover" onerror="this.src='${defaultAvatar}'">
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-serif font-bold text-white text-sm group-hover:text-gold transition-colors truncate">${c.name}</span>
+                <span class="text-neutral-400 text-[11px] font-mono flex items-center gap-1">
+                  <i data-lucide="phone" class="w-3 h-3 text-gold"></i> ${c.phone}
+                </span>
+                <span class="text-neutral-500 text-[10px] truncate max-w-[200px]" title="${c.address}">
+                  <i data-lucide="map-pin" class="w-2.5 h-2.5 inline text-neutral-400"></i> ${c.address}
+                </span>
+              </div>
+            </div>
+          </td>
+
+          <!-- Case Matter -->
+          <td class="py-4 px-4">
+            <div class="flex flex-col">
+              <span class="font-medium text-white text-xs line-clamp-1" title="${c.title}">${c.title}</span>
+              <span class="text-gold text-[10px] uppercase tracking-wider font-semibold mt-0.5">${c.category}</span>
+            </div>
+          </td>
+
+          <!-- Status -->
+          <td class="py-4 px-4">
+            ${getStatusBadge(c.status)}
+          </td>
+
+          <!-- Documents Vault (Isolated Pill) -->
+          <td class="py-4 px-4">
+            <button onclick="openClientVault('${c.id}')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-xs text-neutral-200 transition-colors group-hover:border-gold/50">
+              <i data-lucide="folder-lock" class="w-3.5 h-3.5 text-gold"></i>
+              <strong class="text-gold font-mono">${docCount}</strong>
+              <span class="text-[11px] text-neutral-400">Files Vault</span>
+            </button>
+          </td>
+
+          <!-- Action Buttons -->
+          <td class="py-4 px-4 text-right">
+            <div class="flex items-center justify-end gap-1.5">
+              <button onclick="openClientVault('${c.id}')" title="Open Client Vault" class="p-2 rounded-lg bg-neutral-900 hover:bg-burgundy text-neutral-300 hover:text-white transition-all">
+                <i data-lucide="eye" class="w-4 h-4"></i>
+              </button>
+              <button onclick="deleteCasePrompt('${c.id}')" title="Delete Record" class="p-2 rounded-lg bg-neutral-900 hover:bg-red-900 text-neutral-400 hover:text-white transition-all">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+
+      lucide.createIcons();
+    }
+
+    // =========================================================================
+    // MODAL 1: ADD NEW CLIENT & CASE LOGIC
+    // =========================================================================
+    const newCaseModal = document.getElementById('new-case-modal');
+    const openNewCaseBtn = document.getElementById('open-new-case-modal');
+    const closeNewCaseBtn = document.getElementById('close-new-case-modal');
+    const cancelNewCaseBtn = document.getElementById('cancel-new-case-modal');
+    const avatarInput = document.getElementById('client-avatar-input');
+    const avatarPreviewImg = document.getElementById('avatar-preview-img');
+    const avatarPlaceholder = document.getElementById('avatar-placeholder');
+    const tempFileInput = document.getElementById('temp-doc-file-input');
+    const tempFileChosenText = document.getElementById('temp-file-chosen-text');
+    const btnAddTempDoc = document.getElementById('btn-add-temp-doc');
+    const stagedDocsContainer = document.getElementById('staged-docs-container');
+    const newCaseForm = document.getElementById('new-case-form');
+
+    openNewCaseBtn.addEventListener('click', () => {
+      // Reset form
+      newCaseForm.reset();
+      tempStagedDocs = [];
+      currentNewAvatarDataUrl = '';
+      avatarPreviewImg.src = '';
+      avatarPreviewImg.classList.add('hidden');
+      avatarPlaceholder.classList.remove('hidden');
+      tempFileChosenText.textContent = 'Choose File';
+      renderStagedDocs();
+
+      // Prepopulate next serial
+      document.getElementById('client-serial').value = generateNextSerial();
+      newCaseModal.classList.remove('hidden');
+      lucide.createIcons();
+    });
+
+    closeNewCaseBtn.addEventListener('click', () => newCaseModal.classList.add('hidden'));
+    cancelNewCaseBtn.addEventListener('click', () => newCaseModal.classList.add('hidden'));
+
+    // Avatar Image File Upload & Preview
+    avatarInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          currentNewAvatarDataUrl = evt.target.result;
+          avatarPreviewImg.src = currentNewAvatarDataUrl;
+          avatarPreviewImg.classList.remove('hidden');
+          avatarPlaceholder.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Temp Staged File Selection
+    tempFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        tempFileChosenText.textContent = file.name;
+      }
+    });
+
+    // Add Staged Document for New Case
+    btnAddTempDoc.addEventListener('click', () => {
+      const titleInput = document.getElementById('temp-doc-title');
+      const catInput = document.getElementById('temp-doc-category');
+      const title = titleInput.value.trim();
+      const file = tempFileInput.files[0];
+
+      if (!title) {
+        alert('Please specify a document title.');
+        return;
+      }
+
+      const fileName = file ? file.name : `${title.replace(/\s+/g, '_')}.pdf`;
+      const fileSize = file ? `${(file.size / (1024 * 1024)).toFixed(2)} MB` : '1.2 MB';
+      
+      const newDoc = {
+        id: 'doc-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+        title: title,
+        category: catInput.value,
+        fileName: fileName,
+        fileSize: fileSize,
+        uploadDate: new Date().toISOString().split('T')[0],
+        dataUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
+      };
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          newDoc.dataUrl = evt.target.result;
+          tempStagedDocs.push(newDoc);
+          renderStagedDocs();
+        };
+        reader.readAsDataURL(file);
+      } else {
+        tempStagedDocs.push(newDoc);
+        renderStagedDocs();
+      }
+
+      // Reset staging inputs
+      titleInput.value = '';
+      tempFileInput.value = '';
+      tempFileChosenText.textContent = 'Choose File';
+    });
+
+    function renderStagedDocs() {
+      stagedDocsContainer.innerHTML = '';
+      if (tempStagedDocs.length === 0) {
+        stagedDocsContainer.innerHTML = '<p class="text-[11px] text-neutral-500 italic">No initial documents attached yet.</p>';
+        return;
+      }
+
+      tempStagedDocs.forEach((doc, idx) => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center justify-between p-2 rounded-lg bg-neutral-950 border border-neutral-800 text-xs';
+        div.innerHTML = `
+          <div class="flex items-center gap-2 truncate">
+            <i data-lucide="file-text" class="w-3.5 h-3.5 text-gold flex-shrink-0"></i>
+            <span class="font-medium text-white truncate">${doc.title}</span>
+            <span class="text-[10px] text-neutral-400 bg-neutral-900 px-2 py-0.5 rounded border border-neutral-800">${doc.category}</span>
+            <span class="text-[10px] text-neutral-500 font-mono">${doc.fileSize}</span>
+          </div>
+          <button type="button" onclick="removeTempDoc(${idx})" class="p-1 text-neutral-400 hover:text-red-400 transition-colors">
+            <i data-lucide="trash" class="w-3.5 h-3.5"></i>
+          </button>
+        `;
+        stagedDocsContainer.appendChild(div);
+      });
+      lucide.createIcons();
+    }
+
+    window.removeTempDoc = function(index) {
+      tempStagedDocs.splice(index, 1);
+      renderStagedDocs();
+    };
+
+    // Submit New Case Form
+    newCaseForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const newCase = {
+        id: 'case-' + Date.now(),
+        serialNo: document.getElementById('client-serial').value,
+        name: document.getElementById('client-name').value.trim(),
+        phone: document.getElementById('client-phone').value.trim(),
+        email: document.getElementById('client-email').value.trim() || 'N/A',
+        address: document.getElementById('client-address').value.trim(),
+        avatar: currentNewAvatarDataUrl || '',
+        title: document.getElementById('case-title').value.trim(),
+        category: document.getElementById('case-category').value,
+        status: document.getElementById('case-status').value,
+        attorney: document.getElementById('case-attorney').value.trim() || 'Nexora Senior Counsel',
+        hearingDate: document.getElementById('case-hearing-date').value || 'To be scheduled',
+        description: document.getElementById('case-description').value.trim() || 'Initial consultation recorded.',
+        documents: [...tempStagedDocs]
+      };
+
+      cases.unshift(newCase);
+      saveCases();
+      renderCasesTable();
+      newCaseModal.classList.add('hidden');
+
+      // Auto open this client's vault to show confirmation
+      openClientVault(newCase.id);
+    });
+
+    // =========================================================================
+    // MODAL 2: CLIENT DOSSIER & ISOLATED DOCUMENT VAULT
+    // =========================================================================
+    const vaultModal = document.getElementById('vault-modal');
+    const closeVaultBtn = document.getElementById('close-vault-modal');
+    const toggleAddVaultDocBtn = document.getElementById('toggle-add-vault-doc-btn');
+    const addVaultDocFormWrapper = document.getElementById('add-vault-doc-form-wrapper');
+    const vaultAddDocForm = document.getElementById('vault-add-document-form');
+    const vaultDocFileInput = document.getElementById('vault-doc-file-input');
+    const vaultFileChosenText = document.getElementById('vault-file-chosen-text');
+
+    closeVaultBtn.addEventListener('click', () => {
+      vaultModal.classList.add('hidden');
+      activeVaultCaseId = null;
+    });
+
+    // Toggle document upload within vault
+    toggleAddVaultDocBtn.addEventListener('click', () => {
+      addVaultDocFormWrapper.classList.toggle('hidden');
+    });
+
+    vaultDocFileInput.addEventListener('change', (e) => {
+      if (e.target.files[0]) {
+        vaultFileChosenText.textContent = e.target.files[0].name;
+      }
+    });
+
+    // Open Client Vault (Strictly isolates documents for this person)
+    window.openClientVault = function(caseId) {
+      const clientCase = cases.find(c => c.id === caseId);
+      if (!clientCase) return;
+
+      activeVaultCaseId = caseId;
+
+      // Populate Header & Bio
+      const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(clientCase.name)}&background=800020&color=D4AF37&bold=true`;
+      document.getElementById('vault-client-photo').src = clientCase.avatar || defaultAvatar;
+      document.getElementById('vault-client-serial').textContent = clientCase.serialNo;
+      document.getElementById('vault-client-name').textContent = clientCase.name;
+      document.getElementById('vault-case-title').textContent = clientCase.title;
+      document.getElementById('vault-strict-owner-name').textContent = clientCase.name;
+
+      const badge = document.getElementById('vault-client-status-badge');
+      badge.textContent = clientCase.status;
+      badge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-burgundy text-white';
+
+      document.getElementById('vault-client-phone').textContent = clientCase.phone;
+      document.getElementById('vault-client-email').textContent = clientCase.email || 'N/A';
+      document.getElementById('vault-client-address').textContent = clientCase.address;
+      document.getElementById('vault-client-address').title = clientCase.address;
+
+      document.getElementById('vault-case-category').textContent = clientCase.category;
+      document.getElementById('vault-case-attorney').textContent = clientCase.attorney;
+      document.getElementById('vault-case-hearing').textContent = clientCase.hearingDate || 'None Scheduled';
+      document.getElementById('vault-case-notes').textContent = clientCase.description || 'No confidential notes.';
+
+      // Reset and hide upload form
+      addVaultDocFormWrapper.classList.add('hidden');
+      vaultAddDocForm.reset();
+      vaultFileChosenText.textContent = 'Choose File...';
+
+      // Render documents STRICTLY belonging to this person
+      renderVaultDocuments(clientCase);
+
+      vaultModal.classList.remove('hidden');
+      lucide.createIcons();
+    };
+
+    function renderVaultDocuments(clientCase) {
+      const container = document.getElementById('vault-documents-list');
+      container.innerHTML = '';
+
+      const docs = clientCase.documents || [];
+
+      if (docs.length === 0) {
+        container.innerHTML = `
+          <div class="py-8 text-center bg-neutral-900/50 rounded-2xl border border-neutral-800">
+            <i data-lucide="file-question" class="w-8 h-8 text-neutral-500 mx-auto mb-2"></i>
+            <p class="text-xs text-neutral-300 font-semibold">No Documents in ${clientCase.name}'s Vault Yet</p>
+            <p class="text-[11px] text-neutral-500 mt-0.5">Click "Add Document to this Client" above to securely archive legal files.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      docs.forEach((doc, idx) => {
+        const item = document.createElement('div');
+        item.className = 'flex flex-col sm:flex-row sm:items-center justify-between p-3.5 rounded-xl bg-neutral-900/90 border border-neutral-800 hover:border-gold/30 transition-all gap-3';
+        
+        item.innerHTML = `
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-9 h-9 rounded-lg bg-burgundy/30 border border-burgundy flex items-center justify-center text-gold flex-shrink-0">
+              <i data-lucide="file-text" class="w-4 h-4"></i>
+            </div>
+            <div class="flex flex-col min-w-0">
+              <span class="font-semibold text-white text-xs truncate" title="${doc.title}">${doc.title}</span>
+              <div class="flex items-center gap-2 text-[10px] text-neutral-400 mt-0.5">
+                <span class="text-gold font-mono">${doc.fileName}</span>
+                <span>•</span>
+                <span>${doc.fileSize}</span>
+                <span>•</span>
+                <span>Uploaded: ${doc.uploadDate}</span>
+                <span>•</span>
+                <span class="px-1.5 py-0.2 rounded bg-neutral-800 text-neutral-300 text-[9px] uppercase tracking-wider">${doc.category}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 self-end sm:self-auto flex-shrink-0">
+            <a href="${doc.dataUrl || '#'}" download="${doc.fileName}" target="_blank" 
+               class="px-2.5 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-gold text-xs font-medium flex items-center gap-1 transition-colors">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Download</span>
+            </a>
+            <button onclick="deleteVaultDoc('${idx}')" title="Delete document" 
+                    class="p-1.5 rounded-lg bg-neutral-800/80 hover:bg-red-900/80 text-neutral-400 hover:text-white transition-colors">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        `;
+
+        container.appendChild(item);
+      });
+
+      lucide.createIcons();
+    }
+
+    // Add Document within Vault
+    vaultAddDocForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!activeVaultCaseId) return;
+
+      const clientCase = cases.find(c => c.id === activeVaultCaseId);
+      if (!clientCase) return;
+
+      const titleInput = document.getElementById('vault-doc-title-input');
+      const categoryInput = document.getElementById('vault-doc-category-input');
+      const file = vaultDocFileInput.files[0];
+
+      if (!file) {
+        alert('Please select a document file.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const newDoc = {
+          id: 'doc-' + Date.now(),
+          title: titleInput.value.trim(),
+          category: categoryInput.value,
+          fileName: file.name,
+          fileSize: `${(file.size / (1024 * 1024)).toFixed(2)} MB`,
+          uploadDate: new Date().toISOString().split('T')[0],
+          dataUrl: evt.target.result
+        };
+
+        if (!Array.isArray(clientCase.documents)) clientCase.documents = [];
+        clientCase.documents.unshift(newDoc);
+
+        saveCases();
+        renderVaultDocuments(clientCase);
+        renderCasesTable();
+
+        vaultAddDocForm.reset();
+        vaultFileChosenText.textContent = 'Choose File...';
+        addVaultDocFormWrapper.classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Delete single document in vault
+    window.deleteVaultDoc = function(docIndex) {
+      if (!activeVaultCaseId) return;
+      const clientCase = cases.find(c => c.id === activeVaultCaseId);
+      if (!clientCase || !clientCase.documents) return;
+
+      if (confirm(`Remove this document from ${clientCase.name}'s vault?`)) {
+        clientCase.documents.splice(docIndex, 1);
+        saveCases();
+        renderVaultDocuments(clientCase);
+        renderCasesTable();
+      }
+    };
+
+    // Delete entire case
+    window.deleteCasePrompt = function(caseId) {
+      const clientCase = cases.find(c => c.id === caseId);
+      if (!clientCase) return;
+
+      if (confirm(`Are you sure you want to delete case file ${clientCase.serialNo} for ${clientCase.name}? All associated documents in this vault will be permanently removed.`)) {
+        cases = cases.filter(c => c.id !== caseId);
+        saveCases();
+        renderCasesTable();
+      }
+    };
+
+    // Print Dossier
+    document.getElementById('vault-print-btn').addEventListener('click', () => {
+      window.print();
+    });
+
+    // Search and filter listeners
+    document.getElementById('case-search-input').addEventListener('input', renderCasesTable);
+    document.getElementById('filter-category').addEventListener('change', renderCasesTable);
+    document.getElementById('filter-status').addEventListener('change', renderCasesTable);
+    document.getElementById('sort-order').addEventListener('change', renderCasesTable);
+
+    // =========================================================================
+    // MODAL 3: SUPABASE CONFIGURATION & READY-STATE
+    // =========================================================================
+    const supabaseModal = document.getElementById('supabase-config-modal');
+    const supabaseConfigBtn = document.getElementById('supabase-config-btn');
+    const closeSupabaseBtn = document.getElementById('close-supabase-modal');
+    const closeSupabaseBtn2 = document.getElementById('close-supabase-modal-2');
+    const supabaseForm = document.getElementById('supabase-config-form');
+    const btnClearSupabase = document.getElementById('btn-clear-supabase');
+
+    supabaseConfigBtn.addEventListener('click', () => {
+      const savedConfig = getSupabaseConfig();
+      if (savedConfig) {
+        document.getElementById('supabase-url-input').value = savedConfig.url || '';
+        document.getElementById('supabase-key-input').value = savedConfig.key || '';
+      }
+      supabaseModal.classList.remove('hidden');
+      lucide.createIcons();
+    });
+
+    closeSupabaseBtn.addEventListener('click', () => supabaseModal.classList.add('hidden'));
+    closeSupabaseBtn2.addEventListener('click', () => supabaseModal.classList.add('hidden'));
+
+    function getSupabaseConfig() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY_SUPABASE);
+        return stored ? JSON.parse(stored) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function updateSupabaseStatusDisplay() {
+      const config = getSupabaseConfig();
+      const dot = document.getElementById('supabase-status-dot');
+      const text = document.getElementById('supabase-status-text');
+
+      if (config && config.url && config.key) {
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+        text.textContent = 'Supabase: Connected';
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+        text.textContent = 'Supabase: Local Ready';
+      }
+    }
+
+    supabaseForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const url = document.getElementById('supabase-url-input').value.trim();
+      const key = document.getElementById('supabase-key-input').value.trim();
+
+      if (url && key) {
+        localStorage.setItem(STORAGE_KEY_SUPABASE, JSON.stringify({ url, key }));
+        alert('Supabase credentials saved successfully! Your client files and document storage will route through your Supabase project.');
+      }
+      updateSupabaseStatusDisplay();
+      supabaseModal.classList.add('hidden');
+    });
+
+    btnClearSupabase.addEventListener('click', () => {
+      localStorage.removeItem(STORAGE_KEY_SUPABASE);
+      document.getElementById('supabase-url-input').value = '';
+      document.getElementById('supabase-key-input').value = '';
+      updateSupabaseStatusDisplay();
+      alert('Reset to local vault storage mode.');
+      supabaseModal.classList.add('hidden');
+    });
+
+    // Run Initial Load
+    initDatabase();
+  </script>
+
+</body>
+</html>
