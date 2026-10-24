@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hosting & Support Terms | Nexora Law Firm</title>
+  <meta name="description" content="The terms for Vibe96 Law Suite hosting, deployment and human support services.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+            geist: ['Geist', 'sans-serif'],
+            montserrat: ['Montserrat', 'sans-serif'],
+            poppins: ['Poppins', 'sans-serif'],
+            instrument: ['"Instrument Serif"', 'serif'],
+            merriweather: ['Merriweather', 'serif']
+          },
+          colors: {
+            'dark-900': '#0d0d11',
+            'dark-800': '#15151b',
+            'burgundy': '#800020',
+            'burgundy-light': '#9b1b30',
+            'gold': '#D4AF37',
+            'gold-light': '#f3cf65'
+          },
+          animation: {
+            'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            'fade-in': 'fadeIn 0.7s ease-in-out forwards',
+            'blur-in': 'blurIn 0.8s ease-out forwards'
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(24px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' }
+            },
+            blurIn: {
+              '0%': { opacity: '0', filter: 'blur(10px)' },
+              '100%': { opacity: '1', filter: 'blur(0)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background-color: #64748b; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background-color: #475569; }
+
+    .scrollbar-none::-webkit-scrollbar { display: none; }
+    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .reveal-on-scroll {
+      opacity: 0; filter: blur(5px); transform: translateY(20px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-on-scroll.is-revealed { opacity: 1; filter: blur(0); transform: translateY(0); }
+
+    h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+
+    .legal-content h2 {
+      font-size: 1.5rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem;
+      padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .legal-content ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; }
+    .legal-content ul li { margin-bottom: 0.5rem; line-height: 1.75; }
+    .legal-content p { margin-bottom: 1rem; line-height: 1.75; }
+
+    .toc-link {
+      transition: all 0.2s ease;
+    }
+    .toc-link:hover {
+      color: #D4AF37;
+      transform: translateX(4px);
+    }
+  </style>
+</head>
+<body class="bg-white text-neutral-900 transition-colors duration-300 dark:bg-dark-900 dark:text-neutral-100 antialiased selection:bg-burgundy selection:text-white">
+
+  <!-- VIBE96 TOP TEMPLATE SWITCHER BAR -->
+  <aside aria-label="Template switcher" class="fixed top-0 inset-x-0 z-[60] h-10 bg-neutral-950/95 text-white backdrop-blur-md border-b border-neutral-800 text-xs px-3 sm:px-6 flex items-center justify-between overflow-x-auto scrollbar-none whitespace-nowrap">
+    <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+      <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-burgundy text-white font-medium text-[10px] sm:text-[11px] uppercase tracking-wider shadow-sm">
+        <i data-lucide="scale" class="w-3.5 h-3.5 text-gold"></i> Nexora Law Firm
+      </span>
+      <span class="hidden md:inline text-neutral-400">Legal Standard:</span>
+      <strong class="text-neutral-200 hidden sm:inline text-xs">Service Terms</strong>
+    </div>
+    <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+      <a href="service-terms.html" class="px-2 sm:px-2.5 py-1 rounded bg-burgundy text-white font-semibold text-[10px] sm:text-xs transition-all">Service Terms</a>
+      <a href="license.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">License</a>
+      <a href="seller-agreement.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">Seller Agreement</a>
+      <a href="privacy.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">Privacy Policy</a>
+      <a href="index.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-gold font-medium text-[10px] sm:text-xs transition-all">← Back</a>
+    </div>
+  </aside>
+
+  <div class="min-h-screen flex flex-col relative pt-10">
+
+    <!-- NAVBAR -->
+    <header class="fixed top-10 inset-x-0 h-16 sm:h-20 lg:h-24 z-50 transition-all duration-300 text-neutral-900 dark:text-white">
+      <div class="absolute inset-0 transition-all duration-300 pointer-events-none backdrop-blur-md bg-white/85 dark:bg-dark-900/85 shadow-md"></div>
+      <div class="relative max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between gap-4">
+        <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 group min-w-0">
+          <div class="relative w-9 h-9 sm:w-11 sm:h-11 rounded-full border border-gold/40 shadow-md bg-gradient-to-br from-neutral-900 via-neutral-950 to-burgundy flex-shrink-0 flex items-center justify-center ring-1 ring-gold/20 group-hover:border-gold transition-all">
+            <span class="font-serif font-extrabold text-gold text-base sm:text-lg tracking-wider">N</span>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <span class="font-serif font-bold tracking-tight text-sm sm:text-base lg:text-xl leading-tight transition-colors truncate">
+              Nexora Law Firm
+            </span>
+            <span class="text-[9px] sm:text-[10px] lg:text-[11px] tracking-wider uppercase opacity-80 font-medium truncate">Advocates &amp; Legal Consultants</span>
+          </div>
+        </a>
+
+        <nav class="hidden lg:flex items-center gap-6 xl:gap-8 text-xs xl:text-sm font-medium tracking-wide">
+          <a href="index.html#services" class="hover:text-gold transition-colors">Services</a>
+          <a href="index.html#about" class="hover:text-gold transition-colors">About</a>
+          <a href="index.html#practice-areas" class="hover:text-gold transition-colors">Practice Areas</a>
+          <a href="index.html#contact" class="hover:text-gold transition-colors">Contact</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a href="index.html#contact" class="hidden sm:inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-burgundy hover:bg-burgundy-light text-white text-xs uppercase tracking-wider font-semibold shadow-lg hover:shadow-burgundy/30 transition-all duration-300 flex-shrink-0">
+            <span>Inquire Now</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
+          <button id="legal-mobile-menu-btn" class="lg:hidden p-2 rounded-lg bg-neutral-200 dark:bg-white/10 hover:bg-neutral-300 dark:hover:bg-white/20 transition-colors flex-shrink-0" aria-label="Toggle navigation menu">
+            <i data-lucide="menu" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Legal Mobile Menu Drawer -->
+      <div id="legal-mobile-menu" class="hidden lg:hidden fixed inset-x-0 top-[calc(2.5rem+4rem)] sm:top-[calc(2.5rem+5rem)] lg:top-[calc(2.5rem+6rem)] max-h-[calc(100vh-7rem)] overflow-y-auto bg-neutral-950/98 backdrop-blur-2xl border-b border-neutral-800 text-white px-6 py-6 transition-all duration-300 shadow-2xl z-40">
+        <div class="flex flex-col gap-3 text-base font-medium">
+          <a href="index.html" class="legal-mobile-link py-2 border-b border-neutral-800/60 hover:text-gold flex items-center justify-between">
+            <span>Home</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-neutral-500"></i>
+          </a>
+          <a href="index.html#services" class="legal-mobile-link py-2 border-b border-neutral-800/60 hover:text-gold flex items-center justify-between">
+            <span>Services</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-neutral-500"></i>
+          </a>
+          <a href="index.html#practice-areas" class="legal-mobile-link py-2 border-b border-neutral-800/60 hover:text-gold flex items-center justify-between">
+            <span>Practice Areas</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-neutral-500"></i>
+          </a>
+          <a href="index.html#contact" class="legal-mobile-link py-2 border-b border-neutral-800/60 hover:text-gold flex items-center justify-between">
+            <span>Contact Firm</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-neutral-500"></i>
+          </a>
+          
+          <div class="pt-3 mt-1 border-t border-neutral-800/80">
+            <span class="text-[11px] uppercase tracking-wider text-neutral-400 font-semibold block mb-2">Legal Documents</span>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <a href="service-terms.html" class="py-1.5 px-2.5 rounded bg-burgundy text-white font-semibold">Service Terms</a>
+              <a href="license.html" class="py-1.5 px-2.5 rounded bg-neutral-900 border border-neutral-800 hover:text-gold">License</a>
+              <a href="seller-agreement.html" class="py-1.5 px-2.5 rounded bg-neutral-900 border border-neutral-800 hover:text-gold">Seller Agreement</a>
+              <a href="privacy.html" class="py-1.5 px-2.5 rounded bg-neutral-900 border border-neutral-800 hover:text-gold">Privacy Policy</a>
+            </div>
+          </div>
+
+          <a href="index.html#contact" class="legal-mobile-link mt-3 inline-flex items-center justify-center gap-2 py-3 rounded-full bg-burgundy hover:bg-burgundy-light text-white font-semibold text-sm shadow-lg transition-all">
+            <span>Inquire Now</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO BANNER -->
+    <section class="relative pt-28 sm:pt-36 lg:pt-40 pb-12 sm:pb-16 overflow-hidden">
+      <div class="absolute inset-0 z-0 bg-gradient-to-br from-neutral-950 via-dark-900 to-neutral-900"></div>
+      <div class="absolute inset-0 z-0 opacity-10">
+        <div class="absolute top-20 left-1/4 w-96 h-96 rounded-full bg-burgundy blur-[120px]"></div>
+        <div class="absolute bottom-10 right-1/4 w-64 h-64 rounded-full bg-gold blur-[100px]"></div>
+      </div>
+
+      <div class="relative z-10 max-w-4xl mx-auto px-6 text-center text-white">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel text-xs uppercase tracking-widest text-gold mb-6 border border-gold/30 animate-fade-in">
+          <i data-lucide="file-text" class="w-4 h-4"></i>
+          <span>Get it Live</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl font-serif font-bold tracking-tight text-white leading-[1.15] mb-6 animate-fade-in-up">
+          Hosting & Support <br class="hidden sm:inline">
+          <span class="italic font-normal text-gold">Terms</span>
+        </h1>
+
+        <p class="text-base sm:text-lg text-neutral-300 max-w-2xl mx-auto font-light mb-8 leading-relaxed animate-blur-in">
+          The plain-language terms for Get it Live. They apply to every hosting term, publishing service and expert-hours package you buy on Vibe96.
+        </p>
+      </div>
+
+      <div class="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white dark:from-dark-900 to-transparent pointer-events-none"></div>
+    </section>
+
+    <!-- CONTENT -->
+    <main class="py-16 px-6">
+      <div class="max-w-4xl mx-auto">
+
+        <!-- Table of Contents -->
+        <div class="reveal-on-scroll mb-12 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-dark-800">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-burgundy dark:text-gold mb-4 flex items-center gap-2">
+            <i data-lucide="list" class="w-4 h-4"></i> Contents
+          </h3>
+          <nav class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+            <a href="#what-you-are-buying" class="toc-link text-neutral-600 dark:text-neutral-400 hover:text-gold flex items-center gap-2 py-1">
+              <i data-lucide="chevron-right" class="w-3 h-3 text-burgundy dark:text-gold"></i> What you are buying
+            </a>
+            <a href="#prices-and-terms" class="toc-link text-neutral-600 dark:text-neutral-400 hover:text-gold flex items-center gap-2 py-1">
+              <i data-lucide="chevron-right" class="w-3 h-3 text-burgundy dark:text-gold"></i> Prices and terms
+            </a>
+            <a href="#when-we-start" class="toc-link text-neutral-600 dark:text-neutral-400 hover:text-gold flex items-center gap-2 py-1">
+              <i data-lucide="chevron-right" class="w-3 h-3 text-burgundy dark:text-gold"></i> When we start
+            </a>
+            <a href="#not-included" class="toc-link text-neutral-600 dark:text-neutral-400 hover:text-gold flex items-center gap-2 py-1">
+              <i data-lucide="chevron-right" class="w-3 h-3 text-burgundy dark:text-gold"></i> What is not included
+            </a>
+            <a href="#mobile-publishing" class="toc-link text-neutral-600 dark:text-neutral-400 hover:text-gold flex items-center gap-2 py-1">
+              <i data-lucide="chevron-right" class="w-3 h-3 text-burgundy dark:text-gold"></i> Mobile app publishing
+            </a>
+            <a href="#renewal" class="toc-link text-neutral-600 dark:text-neutral-400 hover:text-gold flex items-center gap-2 py-1">
+              <i data-lucide="chevron-right" class="w-3 h-3 text-burgundy dark:text-gold"></i> Renewal and ending
+            </a>
+            <a href="#expert-hours" class="toc-link text-neutral-600 dark:text-neutral-400 hover:text-gold flex items-center gap-2 py-1">
+              <i data-lucide="chevron-right" class="w-3 h-3 text-burgundy dark:text-gold"></i> Expert hours
+            </a>
+            <a href="#your-access" class="toc-link text-neutral-600 dark:text-neutral-400 hover:text-gold flex items-center gap-2 py-1">
+              <i data-lucide="chevron-right" class="w-3 h-3 text-burgundy dark:text-gold"></i> Your access and data
+            </a>
+            <a href="#refunds" class="toc-link text-neutral-600 dark:text-neutral-400 hover:text-gold flex items-center gap-2 py-1">
+              <i data-lucide="chevron-right" class="w-3 h-3 text-burgundy dark:text-gold"></i> Refunds
+            </a>
+            <a href="#acceptable-use" class="toc-link text-neutral-600 dark:text-neutral-400 hover:text-gold flex items-center gap-2 py-1">
+              <i data-lucide="chevron-right" class="w-3 h-3 text-burgundy dark:text-gold"></i> Acceptable use
+            </a>
+            <a href="#server-data" class="toc-link text-neutral-600 dark:text-neutral-400 hover:text-gold flex items-center gap-2 py-1">
+              <i data-lucide="chevron-right" class="w-3 h-3 text-burgundy dark:text-gold"></i> Data on your server
+            </a>
+            <a href="#liability" class="toc-link text-neutral-600 dark:text-neutral-400 hover:text-gold flex items-center gap-2 py-1">
+              <i data-lucide="chevron-right" class="w-3 h-3 text-burgundy dark:text-gold"></i> Liability
+            </a>
+          </nav>
+        </div>
+
+        <!-- Legal Content -->
+        <div class="legal-content text-neutral-700 dark:text-neutral-300 text-sm reveal-on-scroll">
+
+          <h2 id="what-you-are-buying" class="text-neutral-900 dark:text-white">What you are buying</h2>
+          <ul>
+            <li><strong>Hosting:</strong> a server for your project, prepaid for the term you choose — 3, 6 or 12 months.</li>
+            <li><strong>Publishing:</strong> a one-time service to prepare, deploy and hand over your project.</li>
+            <li><strong>Expert hours (optional):</strong> time with our technical team for changes, troubleshooting and guidance.</li>
+          </ul>
+
+          <h2 id="prices-and-terms" class="text-neutral-900 dark:text-white">Prices and terms</h2>
+          <ul>
+            <li>Hosting is paid upfront for the whole term. Six months is discounted by 5 % and twelve months by 10 %; three months has no discount. Discounts apply to hosting only.</li>
+            <li>The price you see before paying is the price you pay, plus any applicable tax shown at checkout.</li>
+            <li>At renewal, hosting is charged again for the same term at the price shown in the reminder we email 7 days before. Publishing and expert hours never renew.</li>
+          </ul>
+
+          <h2 id="when-we-start" class="text-neutral-900 dark:text-white">When we start, and how long it takes</h2>
+          <ul>
+            <li>Standard deployment takes up to 48 working hours on our side.</li>
+            <li>The clock starts once you have paid and we have everything we need from you — code, access and project information.</li>
+            <li>If we are waiting on you, the clock pauses. Your deployment page always shows what we are waiting for.</li>
+            <li>If you send new source code after work has started, we pause and confirm which version to deploy before continuing.</li>
+          </ul>
+
+          <h2 id="not-included" class="text-neutral-900 dark:text-white">What is not included</h2>
+          <ul>
+            <li>Domain name purchase and renewal.</li>
+            <li>Paid APIs and third-party subscriptions your project uses.</li>
+            <li>Apple and Google developer accounts, and store fees, for mobile publishing.</li>
+          </ul>
+
+          <h2 id="mobile-publishing" class="text-neutral-900 dark:text-white">Mobile app publishing</h2>
+          <ul>
+            <li>We prepare the builds, set up the store listings and submit to both stores.</li>
+            <li>Includes up to 10 resubmissions after a store rejection, where the rejection can be fixed.</li>
+            <li>Store approval typically takes 15–30 days and is decided by Apple and Google, not by us.</li>
+          </ul>
+
+          <h2 id="renewal" class="text-neutral-900 dark:text-white">Renewal and ending</h2>
+          <ul>
+            <li>We email you 30 days and again 7 days before your hosting term ends. The 7-day email states the amount and, with automatic renewal, the card and the date we charge it.</li>
+            <li><strong>Automatic renewal</strong> (your choice at checkout or in your account): we charge your saved card 3 days before the term ends, for the same term, until you turn it off. If a charge fails we try again on each of the next two days and email you each time. You can turn it off, change the card or change the term at any time before the charge.</li>
+            <li>Without automatic renewal, the reminder emails include a link to pay.</li>
+            <li>If the term ends unpaid, your hosting is suspended — shown in your account — and switched back on as soon as it is paid. A renewal paid late still runs from the original end date.</li>
+            <li>If it is still unpaid 15 days after the end date, the server is deleted. We keep a backup you can download from your dashboard for three months after that, then it is deleted.</li>
+          </ul>
+
+          <h2 id="expert-hours" class="text-neutral-900 dark:text-white">Expert hours</h2>
+          <ul>
+            <li>Hours belong to your account, work across any of your projects, and do not expire.</li>
+            <li>Time is recorded against each task to the quarter hour, and you can see it in your dashboard.</li>
+            <li>Support is asynchronous — replies are not live. You can book a meeting from your dashboard.</li>
+          </ul>
+
+          <h2 id="your-access" class="text-neutral-900 dark:text-white">Your access and data</h2>
+          <ul>
+            <li>Passwords, keys and other secrets you send us are stored encrypted and are visible only to the team working on your deployment.</li>
+            <li>You own your project and your server's content. Server credentials are handed over to you on completion.</li>
+          </ul>
+
+          <h2 id="refunds" class="text-neutral-900 dark:text-white">Refunds</h2>
+          <ul>
+            <li>All purchases are final — Vibe96 does not give refunds for licenses, hosting, publishing, expert hours or Vibe Studio credit.</li>
+            <li>Unused expert hours stay on your account and never expire.</li>
+          </ul>
+
+          <h2 id="acceptable-use" class="text-neutral-900 dark:text-white">Acceptable use and suspension</h2>
+          <ul>
+            <li>You must not use a Vibe96 server to host unlawful or infringing content, malware or phishing, send spam, mine cryptocurrency or attack other systems.</li>
+            <li>Vibe96 may suspend a server without notice where it reasonably believes this clause is breached or the server is compromised, and will restore it once fixed.</li>
+            <li>You will cover Vibe96 against claims arising from your project's content.</li>
+          </ul>
+
+          <h2 id="server-data" class="text-neutral-900 dark:text-white">Data on your server</h2>
+          <ul>
+            <li>For personal data on your server, you are the controller and Vibe96 is your processor.</li>
+            <li>Vibe96 processes it only on your instructions, keeps it secure, uses only listed subprocessors, reports breaches within 72 hours, and deletes it when the service ends.</li>
+          </ul>
+
+          <h2 id="liability" class="text-neutral-900 dark:text-white">Liability</h2>
+          <ul>
+            <li>Vibe96 is not liable for indirect or consequential loss, including lost profits, revenue or data.</li>
+            <li>Its total liability for a service is limited to the amount paid for that service in the 12 months before the claim, except liability that cannot be limited by law.</li>
+          </ul>
+
+          <!-- Governing Law -->
+          <div class="mt-10 p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-dark-800">
+            <div class="flex items-start gap-3">
+              <div class="p-2 rounded-lg bg-burgundy text-white flex-shrink-0">
+                <i data-lucide="scale" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <p class="text-neutral-700 dark:text-neutral-300 text-sm leading-relaxed">
+                  These terms are governed by DIFC law, and the DIFC Courts have exclusive jurisdiction.
+                </p>
+                <p class="text-neutral-500 text-xs mt-2">
+                  Vibe96 is a project of Royex Technologies LLC, Dubai, United Arab Emirates, which provides these services ("Vibe96", "we"). Questions about these terms: <a href="https://vibe96.com/support" class="text-gold hover:underline">contact support</a>.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-neutral-950 text-neutral-400 text-xs border-t border-neutral-800 py-12 px-6 mt-auto">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+          <!-- Brand -->
+          <div class="md:col-span-1">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-8 h-8 rounded-full border border-gold/40 flex-shrink-0 bg-neutral-900 flex items-center justify-center">
+                <span class="font-serif font-extrabold text-gold text-sm">N</span>
+              </div>
+              <span class="font-serif font-bold text-neutral-200 text-sm">Nexora Law Firm</span>
+            </div>
+            <p class="text-neutral-500 text-[11px] leading-relaxed">
+              Nexora Law Firm &amp; Associates — Armed with Skill and Heart.
+            </p>
+          </div>
+
+          <!-- Firm -->
+          <div>
+            <h4 class="text-neutral-300 font-semibold text-xs uppercase tracking-wider mb-3">Firm</h4>
+            <div class="flex flex-col gap-2">
+              <a href="index.html" class="hover:text-white transition-colors">Home</a>
+              <a href="index.html#services" class="hover:text-white transition-colors">Services</a>
+              <a href="index.html#about" class="hover:text-white transition-colors">About</a>
+              <a href="index.html#contact" class="hover:text-white transition-colors">Contact</a>
+            </div>
+          </div>
+
+          <!-- Templates -->
+          <div>
+            <h4 class="text-neutral-300 font-semibold text-xs uppercase tracking-wider mb-3">Templates</h4>
+            <div class="flex flex-col gap-2">
+              <a href="index.html" class="hover:text-white transition-colors">Full-Service Firm</a>
+              <a href="accelerator.html" class="hover:text-white transition-colors">Growth Blueprint</a>
+              <a href="odegard.html" class="hover:text-white transition-colors">Odegard Injury</a>
+            </div>
+          </div>
+
+          <!-- Legal -->
+          <div>
+            <h4 class="text-neutral-300 font-semibold text-xs uppercase tracking-wider mb-3">Legal</h4>
+            <div class="flex flex-col gap-2">
+              <a href="service-terms.html" class="text-gold hover:text-gold-light transition-colors font-medium">Service Terms</a>
+              <a href="license.html" class="hover:text-white transition-colors">License</a>
+              <a href="seller-agreement.html" class="hover:text-white transition-colors">Seller Agreement</a>
+              <a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span class="text-[11px] text-neutral-500">© 2025 Nexora Law Firm. All Rights Reserved. Powered by <a href="https://vibe96.com" class="text-gold hover:underline">Vibe96</a>.</span>
+          <a href="mailto:support@vibe96.com" class="text-gold hover:underline text-[11px]">support@vibe96.com</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-revealed'); });
+    }, { threshold: 0.1 });
+    revealElements.forEach(el => observer.observe(el));
+
+    // Mobile menu toggle
+    const legalMobileBtn = document.getElementById('legal-mobile-menu-btn');
+    const legalMobileMenu = document.getElementById('legal-mobile-menu');
+    if (legalMobileBtn && legalMobileMenu) {
+      legalMobileBtn.addEventListener('click', () => {
+        legalMobileMenu.classList.toggle('hidden');
+      });
+      document.querySelectorAll('.legal-mobile-link').forEach(link => {
+        link.addEventListener('click', () => {
+          legalMobileMenu.classList.add('hidden');
+        });
+      });
+    }
+  </script>
+</body>
+</html>
