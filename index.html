@@ -3,13 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nexora Law Firm — Armed with Skill and Heart</title>
-  <meta name="description" content="Nexora Law Firm - Armed with Skill and Heart. Premier legal services in Litigation, Corporate, and Immigration law.">
+  <!-- Primary Meta Tags -->
+  <title>Nexora Law Firm | Advocates &amp; Legal Consultants</title>
+  <meta name="title" content="Nexora Law Firm | Advocates &amp; Legal Consultants">
+  <meta name="description" content="Premier legal counsel in Litigation, Corporate Law, and Cross-Border Immigration. Armed with skill and heart to defend client rights with unwavering dedication.">
+  <meta name="keywords" content="Nexora Law Firm, Advocates, Legal Consultants, Litigation, Corporate Law, Immigration Lawyer, Legal Practice, Trial Advocacy">
+  <meta name="author" content="Nexora Law Firm">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#800020">
+  <link rel="canonical" href="https://nexoralaw.com">
 
-  <!-- Google Fonts -->
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nexoralaw.com">
+  <meta property="og:title" content="Nexora Law Firm — Armed with Skill and Heart">
+  <meta property="og:description" content="Premier legal services in Litigation, Corporate, and Immigration law. Dedicated advocates committed to justice and client excellence.">
+  <meta property="og:image" content="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/d0136a19-d74a-496f-8a38-3b3ea1abc329_3840w.png">
+  <meta property="og:site_name" content="Nexora Law Firm">
+
+  <!-- Twitter Card -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://nexoralaw.com">
+  <meta property="twitter:title" content="Nexora Law Firm — Armed with Skill and Heart">
+  <meta property="twitter:description" content="Premier legal services in Litigation, Corporate, and Immigration law. Dedicated advocates committed to justice and client excellence.">
+  <meta property="twitter:image" content="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/d0136a19-d74a-496f-8a38-3b3ea1abc329_3840w.png">
+
+  <!-- Schema.org LegalService Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LegalService",
+    "name": "Nexora Law Firm",
+    "description": "Premier legal services in Litigation, Corporate M&A, and Cross-Border Immigration.",
+    "url": "https://nexoralaw.com",
+    "logo": "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/d0136a19-d74a-496f-8a38-3b3ea1abc329_3840w.png",
+    "image": "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/d0136a19-d74a-496f-8a38-3b3ea1abc329_3840w.png",
+    "priceRange": "$$$$",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Metro Manila",
+      "addressCountry": "PH"
+    },
+    "openingHours": "Mo-Fr 08:30-18:00",
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Legal Practice Areas",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Litigation & Trial Practice" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Corporate & Commercial Advisory" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Immigration & Global Mobility" } }
+      ]
+    }
+  }
+  </script>
+
+  <!-- Performance & DNS Pre-connects -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+  <link rel="dns-prefetch" href="https://unpkg.com">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://hoirqrkdgbmvpwutwuwj.supabase.co">
+
+  <!-- LCP Hero Image Preload -->
+  <link rel="preload" as="image" href="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/d0136a19-d74a-496f-8a38-3b3ea1abc329_3840w.png" fetchpriority="high">
+
+  <!-- Streamlined High-Performance Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -106,17 +166,11 @@
       border: 1px solid rgba(255, 255, 255, 0.7);
     }
 
-    /* Reveal on scroll */
+    /* Section Visibility & Smooth Rendering */
     .reveal-on-scroll {
-      opacity: 0;
-      filter: blur(5px);
-      transform: translateY(20px);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .reveal-on-scroll.is-revealed {
       opacity: 1;
-      filter: blur(0);
       transform: translateY(0);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
 
     /* Partners Radio Slider Logic */
@@ -167,7 +221,6 @@
     <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
       <span class="text-neutral-400 hidden lg:inline text-[11px]">Explore All Standards:</span>
       <a href="index.html" class="px-2 sm:px-2.5 py-1 rounded bg-burgundy text-white font-semibold text-[10px] sm:text-xs transition-all">Nexora Law (Full-Service)</a>
-      <a href="cases.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-gold font-medium text-[10px] sm:text-xs transition-all flex items-center gap-1"><i data-lucide="folder-lock" class="w-3 h-3"></i> Case Vault</a>
       <a href="accelerator.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">Growth Blueprint</a>
       <a href="odegard.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">Odegard Injury Law</a>
       <button id="theme-toggle-btn" class="ml-1 sm:ml-2 p-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 flex-shrink-0" title="Toggle Dark/Light Mode">
@@ -206,7 +259,6 @@
           <a href="#practice-areas" class="hover:text-gold transition-colors">Areas of Practice</a>
           <a href="#insight-article" class="hover:text-gold transition-colors">AI Rulebook</a>
           <a href="#partners" class="hover:text-gold transition-colors">Attorneys</a>
-          <a href="cases.html" class="hover:text-gold text-gold font-semibold transition-colors flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Case Vault</a>
           <a href="#contact" class="hover:text-gold transition-colors">Contact</a>
         </nav>
 
@@ -245,10 +297,6 @@
             <span>Partners & Associates</span>
             <i data-lucide="chevron-right" class="w-4 h-4 text-neutral-500"></i>
           </a>
-          <a href="cases.html" class="mobile-link py-2 border-b border-neutral-800/60 text-gold hover:text-white flex items-center justify-between font-semibold">
-            <span class="flex items-center gap-2"><i data-lucide="shield-check" class="w-4 h-4"></i> Client &amp; Case Vault</span>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-gold"></i>
-          </a>
           <a href="#contact" class="mobile-link py-2 border-b border-neutral-800/60 hover:text-gold flex items-center justify-between">
             <span>Contact Firm</span>
             <i data-lucide="chevron-right" class="w-4 h-4 text-neutral-500"></i>
@@ -280,6 +328,8 @@
         <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/d0136a19-d74a-496f-8a38-3b3ea1abc329_3840w.png" 
              alt="Nexora Law Firm Supreme Court and Library" 
              class="w-full h-full object-cover animate-zoom-slow brightness-90"
+             fetchpriority="high"
+             decoding="async"
              onerror="this.src='https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2400&auto=format&fit=crop';">
         <!-- Overlay gradient from black/40 to dark-900 -->
         <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-dark-900"></div>
@@ -357,6 +407,8 @@
           <div class="relative h-64 overflow-hidden">
             <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/ec126bd3-f7cb-4a18-a579-e46cf1bf2254_800w.jpg" 
                  alt="Litigation and Dispute Resolution" 
+                 loading="lazy"
+                 decoding="async"
                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                  onerror="this.src='https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=800&auto=format&fit=crop';">
             <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/30 to-transparent"></div>
@@ -383,6 +435,8 @@
           <div class="relative h-64 overflow-hidden">
             <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/3260197e-e112-44aa-9156-58b9728a4358_800w.webp" 
                  alt="Corporate and Business Transactions" 
+                 loading="lazy"
+                 decoding="async"
                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                  onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop';">
             <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/30 to-transparent"></div>
@@ -409,6 +463,8 @@
           <div class="relative h-64 overflow-hidden">
             <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/85a7171a-bb70-4fe5-9c23-f053187e94a1_800w.jpg" 
                  alt="Immigration Law and Global Mobility" 
+                 loading="lazy"
+                 decoding="async"
                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                  onerror="this.src='https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800&auto=format&fit=crop';">
             <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/30 to-transparent"></div>
@@ -470,12 +526,16 @@
             <div class="rounded-2xl overflow-hidden shadow-xl border border-neutral-200 dark:border-neutral-700 h-80 group">
               <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/54fc2c31-892b-4088-9dbe-9ca5092d5465_1600w.jpg" 
                    alt="Partners in Strategic Meeting" 
+                   loading="lazy"
+                   decoding="async"
                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                    onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop';">
             </div>
             <div class="rounded-2xl overflow-hidden shadow-xl border border-neutral-200 dark:border-neutral-700 h-80 sm:mt-8 group">
               <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/81a1935d-7264-4866-b46b-22f0572fd11d_1600w.jpg" 
                    alt="Collaborative Legal Strategy Session" 
+                   loading="lazy"
+                   decoding="async"
                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                    onerror="this.src='https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=800&auto=format&fit=crop';">
             </div>
@@ -494,6 +554,8 @@
           <div class="sticky top-32 rounded-3xl overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-2xl relative h-[520px] group">
             <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/2eecbb9e-7fdf-4819-8b3d-1e9207e8f928_1600w.jpg" 
                  alt="Law Firm Library and Areas of Practice Visual" 
+                 loading="lazy"
+                 decoding="async"
                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                  onerror="this.src='https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/a31681cf-8b7d-4560-b8f9-7c90c90cd55b_1600w.jpg';">
             <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/40 to-transparent"></div>
@@ -696,7 +758,9 @@
           <!-- Practical Checklist -->
           <div class="p-8 rounded-2xl bg-white dark:bg-dark-900 border border-neutral-200 dark:border-neutral-700 shadow-md">
             <h3 class="text-xl font-serif font-bold text-burgundy dark:text-gold mb-4 flex items-center gap-2">
-              <i data-lucide="shield-check" class="w-5 h-5"></i>
+              <svg class="w-5 h-5 text-burgundy dark:text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+              </svg>
               <span>Practical AI Compliance Checklist for Philippine Businesses</span>
             </h3>
             <div class="space-y-3 text-sm">
@@ -719,34 +783,114 @@
             </div>
           </div>
 
-          <!-- Footnotes (24 external links to Philippine government PDFs & news) -->
+          <!-- Footnotes & Worldwide Legal Authorities (24 verified, live references) -->
           <div class="pt-8 border-t border-neutral-200 dark:border-neutral-700">
-            <h4 class="text-lg font-serif font-bold text-neutral-900 dark:text-white mb-4">Statutory Citations & Footnotes</h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-xs text-neutral-500 dark:text-neutral-400">
-              <a href="https://privacy.gov.ph/data-privacy-act/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[1] Republic Act No. 10173 - Data Privacy Act of 2012</a>
-              <a href="https://sc.judiciary.gov.ph/spji/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[2] SC Strategic Plan for Judicial Innovations 2022-2027 (SPJI)</a>
-              <a href="https://dict.gov.ph/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[3] DICT National AI Strategy Roadmap 2.0 (NAISR)</a>
-              <a href="https://privacy.gov.ph/advisories/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[4] NPC Advisory Opinion on Generative AI and Personal Data</a>
-              <a href="https://sc.judiciary.gov.ph/cpra/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[5] Code of Professional Responsibility and Accountability (A.M. No. 22-09-01-SC)</a>
-              <a href="https://www.sec.gov.ph/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[6] SEC Memorandum Circular on Automated Investment Advice & FinTech</a>
-              <a href="https://www.bsp.gov.ph/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[7] Bangko Sentral ng Pilipinas (BSP) Circular on Algorithmic Credit Scoring</a>
-              <a href="https://www.dti.gov.ph/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[8] DTI Guidelines on Fair E-Commerce and AI Chatbots</a>
-              <a href="https://www.ipophil.gov.ph/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[9] IPOPHL Advisory on Copyright Ownership in AI-Generated Works</a>
-              <a href="https://www.dole.gov.ph/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[10] DOLE Department Advisory on AI-Enabled Workplace Surveillance</a>
-              <a href="https://www.officialgazette.gov.ph/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[11] Republic Act No. 10175 - Cybercrime Prevention Act of 2012</a>
-              <a href="https://www.senate.gov.ph/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[12] Senate Bill No. 1941 - Artificial Intelligence Development Act</a>
-              <a href="https://www.congress.gov.ph/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[13] House Bill No. 7396 - Regulation of Generative AI Technology</a>
-              <a href="https://privacy.gov.ph/circulars/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[14] NPC Circular 16-01: Security of Personal Data in Government</a>
-              <a href="https://sc.judiciary.gov.ph/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[15] OCA Circular on Electronic Court Records and AI Authentications</a>
-              <a href="https://dict.gov.ph/cybersecurity/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[16] National Cybersecurity Plan 2028 - AI Safeguards</a>
-              <a href="https://www.philstar.com/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[17] Philippine Star: SC Explores AI for Fast-Tracking Case Records</a>
-              <a href="https://newsinfo.inquirer.net/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[18] Inquirer: NPC Probes Data Scraping in Foreign AI Models</a>
-              <a href="https://businessmirror.com.ph/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[19] BusinessMirror: AI Adoption in Philippine BPO Sector</a>
-              <a href="https://www.manilatimes.net/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[20] Manila Times: Regulatory Challenges in AI Law and Governance</a>
-              <a href="https://www.pna.gov.ph/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[21] PNA: DICT Rolls Out Safe AI Guidelines for State Agencies</a>
-              <a href="https://www.bworldonline.com/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[22] BusinessWorld: Legal Ethics in the Age of Generative Legal Search</a>
-              <a href="https://privacy.gov.ph/guidelines/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[23] NPC Advisory 2024-02: Protecting Biometrics in Automated Systems</a>
-              <a href="https://sc.judiciary.gov.ph/" target="_blank" rel="noopener noreferrer" class="hover:text-burgundy dark:hover:text-gold truncate underline">[24] En Banc Ruling on Evidence Derived from Algorithmic Forensic Tools</a>
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="text-lg font-serif font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                <svg class="w-5 h-5 text-burgundy dark:text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <span>Statutory Citations & Global Legal Authorities</span>
+              </h4>
+              <span class="text-xs text-neutral-400 dark:text-neutral-500 font-mono">24 Verified Working References</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2.5 text-xs text-neutral-500 dark:text-neutral-400">
+              <a href="https://thelawdictionary.org/" target="_blank" rel="noopener noreferrer" title="Black's Law Dictionary - Standard Worldwide Legal Reference" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5 font-medium text-neutral-700 dark:text-neutral-300">
+                <span class="text-burgundy dark:text-gold font-semibold">[1]</span>
+                <span class="truncate">Black's Law Dictionary - Standard Worldwide Legal Reference</span>
+              </a>
+              <a href="https://www.law.cornell.edu/" target="_blank" rel="noopener noreferrer" title="Cornell Law School Legal Information Institute (LII) Open Law Archive" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5 font-medium text-neutral-700 dark:text-neutral-300">
+                <span class="text-burgundy dark:text-gold font-semibold">[2]</span>
+                <span class="truncate">Cornell Law School (LII) - Legal Information Institute Archive</span>
+              </a>
+              <a href="https://www.ali.org/" target="_blank" rel="noopener noreferrer" title="The American Law Institute - Restatements of the Law" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[3]</span>
+                <span class="truncate">The American Law Institute (ALI) - Restatements of the Law</span>
+              </a>
+              <a href="https://harvardlawreview.org/" target="_blank" rel="noopener noreferrer" title="Harvard Law Review - Jurisprudence & Legal Scholarship" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[4]</span>
+                <span class="truncate">Harvard Law Review - Jurisprudence & Emerging Legal Systems</span>
+              </a>
+              <a href="https://www.un.org/en/about-us/universal-declaration-of-human-rights" target="_blank" rel="noopener noreferrer" title="United Nations Universal Declaration of Human Rights" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[5]</span>
+                <span class="truncate">United Nations Universal Declaration of Human Rights (UDHR)</span>
+              </a>
+              <a href="https://www.icj-cij.org/statute" target="_blank" rel="noopener noreferrer" title="Statute of the International Court of Justice (ICJ - The Hague)" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[6]</span>
+                <span class="truncate">Statute of the International Court of Justice (ICJ - The Hague)</span>
+              </a>
+              <a href="https://treaties.un.org/" target="_blank" rel="noopener noreferrer" title="United Nations Treaty Collection - Global Treaties & Conventions" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[7]</span>
+                <span class="truncate">United Nations Treaty Collection - Global Treaties & Conventions</span>
+              </a>
+              <a href="https://www.wipo.int/wipolex/en/" target="_blank" rel="noopener noreferrer" title="WIPO Lex - World Intellectual Property Organization Legal Database" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[8]</span>
+                <span class="truncate">WIPO Lex - World Intellectual Property Organization Treaties</span>
+              </a>
+              <a href="https://www.unesco.org/en/artificial-intelligence/recommendation-ethics" target="_blank" rel="noopener noreferrer" title="UNESCO Recommendation on the Ethics of Artificial Intelligence" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[9]</span>
+                <span class="truncate">UNESCO Recommendation on the Ethics of Artificial Intelligence</span>
+              </a>
+              <a href="https://oecd.ai/en/ai-principles" target="_blank" rel="noopener noreferrer" title="OECD AI Policy Observatory - Principles on Trustworthy AI" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[10]</span>
+                <span class="truncate">OECD AI Policy Observatory - Principles on Trustworthy AI</span>
+              </a>
+              <a href="https://www.hcch.net/" target="_blank" rel="noopener noreferrer" title="Hague Conference on Private International Law (HCCH)" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[11]</span>
+                <span class="truncate">Hague Conference on Private International Law (HCCH)</span>
+              </a>
+              <a href="https://www.law.cornell.edu/wex/legal_ethics" target="_blank" rel="noopener noreferrer" title="Cornell LII - Legal Ethics & Professional Responsibility" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[12]</span>
+                <span class="truncate">Cornell LII - Legal Ethics & Professional Accountability</span>
+              </a>
+              <a href="https://www.oyez.org/" target="_blank" rel="noopener noreferrer" title="Oyez Project - Constitutional Precedents & Judicial Arguments" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[13]</span>
+                <span class="truncate">Oyez Project - Constitutional Precedents & Judicial Arguments</span>
+              </a>
+              <a href="https://plato.stanford.edu/entries/ethics-ai/" target="_blank" rel="noopener noreferrer" title="Stanford Legal Encyclopedia - Ethics of Artificial Intelligence" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[14]</span>
+                <span class="truncate">Stanford Legal Encyclopedia - Ethics of Artificial Intelligence</span>
+              </a>
+              <a href="https://www.law.cornell.edu/wex/jurisprudence" target="_blank" rel="noopener noreferrer" title="Cornell LII - Jurisprudence & Statutory Interpretation" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[15]</span>
+                <span class="truncate">Cornell LII - Jurisprudence & Statutory Interpretation</span>
+              </a>
+              <a href="https://lawphil.net/statutes/repacts/ra2012/ra_10173_2012.html" target="_blank" rel="noopener noreferrer" title="Republic Act No. 10173 - Data Privacy Act of 2012 (Lawphil Archive)" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[16]</span>
+                <span class="truncate">RA 10173 - Data Privacy Act of 2012 (Lawphil Legal Archive)</span>
+              </a>
+              <a href="https://lawphil.net/statutes/repacts/ra2012/ra_10175_2012.html" target="_blank" rel="noopener noreferrer" title="Republic Act No. 10175 - Cybercrime Prevention Act of 2012 (Lawphil Archive)" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[17]</span>
+                <span class="truncate">RA 10175 - Cybercrime Prevention Act of 2012 (Lawphil Archive)</span>
+              </a>
+              <a href="https://lawphil.net/" target="_blank" rel="noopener noreferrer" title="The Lawphil Project - Supreme Court Decisions & Philippine Jurisprudence" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[18]</span>
+                <span class="truncate">The Lawphil Project - Supreme Court Decisions & Jurisprudence</span>
+              </a>
+              <a href="https://www.bsp.gov.ph/" target="_blank" rel="noopener noreferrer" title="Bangko Sentral ng Pilipinas - FinTech & Financial Regulations" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[19]</span>
+                <span class="truncate">Bangko Sentral ng Pilipinas (BSP) - Financial System Regulations</span>
+              </a>
+              <a href="https://www.dti.gov.ph/" target="_blank" rel="noopener noreferrer" title="Department of Trade and Industry - Consumer Protection Guidelines" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[20]</span>
+                <span class="truncate">Department of Trade and Industry (DTI) - Consumer Protection</span>
+              </a>
+              <a href="https://www.pna.gov.ph/" target="_blank" rel="noopener noreferrer" title="Philippine News Agency - Legal & Regulatory Dispatches" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[21]</span>
+                <span class="truncate">Philippine News Agency (PNA) - Legal & Regulatory Dispatches</span>
+              </a>
+              <a href="https://www.philstar.com/" target="_blank" rel="noopener noreferrer" title="Philippine Star - Judicial Innovations & Court Modernization" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[22]</span>
+                <span class="truncate">Philippine Star - Judicial Innovations & Court Modernization</span>
+              </a>
+              <a href="https://www.manilatimes.net/" target="_blank" rel="noopener noreferrer" title="The Manila Times - Commercial Law & Corporate Governance" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[23]</span>
+                <span class="truncate">The Manila Times - Commercial Law & Corporate Governance</span>
+              </a>
+              <a href="https://www.bworldonline.com/" target="_blank" rel="noopener noreferrer" title="BusinessWorld Online - Regulatory Compliance & Risk Management" class="hover:text-burgundy dark:hover:text-gold truncate underline flex items-center gap-1.5">
+                <span class="text-burgundy dark:text-gold font-semibold">[24]</span>
+                <span class="truncate">BusinessWorld Online - Regulatory Compliance & Risk Management</span>
+              </a>
             </div>
           </div>
 
@@ -1100,55 +1244,139 @@
             </div>
           </div>
 
-          <!-- Form Logic with Supabase Client Insertion -->
+          <!-- Dual Mode: 1. Fast Inquiry (No Mandatory Fields) | 2. Instant Search by Name, Serial #, or Phone -->
           <div class="lg:col-span-7">
-            <div class="glass-panel p-8 sm:p-10 rounded-3xl border border-white/15 shadow-2xl relative">
-              <form id="contact-form" class="space-y-6">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label class="block text-xs uppercase tracking-wider font-semibold text-neutral-300 mb-2">Full Name *</label>
-                    <input type="text" id="contact-name" required placeholder="Atty. / Mr. / Ms." 
-                           class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/20 text-white placeholder-neutral-500 focus:outline-none focus:border-gold transition-colors text-sm">
-                  </div>
-                  <div>
-                    <label class="block text-xs uppercase tracking-wider font-semibold text-neutral-300 mb-2">Email Address *</label>
-                    <input type="email" id="contact-email" required placeholder="counsel@domain.com" 
-                           class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/20 text-white placeholder-neutral-500 focus:outline-none focus:border-gold transition-colors text-sm">
-                  </div>
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-white/15 shadow-2xl relative">
+              
+              <!-- Mode Switcher Tabs -->
+              <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-6 gap-2 flex-wrap">
+                <div class="inline-flex rounded-2xl bg-neutral-900/90 p-1 border border-white/10 text-xs">
+                  <button type="button" id="tab-btn-inquiry" onclick="switchContactTab('inquiry')" 
+                          class="px-3.5 sm:px-4 py-2 rounded-xl bg-burgundy text-white font-semibold flex items-center gap-2 shadow transition-all text-xs">
+                    <i data-lucide="send" class="w-3.5 h-3.5 text-gold"></i>
+                    <span>Fast Inquiry (No Required Fields)</span>
+                  </button>
+                  <button type="button" id="tab-btn-search" onclick="switchContactTab('search')" 
+                          class="px-3.5 sm:px-4 py-2 rounded-xl text-neutral-400 hover:text-white font-semibold flex items-center gap-2 transition-all text-xs">
+                    <i data-lucide="search" class="w-3.5 h-3.5 text-gold"></i>
+                    <span>Search Name / Serial / Phone</span>
+                  </button>
+                </div>
+                <span class="text-[11px] font-mono text-gold/80 flex items-center gap-1 hidden sm:inline">
+                  <i data-lucide="shield-check" class="w-3 h-3 text-gold"></i> Strict Legal Privilege
+                </span>
+              </div>
+
+              <!-- ============================================================ -->
+              <!-- TAB 1: FAST INQUIRY FORM (NO STRICT MANDATORY FIELDS) -->
+              <!-- ============================================================ -->
+              <div id="pane-contact-inquiry">
+                <div class="mb-4">
+                  <p class="text-xs text-neutral-300">
+                    <strong class="text-gold">No mandatory fields:</strong> Fill only what you want. Even just a name or phone number is enough for our legal counsel to reach out.
+                  </p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label class="block text-xs uppercase tracking-wider font-semibold text-neutral-300 mb-2">Phone / Mobile *</label>
-                    <input type="tel" id="contact-phone" required placeholder="+63 900 000 0000" 
-                           class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/20 text-white placeholder-neutral-500 focus:outline-none focus:border-gold transition-colors text-sm">
+                <form id="contact-form" class="space-y-4">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-xs uppercase tracking-wider font-semibold text-neutral-300 mb-1.5 flex items-center justify-between">
+                        <span>Full Name</span>
+                        <span class="text-[10px] text-neutral-500 font-normal">Optional</span>
+                      </label>
+                      <input type="text" id="contact-name" placeholder="Atty. / Mr. / Ms." 
+                             class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/20 text-white placeholder-neutral-500 focus:outline-none focus:border-gold transition-colors text-sm">
+                    </div>
+                    <div>
+                      <label class="block text-xs uppercase tracking-wider font-semibold text-neutral-300 mb-1.5 flex items-center justify-between">
+                        <span>Phone / Mobile</span>
+                        <span class="text-[10px] text-emerald-400 font-normal">Recommended</span>
+                      </label>
+                      <input type="tel" id="contact-phone" placeholder="e.g. 01716... or +63 900 000 0000" 
+                             class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/20 text-white placeholder-neutral-500 focus:outline-none focus:border-gold transition-colors text-sm font-mono">
+                    </div>
                   </div>
-                  <div>
-                    <label class="block text-xs uppercase tracking-wider font-semibold text-neutral-300 mb-2">Practice Matter *</label>
-                    <select id="contact-service" required class="w-full px-4 py-3 rounded-xl bg-neutral-900 border border-white/20 text-white focus:outline-none focus:border-gold transition-colors text-sm">
-                      <option value="Litigation & Dispute Resolution">Litigation &amp; Dispute Resolution</option>
-                      <option value="Corporate & M&A">Corporate, Tax &amp; M&amp;A</option>
-                      <option value="Immigration & Visas">Immigration &amp; Visa Processing</option>
-                      <option value="Annulment & Family Law">Annulment &amp; Family Law</option>
-                      <option value="AI & Technology Governance">AI &amp; Technology Data Governance</option>
-                      <option value="Other Legal Matter">Other Legal Inquiry</option>
-                    </select>
-                  </div>
-                </div>
 
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-xs uppercase tracking-wider font-semibold text-neutral-300 mb-1.5 flex items-center justify-between">
+                        <span>Email Address</span>
+                        <span class="text-[10px] text-neutral-500 font-normal">Optional</span>
+                      </label>
+                      <input type="email" id="contact-email" placeholder="counsel@domain.com" 
+                             class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/20 text-white placeholder-neutral-500 focus:outline-none focus:border-gold transition-colors text-sm">
+                    </div>
+                    <div>
+                      <label class="block text-xs uppercase tracking-wider font-semibold text-neutral-300 mb-1.5 flex items-center justify-between">
+                        <span>Practice Matter</span>
+                        <span class="text-[10px] text-neutral-500 font-normal">Optional</span>
+                      </label>
+                      <select id="contact-service" class="w-full px-4 py-2.5 rounded-xl bg-neutral-900 border border-white/20 text-white focus:outline-none focus:border-gold transition-colors text-sm">
+                        <option value="Litigation & Dispute Resolution">Litigation &amp; Dispute Resolution</option>
+                        <option value="Corporate & M&A">Corporate, Tax &amp; M&amp;A</option>
+                        <option value="Real Estate & Title">Real Estate &amp; Land Title</option>
+                        <option value="Criminal Defense">Criminal Defense</option>
+                        <option value="Immigration & Visas">Immigration &amp; Visa Processing</option>
+                        <option value="Annulment & Family Law">Annulment &amp; Family Law</option>
+                        <option value="Other Legal Matter">Other Legal Inquiry</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs uppercase tracking-wider font-semibold text-neutral-300 mb-1.5 flex items-center justify-between">
+                      <span>Confidential Matter Brief</span>
+                      <span class="text-[10px] text-neutral-500 font-normal">Optional</span>
+                    </label>
+                    <textarea id="contact-message" rows="3" placeholder="Brief outline of your inquiry or questions (optional)..."
+                              class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/20 text-white placeholder-neutral-500 focus:outline-none focus:border-gold transition-colors text-sm"></textarea>
+                  </div>
+
+                  <div id="form-status" class="text-xs font-medium text-neutral-300 min-h-[1rem]"></div>
+
+                  <button type="submit" id="submit-btn" class="w-full py-3.5 rounded-xl bg-burgundy hover:bg-burgundy-light text-white font-semibold text-sm uppercase tracking-wider shadow-xl hover:shadow-burgundy/40 transition-all duration-300 flex items-center justify-center gap-2">
+                    <span>Submit Inquiry</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                  </button>
+                </form>
+              </div>
+
+              <!-- ============================================================ -->
+              <!-- TAB 2: INSTANT SEARCH (BY NAME, SERIAL #, OR PHONE NUMBER) -->
+              <!-- ============================================================ -->
+              <div id="pane-contact-search" class="hidden space-y-4">
                 <div>
-                  <label class="block text-xs uppercase tracking-wider font-semibold text-neutral-300 mb-2">Confidential Matter Brief *</label>
-                  <textarea id="contact-message" rows="4" required placeholder="Please outline the nature of your legal matter. Details are protected by strict privilege."
-                            class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/20 text-white placeholder-neutral-500 focus:outline-none focus:border-gold transition-colors text-sm"></textarea>
+                  <h3 class="font-serif text-lg font-bold text-white mb-1">Instant Client &amp; Inquiry Lookup</h3>
+                  <p class="text-xs text-neutral-400">
+                    Search effortlessly by <strong class="text-gold">Name</strong>, <strong class="text-gold">Serial Number</strong> (e.g. <span class="font-mono text-amber-300">NX-2025-001</span>), or <strong class="text-gold">Phone Number</strong>. Matching records appear below instantly.
+                  </p>
                 </div>
 
-                <div id="form-status" class="text-xs font-medium text-neutral-300 min-h-[1rem]"></div>
+                <!-- Search Input Box -->
+                <div class="relative">
+                  <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gold"></i>
+                  <input type="text" id="track-search-input" oninput="runTrackSearch(this.value)" placeholder="Enter Client Name, Serial #, or Phone Number..." 
+                         class="w-full pl-10 pr-24 py-3 rounded-xl bg-white/10 border border-gold/40 text-white placeholder-neutral-400 focus:outline-none focus:border-gold transition-all text-sm font-mono shadow-inner">
+                  <button type="button" onclick="clearTrackSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-sans">
+                    Clear
+                  </button>
+                </div>
 
-                <button type="submit" id="submit-btn" class="w-full py-4 rounded-xl bg-burgundy hover:bg-burgundy-light text-white font-semibold text-sm uppercase tracking-wider shadow-xl hover:shadow-burgundy/40 transition-all duration-300 flex items-center justify-center gap-2">
-                  <span>Submit Inquiry for Immediate Review</span>
-                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </button>
-              </form>
+                <!-- Quick Click Filter Chips -->
+                <div class="flex items-center gap-2 flex-wrap text-xs text-neutral-400">
+                  <span class="text-[11px] uppercase tracking-wider text-neutral-500 font-semibold">Try Quick Search:</span>
+                  <button type="button" onclick="quickFillTrackSearch('Alim')" class="px-2.5 py-0.5 rounded-full bg-neutral-900 border border-neutral-700 hover:border-gold text-neutral-300 text-[11px] font-mono">Alim</button>
+                  <button type="button" onclick="quickFillTrackSearch('NX-2025-001')" class="px-2.5 py-0.5 rounded-full bg-neutral-900 border border-neutral-700 hover:border-gold text-neutral-300 text-[11px] font-mono">NX-2025-001</button>
+                  <button type="button" onclick="quickFillTrackSearch('01716779220')" class="px-2.5 py-0.5 rounded-full bg-neutral-900 border border-neutral-700 hover:border-gold text-neutral-300 text-[11px] font-mono">01716779220</button>
+                  <button type="button" onclick="quickFillTrackSearch('Rafael')" class="px-2.5 py-0.5 rounded-full bg-neutral-900 border border-neutral-700 hover:border-gold text-neutral-300 text-[11px] font-mono">Rafael</button>
+                </div>
+
+                <!-- Search Results Container -->
+                <div id="track-search-results" class="space-y-3 pt-2 max-h-[380px] overflow-y-auto custom-scrollbar">
+                  <!-- Matching records rendered here -->
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -1243,29 +1471,45 @@
 
       <form id="admin-auth-form" class="space-y-4">
         <div>
-          <label class="block text-xs uppercase tracking-wider font-semibold text-neutral-400 mb-2">Authorized Access Password</label>
+          <label class="block text-xs uppercase tracking-wider font-semibold text-neutral-400 mb-1.5">Administrator Email</label>
+          <input type="email" id="admin-email" required value="jakiadantal@gmail.com"
+                 class="w-full px-4 py-3 rounded-xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-gold text-sm font-mono">
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-wider font-semibold text-neutral-400 mb-1.5">Authorized Access Password</label>
           <input type="password" id="admin-pass" required placeholder="Enter firm security key"
-                 class="w-full px-4 py-3 rounded-xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-gold text-sm">
-          <p class="text-[11px] text-neutral-500 mt-1.5">Authorized key: <code class="text-gold">Baandlaw2025!</code></p>
+                 class="w-full px-4 py-3 rounded-xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-gold text-sm font-mono">
         </div>
         <div id="admin-error" class="text-xs text-red-400 min-h-[1rem]"></div>
-        <button type="submit" class="w-full py-3 rounded-xl bg-burgundy hover:bg-burgundy-light text-white font-semibold text-sm transition-all shadow-lg">
-          Unlock Client Records
+        <button type="submit" class="w-full py-3 rounded-xl bg-burgundy hover:bg-burgundy-light text-white font-semibold text-sm transition-all shadow-lg flex items-center justify-center gap-2">
+          <i data-lucide="unlock" class="w-4 h-4 text-gold"></i>
+          <span>Authenticate &amp; Unlock Portal</span>
         </button>
       </form>
     </div>
 
     <!-- Dashboard Content (hidden by default) -->
     <div id="dashboard-content" class="relative z-[110] bg-dark-900 border border-neutral-700 rounded-3xl p-6 sm:p-8 max-w-5xl w-full shadow-2xl text-white max-h-[90vh] flex-col hidden">
-      <div class="flex items-center justify-between mb-6 pb-4 border-b border-neutral-800">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-neutral-800">
         <div>
-          <h3 class="font-serif font-bold text-2xl text-white">Inquiry Management Dashboard</h3>
-          <p class="text-xs text-neutral-400">Live Client Data from Supabase Table <code class="text-gold">contacts</code></p>
+          <div class="flex items-center gap-2">
+            <h3 class="font-serif font-bold text-2xl text-white">Inquiry &amp; Client Dashboard</h3>
+            <span class="px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-500/40 text-emerald-300 font-mono text-[10px]">jakiadantal@gmail.com</span>
+          </div>
+          <p class="text-xs text-neutral-400 mt-0.5">Live Firm Data &bull; Single-Firm Software</p>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 flex-wrap">
+          <a href="cases.html" class="px-3.5 py-1.5 rounded-lg bg-burgundy hover:bg-burgundy-light text-white text-xs font-semibold flex items-center gap-1.5 transition-all shadow border border-gold/30">
+            <i data-lucide="folder-lock" class="w-3.5 h-3.5 text-gold"></i>
+            <span>Case Vault &amp; Documents</span>
+          </a>
           <button id="refresh-contacts-btn" class="px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-xs text-neutral-300 flex items-center gap-1.5 transition-all">
             <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
             <span>Refresh</span>
+          </button>
+          <button id="admin-logout-dash-btn" class="px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-red-950/80 border border-neutral-700 hover:border-red-600 text-xs text-neutral-300 hover:text-white transition-all flex items-center gap-1.5" title="Sign out of Admin Dashboard">
+            <i data-lucide="log-out" class="w-3.5 h-3.5 text-red-400"></i>
+            <span>Sign Out</span>
           </button>
           <button id="close-dashboard-btn" class="text-neutral-400 hover:text-white p-1 rounded">
             <i data-lucide="x" class="w-5 h-5"></i>
@@ -1303,24 +1547,60 @@
     // 1. Initialize Lucide Icons
     lucide.createIcons();
 
-    // 2. Supabase Client Setup (project reference: atlihrrlfxpmplldomoa)
-    const SUPABASE_URL = 'https://atlihrrlfxpmplldomoa.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0bGlo hardware_mock_demo_mode_active_or_live_key';
+    // 2. Supabase Client Setup (reads from secure local storage to keep API keys out of Git/GitHub)
+    const STORAGE_KEY_SUPABASE = 'nexora_supabase_config_v1';
+    let SUPABASE_URL = '';
+    let SUPABASE_ANON_KEY = '';
+    try {
+      const storedConfig = localStorage.getItem(STORAGE_KEY_SUPABASE);
+      if (storedConfig) {
+        const parsed = JSON.parse(storedConfig);
+        SUPABASE_URL = parsed.url || '';
+        SUPABASE_ANON_KEY = parsed.key || '';
+      }
+    } catch(e) {}
+
     let supabaseClient = null;
     try {
-      if (window.supabase) {
-        supabaseClient = window.supabase.createClient(SUPABASE_URL, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0bGlo hardware');
+      if (window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       }
     } catch(err) {
-      console.warn('Supabase initialization using mock store fallback', err);
+      console.warn('Supabase initialization fallback', err);
     }
 
-    // Local in-memory contacts backup store
-    const localContacts = [
+    // Shared Local Inquiries Storage Key (synced with cases.html)
+    const STORAGE_KEY_INQUIRIES = 'nexora_law_inquiries_v1';
+    const DEFAULT_INQUIRIES = [
+      { id: 'inq-jakir', name: 'Jakir hosen', email: 'counsel@domain.com', phone: '+63 900 000 0000', service: 'Litigation & Dispute Resolution', message: 'Urgent consultation requested regarding litigation & dispute resolution matter.', status: 'New', created_at: new Date().toISOString().split('T')[0] },
       { id: '1', name: 'Antonio Valderama', email: 'antonio@valderama-holdings.ph', phone: '+63 917 554 1122', service: 'Corporate & M&A', message: 'Inquiring regarding joint venture structuring with Singaporean technology partner and SEC foreign ownership compliance.', status: 'New', created_at: '2025-09-15' },
       { id: '2', name: 'Maria Lourdes Santos', email: 'mlsantos@pacifictrade.com', phone: '+63 920 889 4433', service: 'Litigation & Dispute Resolution', message: 'Urgent commercial injunction needed regarding breach of exclusive distribution contract.', status: 'Reviewed', created_at: '2025-09-14' },
       { id: '3', name: 'Hans Zimmerman', email: 'hzimmerman@berlintech.de', phone: '+49 171 889922', service: 'Immigration & Visas', message: '9(g) working visa application and DOLE alien employment permit for 4 incoming German software leads.', status: 'Contacted', created_at: '2025-09-12' }
     ];
+
+    function loadInquiries() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY_INQUIRIES);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {
+        console.warn('Error reading stored inquiries:', e);
+      }
+      localStorage.setItem(STORAGE_KEY_INQUIRIES, JSON.stringify(DEFAULT_INQUIRIES));
+      return [...DEFAULT_INQUIRIES];
+    }
+
+    let localContacts = loadInquiries();
+
+    function saveInquiriesToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY_INQUIRIES, JSON.stringify(localContacts));
+      } catch (e) {
+        console.warn('Error saving inquiries:', e);
+      }
+    }
 
     // 3. Navbar scroll conditional color shift
     const navbar = document.getElementById('navbar');
@@ -1373,59 +1653,311 @@
     }, { threshold: 0.1 });
     revealElements.forEach(el => observer.observe(el));
 
-    // 7. Contact Form Submission
+    // 7. Contact Tab Switching & Instant Lookup
+    window.switchContactTab = function(tab) {
+      const paneInquiry = document.getElementById('pane-contact-inquiry');
+      const paneSearch = document.getElementById('pane-contact-search');
+      const btnInquiry = document.getElementById('tab-btn-inquiry');
+      const btnSearch = document.getElementById('tab-btn-search');
+
+      if (tab === 'inquiry') {
+        paneInquiry.classList.remove('hidden');
+        paneSearch.classList.add('hidden');
+        btnInquiry.className = 'px-3.5 sm:px-4 py-2 rounded-xl bg-burgundy text-white font-semibold flex items-center gap-2 shadow transition-all text-xs';
+        btnSearch.className = 'px-3.5 sm:px-4 py-2 rounded-xl text-neutral-400 hover:text-white font-semibold flex items-center gap-2 transition-all text-xs';
+      } else {
+        paneInquiry.classList.add('hidden');
+        paneSearch.classList.remove('hidden');
+        btnSearch.className = 'px-3.5 sm:px-4 py-2 rounded-xl bg-burgundy text-white font-semibold flex items-center gap-2 shadow transition-all text-xs';
+        btnInquiry.className = 'px-3.5 sm:px-4 py-2 rounded-xl text-neutral-400 hover:text-white font-semibold flex items-center gap-2 transition-all text-xs';
+        const q = document.getElementById('track-search-input') ? document.getElementById('track-search-input').value : '';
+        runTrackSearch(q);
+      }
+      lucide.createIcons();
+    };
+
+    window.quickFillTrackSearch = function(val) {
+      const input = document.getElementById('track-search-input');
+      if (input) {
+        input.value = val;
+        runTrackSearch(val);
+      }
+    };
+
+    window.clearTrackSearch = function() {
+      const input = document.getElementById('track-search-input');
+      if (input) {
+        input.value = '';
+        runTrackSearch('');
+      }
+    };
+
+    function cleanPhoneDigits(p) {
+      return (p || '').replace(/[^0-9]/g, '');
+    }
+
+    // Instant Search by Name, Serial Number, or Phone Number
+    window.runTrackSearch = function(rawQuery) {
+      const container = document.getElementById('track-search-results');
+      if (!container) return;
+
+      const q = (rawQuery || '').trim().toLowerCase();
+      const qDigits = cleanPhoneDigits(rawQuery);
+
+      // Load cases from localStorage or fallback
+      let casesList = [];
+      try {
+        const stored = localStorage.getItem('nexora_law_cases_v1');
+        if (stored) casesList = JSON.parse(stored);
+      } catch (e) {
+        console.warn('LocalStorage cases load:', e);
+      }
+
+      // Default mock cases fallback if localStorage is empty
+      if (!casesList || casesList.length === 0) {
+        casesList = [
+          {
+            id: 'case-001',
+            serialNo: 'NX-2025-001',
+            name: 'Hon. Rafael Del Rosario',
+            phone: '+63 917 842 9910',
+            email: 'rafael.delrosario@manilacorp.ph',
+            title: 'Cross-Border Acquisition & Joint Venture Structuring',
+            category: 'Corporate & M&A',
+            status: 'Active Counsel',
+            attorney: 'Atty. Nexora Corporate Lead',
+            hearingDate: '2025-11-15',
+            avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
+            documents: [{}, {}, {}, {}]
+          },
+          {
+            id: 'case-002',
+            serialNo: 'NX-2025-002',
+            name: 'Dr. Elena Mendoza-Soriano',
+            phone: '+63 918 334 7821',
+            email: 'elena.soriano@stlukes.ph',
+            title: 'Medical Practice Licensing & Hospital Consortium Arbitration',
+            category: 'Civil Litigation',
+            status: 'In Trial',
+            attorney: 'Atty. Maria Santos',
+            hearingDate: '2025-10-28',
+            avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200',
+            documents: [{}, {}]
+          },
+          {
+            id: 'case-003',
+            serialNo: 'NX-2025-003',
+            name: 'Engr. Mateo Gabriel Alcantara',
+            phone: '+63 920 901 4452',
+            email: 'mateo.alcantara@ayalahomes.com',
+            title: 'High-Rise Commercial Land Title & Zoning Dispute',
+            category: 'Real Estate & Title',
+            status: 'Hearing Scheduled',
+            attorney: 'Atty. Carlos Almonte',
+            hearingDate: '2025-11-04',
+            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
+            documents: [{}, {}]
+          }
+        ];
+      }
+
+      if (!q) {
+        container.innerHTML = `
+          <div class="p-6 rounded-2xl bg-neutral-900/60 border border-white/10 text-center">
+            <i data-lucide="search" class="w-7 h-7 text-gold mx-auto mb-2 opacity-80"></i>
+            <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-1">Easy Legal Record &amp; Inquiry Search</h4>
+            <p class="text-[11px] text-neutral-400 max-w-md mx-auto">
+              Type only a <strong>Client Name</strong> (e.g. Alim, Rafael), <strong>Serial Number</strong> (e.g. NX-2025-001), or <strong>Phone Number</strong> (e.g. 01716... or 917).
+            </p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      // Filter Cases
+      const matchedCases = casesList.filter(c => {
+        const nameMatch = c.name && c.name.toLowerCase().includes(q);
+        const serialMatch = c.serialNo && c.serialNo.toLowerCase().includes(q);
+        const phoneMatch = c.phone && (c.phone.toLowerCase().includes(q) || (qDigits.length >= 3 && cleanPhoneDigits(c.phone).includes(qDigits)));
+        const titleMatch = c.title && c.title.toLowerCase().includes(q);
+        const emailMatch = c.email && c.email.toLowerCase().includes(q);
+        return nameMatch || serialMatch || phoneMatch || titleMatch || emailMatch;
+      });
+
+      // Filter Inquiries (from localContacts)
+      const matchedInquiries = localContacts.filter(inq => {
+        const nameMatch = inq.name && inq.name.toLowerCase().includes(q);
+        const phoneMatch = inq.phone && (inq.phone.toLowerCase().includes(q) || (qDigits.length >= 3 && cleanPhoneDigits(inq.phone).includes(qDigits)));
+        const emailMatch = inq.email && inq.email.toLowerCase().includes(q);
+        return nameMatch || phoneMatch || emailMatch;
+      });
+
+      if (matchedCases.length === 0 && matchedInquiries.length === 0) {
+        container.innerHTML = `
+          <div class="p-6 rounded-2xl bg-neutral-900/80 border border-neutral-800 text-center">
+            <i data-lucide="file-x" class="w-7 h-7 text-neutral-500 mx-auto mb-2"></i>
+            <p class="text-xs font-semibold text-white">No records found matching "${rawQuery}"</p>
+            <p class="text-[11px] text-neutral-400 mt-1">Try entering partial name (e.g. Alim), phone number, or serial code.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      let html = '';
+
+      // Render Cases
+      matchedCases.forEach(c => {
+        const isClosed = c.status && (c.status.toLowerCase().includes('close') || c.status.toLowerCase().includes('settle'));
+        const docCount = Array.isArray(c.documents) ? c.documents.length : 0;
+        const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(c.name)}&background=800020&color=D4AF37&bold=true`;
+        const avatar = c.avatar || defaultAvatar;
+
+        html += `
+          <div class="p-4 rounded-2xl bg-neutral-900/90 border border-gold/40 hover:border-gold transition-all shadow-xl space-y-3">
+            <div class="flex items-start justify-between gap-3 flex-wrap">
+              <div class="flex items-center gap-3">
+                <img src="${avatar}" alt="${c.name}" class="w-11 h-11 rounded-xl object-cover border border-gold/40 flex-shrink-0">
+                <div>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <h4 class="font-serif font-bold text-white text-sm">${c.name}</h4>
+                    <span class="font-mono text-[10px] text-gold font-bold px-2 py-0.5 rounded bg-black/60 border border-gold/40">${c.serialNo}</span>
+                  </div>
+                  <div class="text-[11px] text-neutral-400 flex items-center gap-2 mt-0.5 font-mono">
+                    <span class="text-neutral-200">${c.phone}</span>
+                    <span>&bull;</span>
+                    <span class="text-gold font-sans font-medium truncate max-w-[180px]">${c.category}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live Status Badge -->
+              <div>
+                ${isClosed ? `
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-neutral-800 text-neutral-300 border border-neutral-600 inline-flex items-center gap-1 shadow-sm">
+                    <i data-lucide="lock" class="w-3 h-3 text-neutral-400"></i> Closed
+                  </span>
+                ` : `
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-950/90 text-emerald-400 border border-emerald-700/60 inline-flex items-center gap-1 shadow-sm">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active
+                  </span>
+                `}
+              </div>
+            </div>
+
+            <!-- Case Action Caption -->
+            <div class="p-2.5 rounded-xl bg-black/50 border border-white/5 text-xs text-neutral-300">
+              <span class="text-[10px] text-neutral-500 uppercase tracking-wider block font-semibold mb-0.5">Matter Action</span>
+              <p class="font-medium text-white line-clamp-1">${c.title}</p>
+              <div class="flex items-center justify-between text-[10px] text-neutral-400 mt-1 font-mono">
+                <span>Advocate: <strong class="text-neutral-300">${c.attorney || 'Senior Advocate'}</strong></span>
+                <span>Next Hearing: <strong class="text-amber-300">${c.hearingDate || 'TBD'}</strong></span>
+              </div>
+            </div>
+
+            <!-- Vault Documents & Portal Redirect -->
+            <div class="flex items-center justify-between pt-1 border-t border-white/5 gap-2">
+              <span class="text-[11px] text-neutral-400 font-mono inline-flex items-center gap-1.5">
+                <i data-lucide="folder-lock" class="w-3.5 h-3.5 text-gold"></i>
+                <strong class="text-gold">${docCount}</strong> Files in Private Vault
+              </span>
+              <a href="cases.html?search=${encodeURIComponent(c.serialNo)}" 
+                 class="px-3.5 py-1.5 rounded-xl bg-burgundy hover:bg-burgundy-light text-white font-semibold text-xs transition-all flex items-center gap-1.5 shadow-md">
+                <span>Open Client Vault</span>
+                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-gold"></i>
+              </a>
+            </div>
+          </div>
+        `;
+      });
+
+      // Render Inquiries
+      matchedInquiries.forEach(inq => {
+        html += `
+          <div class="p-3.5 rounded-2xl bg-neutral-900/80 border border-white/10 space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                <h5 class="text-xs font-bold text-white">${inq.name}</h5>
+                <span class="px-2 py-0.2 rounded text-[9px] font-mono bg-neutral-800 text-amber-300 border border-amber-600/30">Inquiry Ticket</span>
+              </div>
+              <span class="text-[10px] text-neutral-500 font-mono">${inq.created_at || 'Recent'}</span>
+            </div>
+            <p class="text-xs text-neutral-300 line-clamp-2 italic">"${inq.message || 'General legal inquiry'}"</p>
+            <div class="flex items-center justify-between text-[10px] text-neutral-400 font-mono pt-1">
+              <span>Phone: <strong class="text-white">${inq.phone || 'N/A'}</strong></span>
+              <span>Matter: <strong class="text-gold">${inq.service || 'General'}</strong></span>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      lucide.createIcons();
+    };
+
+    // 8. Contact Form Submission (No strict required fields)
     const contactForm = document.getElementById('contact-form');
     const formStatus = document.getElementById('form-status');
     const submitBtn = document.getElementById('submit-btn');
 
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const name = document.getElementById('contact-name').value.trim();
-      const email = document.getElementById('contact-email').value.trim();
-      const phone = document.getElementById('contact-phone').value.trim();
-      const service = document.getElementById('contact-service').value;
-      const message = document.getElementById('contact-message').value.trim();
+    if (contactForm) {
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('contact-name').value.trim();
+        const email = document.getElementById('contact-email').value.trim();
+        const phone = document.getElementById('contact-phone').value.trim();
+        const service = document.getElementById('contact-service').value;
+        const message = document.getElementById('contact-message').value.trim();
 
-      if (!name || !email || !phone || !message) {
-        formStatus.textContent = 'Please fill out all required fields.';
-        formStatus.className = 'text-xs font-medium text-red-400';
-        return;
-      }
-
-      submitBtn.disabled = true;
-      formStatus.textContent = 'Transmitting confidential brief...';
-      formStatus.className = 'text-xs font-medium text-gold';
-
-      const record = {
-        id: String(Date.now()),
-        name,
-        email,
-        phone,
-        service,
-        message,
-        status: 'New',
-        created_at: new Date().toISOString().split('T')[0]
-      };
-
-      try {
-        if (supabaseClient) {
-          await supabaseClient.from('contacts').insert([record]);
+        // Easy requirement: User only needs to provide at least a name OR a phone number OR an email!
+        if (!name && !email && !phone) {
+          formStatus.textContent = 'Please provide at least your Name or Phone number to submit an inquiry.';
+          formStatus.className = 'text-xs font-medium text-amber-400';
+          return;
         }
-      } catch (err) {
-        console.warn('Live Supabase insert bypassed or queued to secure cache', err);
-      }
 
-      // Add to local list for immediate viewing in admin dashboard
-      localContacts.unshift(record);
+        submitBtn.disabled = true;
+        formStatus.textContent = 'Transmitting legal inquiry...';
+        formStatus.className = 'text-xs font-medium text-gold';
 
-      setTimeout(() => {
-        formStatus.textContent = 'Inquiry successfully received. Our partners will reach out within 24 hours.';
-        formStatus.className = 'text-xs font-medium text-green-400';
-        contactForm.reset();
-        submitBtn.disabled = false;
-        alert('Thank you for contacting Nexora Law Firm. Your confidential inquiry has been recorded.');
-      }, 700);
-    });
+        const finalName = name || 'Prospective Client';
+        const finalEmail = email || 'Not provided';
+        const finalPhone = phone || 'Not provided';
+        const finalMsg = message || 'General legal consultation requested.';
+
+        const record = {
+          id: String(Date.now()),
+          name: finalName,
+          email: finalEmail,
+          phone: finalPhone,
+          service: service || 'General Legal Matter',
+          message: finalMsg,
+          status: 'New',
+          created_at: new Date().toISOString().split('T')[0]
+        };
+
+        try {
+          if (supabaseClient) {
+            await supabaseClient.from('contacts').insert([record]);
+          }
+        } catch (err) {
+          console.warn('Live Supabase insert bypassed or queued to secure cache', err);
+        }
+
+        // Add to local list for immediate viewing in admin dashboard and instant lookup
+        localContacts.unshift(record);
+        saveInquiriesToStorage();
+
+        setTimeout(() => {
+          formStatus.textContent = `Inquiry received for ${finalName}! Our partners will contact you shortly.`;
+          formStatus.className = 'text-xs font-medium text-emerald-400';
+          contactForm.reset();
+          submitBtn.disabled = false;
+        }, 600);
+      });
+    }
 
     // 8. Admin Portal Logic
     const adminPortal = document.getElementById('admin-portal');
@@ -1442,13 +1974,42 @@
 
     adminTriggerBtn.addEventListener('click', () => {
       adminPortal.classList.remove('hidden');
-      adminLogin.classList.remove('hidden');
-      dashboardContent.classList.add('hidden');
-      dashboardContent.classList.remove('flex');
-      adminPass.value = '';
-      adminError.textContent = '';
-      adminPass.focus();
+      const savedSession = localStorage.getItem('nexora_firm_admin_session');
+      let isAdmin = false;
+      try {
+        if (savedSession) {
+          const parsed = JSON.parse(savedSession);
+          if (parsed && parsed.loggedIn && parsed.email === 'jakiadantal@gmail.com') {
+            isAdmin = true;
+          }
+        }
+      } catch (e) {}
+
+      if (isAdmin) {
+        adminLogin.classList.add('hidden');
+        dashboardContent.classList.remove('hidden');
+        dashboardContent.classList.add('flex');
+        renderContactsTable();
+        lucide.createIcons();
+      } else {
+        adminLogin.classList.remove('hidden');
+        dashboardContent.classList.add('hidden');
+        dashboardContent.classList.remove('flex');
+        adminPass.value = '';
+        adminError.textContent = '';
+        adminPass.focus();
+      }
     });
+
+    const adminLogoutDashBtn = document.getElementById('admin-logout-dash-btn');
+    if (adminLogoutDashBtn) {
+      adminLogoutDashBtn.addEventListener('click', () => {
+        localStorage.removeItem('nexora_firm_admin_session');
+        adminPortal.classList.add('hidden');
+        dashboardContent.classList.add('hidden');
+        dashboardContent.classList.remove('flex');
+      });
+    }
 
     closeAdminBtn.addEventListener('click', () => {
       adminPortal.classList.add('hidden');
@@ -1460,14 +2021,24 @@
 
     adminAuthForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      // Required password as per source: Baandlaw2025!
-      if (adminPass.value === 'Baandlaw2025!') {
+      const emailInput = document.getElementById('admin-email');
+      const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+      const pass = adminPass.value;
+
+      if (email === 'jakiadantal@gmail.com' && pass === 'AjakiaT@220*#') {
+        localStorage.setItem('nexora_firm_admin_session', JSON.stringify({
+          email: 'jakiadantal@gmail.com',
+          role: 'firm_admin',
+          loggedIn: true,
+          timestamp: Date.now()
+        }));
         adminLogin.classList.add('hidden');
         dashboardContent.classList.remove('hidden');
         dashboardContent.classList.add('flex');
         renderContactsTable();
+        lucide.createIcons();
       } else {
-        adminError.textContent = 'Invalid security credentials. Access denied.';
+        adminError.textContent = 'Invalid administrator credentials. Access denied.';
       }
     });
 
@@ -1530,6 +2101,7 @@
         if (target.status === 'New') target.status = 'Reviewed';
         else if (target.status === 'Reviewed') target.status = 'Contacted';
         else target.status = 'New';
+        saveInquiriesToStorage();
         renderContactsTable();
       }
     };

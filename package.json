@@ -1,0 +1,47 @@
+{
+  "name": "nexora-law-firm",
+  "version": "1.0.1",
+  "description": "A luxury, fully-responsive legal firm web application and multi-practice suite built for modern legal advocacy and consultation.",
+  "homepage": "https://nexoralaw.vercel.app/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jakia5876/Nexora-Law-Firm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Jakia5876/Nexora-Law-Firm/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Jakia",
+    "email": "admin@nexoralaw.com"
+  },
+  "keywords": [
+    "law-firm",
+    "legal",
+    "supabase",
+    "case-management",
+    "html",
+    "tailwindcss",
+    "static-site"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve . --listen 8080",
+    "lint:html": "npx htmlhint *.html",
+    "lint:sql": "echo 'SQL lint: review database/schema.sql manually'",
+    "validate": "npm run lint:html"
+  },
+  "devDependencies": {
+    "htmlhint": "1.1.4",
+    "serve": "14.2.4"
+  },
+  "cdnDependencies": {
+    "comment": "These CDN libraries are loaded at runtime in HTML files — no npm install needed",
+    "@supabase/supabase-js": "2.50.0",
+    "tailwindcss": "3.4.17",
+    "lucide": "0.511.0"
+  }
+}

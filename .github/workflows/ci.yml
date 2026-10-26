@@ -1,0 +1,131 @@
+name: CI — Validate & Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ─────────────────────────────────────────────
+  # JOB 1: HTML Validation
+  # ─────────────────────────────────────────────
+  validate-html:
+    name: HTML Lint & Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run HTMLHint
+        run: npm run lint:html
+
+  # ─────────────────────────────────────────────
+  # JOB 2: Security Scan
+  # ─────────────────────────────────────────────
+  security-scan:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check for hardcoded secrets
+        run: |
+          echo "Scanning for potential hardcoded credentials..."
+          # Fail if real Supabase URLs (non-placeholder) are found in HTML
+          if grep -rn "eyJ[A-Za-z0-9_-]\{20,\}" --include="*.html" .; then
+            echo "❌ Possible hardcoded JWT token found in HTML files!"
+            exit 1
+          else
+            echo "✅ No hardcoded JWT tokens detected."
+          fi
+
+      - name: Verify .env is gitignored
+        run: |
+          if git ls-files --error-unmatch .env 2>/dev/null; then
+            echo "❌ .env file is tracked by git — remove it immediately!"
+            exit 1
+          else
+            echo "✅ .env is properly gitignored."
+          fi
+
+  # ─────────────────────────────────────────────
+  # JOB 3: Required Files Check
+  # ─────────────────────────────────────────────
+  required-files:
+    name: Required Files Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify required files exist
+        run: |
+          REQUIRED_FILES=(
+            "README.md"
+            "CHANGELOG.md"
+            "AGENTS.md"
+            "HowToSetup.md"
+            "CONTRIBUTING.md"
+            "SECURITY.md"
+            "LICENSE"
+            ".env.example"
+            "package.json"
+            "vercel.json"
+            "database/schema.sql"
+            "database/seed.sql"
+            "index.html"
+            "cases.html"
+          )
+          MISSING=0
+          for f in "${REQUIRED_FILES[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "❌ Missing: $f"
+              MISSING=$((MISSING + 1))
+            else
+              echo "✅ Found: $f"
+            fi
+          done
+          if [ $MISSING -gt 0 ]; then
+            echo ""
+            echo "❌ $MISSING required file(s) missing!"
+            exit 1
+          else
+            echo ""
+            echo "✅ All required files present."
+          fi
+
+  # ─────────────────────────────────────────────
+  # JOB 4: Deploy to Vercel (main branch only)
+  # ─────────────────────────────────────────────
+  deploy:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    needs: [validate-html, security-scan, required-files]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'

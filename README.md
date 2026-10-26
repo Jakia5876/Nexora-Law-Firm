@@ -1,26 +1,180 @@
-# Nexora Law Firm — Suite
+# Nexora Law Firm
 
-A luxury, fully-responsive legal firm web application and multi-practice suite built for modern legal advocacy and consultation.
+> A luxury, fully-responsive legal firm web application and multi-practice suite built for modern legal advocacy and consultation.
 
-## ⚖️ Features
+[![CI](https://github.com/Jakia5876/Nexora-Law-Firm/actions/workflows/ci.yml/badge.svg)](https://github.com/Jakia5876/Nexora-Law-Firm/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.0.1-blue.svg)](CHANGELOG.md)
+[![Demo](https://img.shields.io/badge/demo-live-brightgreen.svg)](https://nexoralaw.vercel.app/)
 
-- **Full-Service Firm Practice** (`index.html`): High-conversion hero, practice area showcases, attorney rosters, AI rulebook briefings, client testimonials, and consultation inquiry forms.
-- **Responsive Across All Devices**: Optimized with fluid layouts and touch drawers for Mobile (375px+), Tablet (768px+), Laptop (1024px+), and Desktop (1440px+).
-- **Comprehensive Legal Suite**:
-  - `service-terms.html` — Hosting & support terms
-  - `license.html` — Commercial licensing terms
-  - `seller-agreement.html` — Marketplace and vendor agreement
-  - `privacy.html` — Data protection & privacy policy
+**Live Demo**: [nexoralaw.vercel.app](https://nexoralaw.vercel.app/)
+
+---
+
+## ✨ Features
+
+- **Full-Service Firm Landing Page** (`index.html`):
+  - High-conversion hero with animated background
+  - Practice area showcases (Corporate, Criminal, Family, Property)
+  - Attorney roster with profile cards
+  - AI rulebook briefings section
+  - Client testimonials
+  - Consultation inquiry form → Supabase `contacts` table
+
+- **Case Management Dashboard** (`cases.html`):
+  - Full CRUD: cases, courts, case types, assistants
+  - Hearing date tracking and order diary
+  - Document vault with Supabase Storage
+  - Subscription enforcement
+  - Print-ready case reports
+
 - **Specialized Practice Templates**:
   - `accelerator.html` — Corporate growth & acquisition practice
   - `odegard.html` — Trial & personal injury practice
 
+- **Legal Document Pages**:
+  - `service-terms.html`, `license.html`, `seller-agreement.html`, `privacy.html`
+
+- **Responsive Design**: Optimized for 375px → 1440px+ viewports
+
+---
+
 ## 🛠️ Tech Stack
 
-- **HTML5 & Vanilla CSS**: Zero build-step requirement, fast loading.
-- **Tailwind CSS (CDN)**: Modern utility styling with custom design tokens (`#800020` Burgundy, Obsidian Dark Mode, and Metallic Gold accents).
-- **Lucide Icons & Google Fonts**: Crisp iconography with Playfair Display and Inter typography.
+| Layer | Technology |
+|-------|-----------|
+| Structure | HTML5 (semantic) |
+| Styling | Tailwind CSS 3.x (CDN) + Vanilla CSS |
+| Icons | Lucide Icons (CDN) |
+| Fonts | Google Fonts — Playfair Display, Inter |
+| Backend | Supabase (PostgreSQL + Auth + Storage + RLS) |
+| Deployment | Vercel |
+| CI/CD | GitHub Actions |
+
+**Design System:**
+- 🔴 Burgundy `#800020` — primary brand
+- ⚫ Obsidian Dark `#0D0D0D` — dark mode base
+- 🥇 Metallic Gold `#C9A84C` — accent
+
+---
+
+## ⚡ Quick Start
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/Jakia5876/Nexora-Law-Firm.git
+cd Nexora-Law-Firm
+
+# 2. Copy environment template
+cp .env.example .env
+
+# 3. Add your Supabase credentials to .env, then also update
+#    the inline constants in index.html and cases.html
+
+# 4. Run the database setup in Supabase SQL Editor:
+#    → Run database/schema.sql first
+#    → Run database/seed.sql second
+
+# 5. Start a local dev server
+npx serve .
+```
+
+See [HowToSetup.md](HowToSetup.md) for the complete setup guide.
+
+---
+
+## 📁 Project Structure
+
+```
+.
+├── index.html              # Main landing page + client login
+├── cases.html              # Case management dashboard
+├── accelerator.html        # Corporate practice page
+├── odegard.html            # Trial & injury practice page
+├── service-terms.html      # Terms of service
+├── license.html            # Commercial license
+├── seller-agreement.html   # Vendor agreement
+├── privacy.html            # Privacy policy
+├── supabase-setup.sql      # Combined schema + seed (one-step setup)
+├── database/
+│   ├── schema.sql          # Database schema (tables, triggers, RLS)
+│   └── seed.sql            # Initial seed data
+├── .github/
+│   └── workflows/
+│       └── ci.yml          # GitHub Actions CI pipeline
+├── .env.example            # Environment variable template
+├── package.json            # Project metadata & dev dependencies
+├── vercel.json             # Vercel deployment configuration
+├── HowToSetup.md           # Step-by-step setup guide
+├── AGENTS.md               # AI agent & contributor guide
+├── CONTRIBUTING.md         # How to contribute
+├── SECURITY.md             # Vulnerability reporting policy
+├── CHANGELOG.md            # Version history
+├── LICENSE                 # MIT License
+└── README.md               # This file
+```
+
+---
+
+## 🗄️ Database Schema
+
+| Table | Purpose |
+|-------|---------|
+| `users` | Multi-role accounts (admin, lawyer, client, assistant) |
+| `court` | Court registry |
+| `subscriptions` | Subscription plans & payment records |
+| `case_type` | Case categorization |
+| `assistant` | Legal assistant profiles |
+| `cases` | Core case records |
+| `case_detail` | Hearing history, orders, diary |
+| `case_documents` | Document vault (Supabase Storage) |
+| `contacts` | Website inquiry submissions |
+
+---
 
 ## 🚀 Deployment
 
-Can be deployed instantly on GitHub Pages, Vercel, Netlify, or any static hosting provider.
+### One-click Vercel Deploy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Jakia5876/Nexora-Law-Firm)
+
+### Manual Vercel
+```bash
+npm install -g vercel
+vercel deploy --prod
+```
+
+### GitHub Pages / Netlify
+Upload all `.html` files and assets. No build step required.
+
+---
+
+## 🔐 Security
+
+- Row Level Security (RLS) enabled on all Supabase tables
+- See [SECURITY.md](SECURITY.md) for vulnerability reporting
+- See [CONTRIBUTING.md](CONTRIBUTING.md) for secure development practices
+
+---
+
+## 📋 Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for:
+- How to set up your development environment
+- Commit message conventions
+- Code style guidelines
+- How to submit a pull request
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
+
+---
+
+## 📌 Versions
+
+See [CHANGELOG.md](CHANGELOG.md) for the full version history.
+
+Current version: **1.0.1**
