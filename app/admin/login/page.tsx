@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('admin@nexoralaw.com');
+  const [email, setEmail] = useState('admin@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ export default function AdminLoginPage() {
   }
 
   function handleAutofill() {
-    setEmail('admin@nexoralaw.com');
+    setEmail('admin@example.com');
     setPassword('DemoAdmin2026!');
     setError(null);
   }
