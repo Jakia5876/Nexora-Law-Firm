@@ -62,6 +62,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.2] — 2026-10-27
+
+### Added
+- **`HowToSetup.md`** — Comprehensive step-by-step setup documentation covering:
+  - Multi-target deployment guides (Docker containerization + Ubuntu Linux VPS with Nginx & Let's Encrypt SSL)
+  - PostgreSQL & Supabase database initialization instructions
+  - First administrator authentication procedures and password management
+  - Complete firm white-labeling and rebranding guide (colors, typography, logos, practice areas)
+- **`Dockerfile` & `docker-compose.yml`** — High-performance Alpine Nginx container setup with health check endpoints and 1-command startup
+- **`docker/nginx.conf`** — Optimized web server configuration with gzip compression, security headers, and asset caching
+- **`.env.example`** — Full environment template with detailed comments and placeholders for every configuration key
+- **`database/schema.sql`** — Complete standalone PostgreSQL/Supabase schema with role-based Row Level Security (RLS) policies protecting every mutating endpoint
+- **`database/seed.sql`** — Initial development seed data with sequence resets and placeholder credentials
+
+### Changed
+- Enhanced `package.json` with clean machine build (`npm run build`) and test (`npm test`) scripts
+- Synchronized `supabase-setup.sql` with updated table schemas, foreign key cascade options, and audit trail
+
+---
+
 ## [Unreleased]
 
 ### Planned

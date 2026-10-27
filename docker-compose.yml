@@ -1,0 +1,20 @@
+services:
+  nexora-law:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nexora-law-firm
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8080}:80"
+    environment:
+      - APP_ENV=${APP_ENV:-production}
+      - APP_URL=${APP_URL:-http://localhost:8080}
+      - SUPABASE_URL=${SUPABASE_URL:-https://your-project-id.supabase.co}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-your-supabase-anon-key-here}
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s

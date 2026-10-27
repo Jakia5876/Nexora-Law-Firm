@@ -60,6 +60,16 @@
 
 ## ⚡ Quick Start
 
+### Option A: Docker (Fastest)
+
+```bash
+cp .env.example .env
+docker compose up -d
+# Open http://localhost:8080 in your browser
+```
+
+### Option B: Local Node.js
+
 ```bash
 # 1. Clone the repo
 git clone https://github.com/Jakia5876/Nexora-Law-Firm.git
@@ -68,18 +78,16 @@ cd Nexora-Law-Firm
 # 2. Copy environment template
 cp .env.example .env
 
-# 3. Add your Supabase credentials to .env, then also update
-#    the inline constants in index.html and cases.html
+# 3. Add your Supabase credentials to .env
 
-# 4. Run the database setup in Supabase SQL Editor:
-#    → Run database/schema.sql first
-#    → Run database/seed.sql second
+# 4. Run database setup in Supabase SQL Editor:
+#    → database/schema.sql first, then database/seed.sql
 
-# 5. Start a local dev server
-npx serve .
+# 5. Start a local server
+npm start
 ```
 
-See [HowToSetup.md](HowToSetup.md) for the complete setup guide.
+See [HowToSetup.md](HowToSetup.md) for full VPS (Ubuntu + Nginx) and Docker installation guides.
 
 ---
 
@@ -99,13 +107,17 @@ See [HowToSetup.md](HowToSetup.md) for the complete setup guide.
 ├── database/
 │   ├── schema.sql          # Database schema (tables, triggers, RLS)
 │   └── seed.sql            # Initial seed data
+├── Dockerfile              # Production multi-stage Docker container
+├── docker-compose.yml      # 1-command Docker Compose orchestration
+├── docker/
+│   └── nginx.conf          # Nginx reverse proxy & cache configuration
 ├── .github/
 │   └── workflows/
 │       └── ci.yml          # GitHub Actions CI pipeline
 ├── .env.example            # Environment variable template
-├── package.json            # Project metadata & dev dependencies
+├── package.json            # Project metadata & scripts
 ├── vercel.json             # Vercel deployment configuration
-├── HowToSetup.md           # Step-by-step setup guide
+├── HowToSetup.md           # Step-by-step setup guide (VPS + Docker)
 ├── AGENTS.md               # AI agent & contributor guide
 ├── CONTRIBUTING.md         # How to contribute
 ├── SECURITY.md             # Vulnerability reporting policy

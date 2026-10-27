@@ -1,185 +1,390 @@
 # How to Set Up Nexora Law Firm
 
-This guide walks you through setting up the Nexora Law Firm project locally and connecting it to Supabase.
+This guide provides complete, step-by-step instructions for deploying and running **Nexora Law Firm** across multiple targets (VPS and Docker), setting up the Supabase / PostgreSQL database, completing your first administrator login, and customizing the firm branding.
 
 ---
 
-## Prerequisites
+## Table of Contents
 
-- A [Supabase](https://supabase.com) account (free tier works)
-- A modern web browser (Chrome, Firefox, Edge)
-- [Node.js](https://nodejs.org) v18+ (optional — only needed for local dev server)
-- [Git](https://git-scm.com) (optional — for cloning)
+1. [Prerequisites](#1-prerequisites)
+2. [Database Setup (PostgreSQL / Supabase)](#2-database-setup-postgresql--supabase)
+3. [Environment Configuration (.env)](#3-environment-configuration-env)
+4. [Deployment Target 1: Docker (Recommended)](#4-deployment-target-1-docker-recommended)
+5. [Deployment Target 2: VPS (Ubuntu Linux + Nginx)](#5-deployment-target-2-vps-ubuntu-linux--nginx)
+6. [Alternative Target: Local Development & Vercel](#6-alternative-target-local-development--vercel)
+7. [First Administrator Login](#7-first-administrator-login)
+8. [Branding & Customization Guide](#8-branding--customization-guide)
+9. [Supabase Storage for Private Document Vault](#9-supabase-storage-for-private-document-vault)
+10. [Troubleshooting & FAQ](#10-troubleshooting--faq)
 
 ---
 
-## 1. Clone the Repository
+## 1. Prerequisites
+
+Before starting, ensure you have:
+
+- A **PostgreSQL database** or a free [Supabase](https://supabase.com) project account
+- For Docker Target: **Docker Engine 24+** and **Docker Compose v2+** installed
+- For VPS Target: **Ubuntu 20.04/22.04/24.04 LTS** server with SSH root or sudo access
+- A web browser (Chrome, Firefox, Safari, or Edge)
+- Domain name pointed to your server IP (optional, required for production SSL)
+
+---
+
+## 2. Database Setup (PostgreSQL / Supabase)
+
+Nexora Law Firm includes a full SQL database schema located at `database/schema.sql` and initial data at `database/seed.sql`.
+
+### Option A: Using the Supabase Dashboard (Fastest)
+
+1. Sign in to your [Supabase Dashboard](https://app.supabase.com) and click **New Project**.
+2. Name your project (e.g., `nexora-law-firm`), set a secure database password, and select your region.
+3. Once the database is provisioned, open the **SQL Editor** from the left navigation bar.
+4. Click **New Query**, paste the complete contents of `database/schema.sql`, and click **Run**.
+5. Create another query, paste the contents of `database/seed.sql`, and click **Run**.
+   > **Note on Execution Order**: Always run `database/schema.sql` first to establish tables, constraints, indexes, and RLS policies before running `database/seed.sql`.
+   > 
+   > Alternatively, execute `supabase-setup.sql` which combines both schema and seed in one automated script.
+
+6. Verify that the following tables exist in the **Table Editor**:
+   - `users` (Admin, lawyer, and client accounts)
+   - `court` (Jurisdictions and tribunals)
+   - `case_type` (Corporate, litigation, IP, etc.)
+   - `assistant` (Paralegals and legal clerks)
+   - `cases` (Primary client case registry)
+   - `case_detail` (Hearing timeline and court orders)
+   - `case_documents` (Secure client document vault)
+   - `contacts` (Website consultations and inquiries)
+   - `subscriptions` (Billing plans and retainer records)
+
+### Option B: Using Standard PostgreSQL CLI
+
+If deploying against your own self-hosted PostgreSQL server:
+
+```bash
+# Connect to your PostgreSQL instance and execute schema & seed
+psql -h localhost -U postgres -d nexora_db -f database/schema.sql
+psql -h localhost -U postgres -d nexora_db -f database/seed.sql
+```
+
+---
+
+## 3. Environment Configuration (.env)
+
+1. Copy the example environment template:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Retrieve your API credentials from **Supabase Dashboard → Project Settings → API**:
+   - **Project URL** (e.g., `https://xyzproject.supabase.co`)
+   - **Anon / Public Key** (client-side API key)
+   - **Service Role Key** (server-only key for administrative operations)
+
+3. Update `.env` with your settings:
+   ```env
+   SUPABASE_URL=https://your-project-id.supabase.co
+   SUPABASE_ANON_KEY=your-supabase-anon-key-here
+   SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key-here
+   APP_ENV=production
+   APP_URL=https://yourdomain.com
+   PORT=8080
+   STORAGE_BUCKET=case-documents
+   ```
+
+4. Since Nexora is a pure client-side web application, also enter your Supabase URL and Anon Key directly into the portal:
+   - Open `cases.html` in your browser.
+   - Click the **Supabase Sync** icon in the header.
+   - Enter your **Project URL** and **Anon Key**, then click **Connect Supabase**. Credentials are saved securely to your local storage session.
+
+---
+
+## 4. Deployment Target 1: Docker (Recommended)
+
+Docker provides an isolated, zero-dependency deployment that runs anywhere in seconds.
+
+### Step 1: Clone or Extract the Archive
 
 ```bash
 git clone https://github.com/Jakia5876/Nexora-Law-Firm.git
 cd Nexora-Law-Firm
 ```
 
-Or download the ZIP from GitHub and extract it.
-
----
-
-## 2. Create Your Supabase Project
-
-1. Go to [app.supabase.com](https://app.supabase.com) and sign in
-2. Click **New Project**
-3. Fill in:
-   - **Name**: `nexora-law-firm` (or any name)
-   - **Database Password**: Set a strong password (save it!)
-   - **Region**: Choose the closest to your users
-4. Click **Create new project** and wait ~2 minutes for it to provision
-
----
-
-## 3. Set Up the Database
-
-1. In your Supabase dashboard, click **SQL Editor** in the left sidebar
-2. Click **New query**
-3. Copy and paste the contents of **`database/schema.sql`** and click **Run**
-4. Create another new query, paste the contents of **`database/seed.sql`**, and click **Run**
-
-> **Order matters!** Always run `schema.sql` before `seed.sql` due to foreign key dependencies.
-
-Alternatively, run the combined file:
-- Paste the contents of **`supabase-setup.sql`** in a single query and run it.
-
----
-
-## 4. Configure Environment Variables
-
-1. Copy the example file:
-   ```bash
-   cp .env.example .env
-   ```
-
-2. In your Supabase dashboard, go to **Project Settings → API**
-3. Copy your **Project URL** and **anon/public key**
-4. Update `.env`:
-   ```env
-   SUPABASE_URL=https://your-project-id.supabase.co
-   SUPABASE_ANON_KEY=your-anon-key-here
-   ```
-
-5. Since this is a **static HTML site** (no build step), also update the inline constants directly in:
-   - `index.html` — search for `SUPABASE_URL` and `SUPABASE_ANON_KEY`
-   - `cases.html` — search for `SUPABASE_URL` and `SUPABASE_ANON_KEY`
-
-   Replace the placeholder values with your actual credentials from step 3.
-
----
-
-## 5. Run Locally
-
-### Option A — Using Node.js (recommended)
+### Step 2: Configure Environment Variables
 
 ```bash
-npx serve .
+cp .env.example .env
+# Edit .env with your favorite editor (nano, vim)
+nano .env
 ```
 
-Then open [http://localhost:3000](http://localhost:3000) in your browser.
+### Step 3: Build and Run with Docker Compose
 
-### Option B — Using Python
+Run the following command to build the production image and launch the container in the background:
 
 ```bash
-python -m http.server 8080
+docker compose up -d --build
 ```
 
-Then open [http://localhost:8080](http://localhost:8080) in your browser.
-
-### Option C — Open directly
-
-Simply open `index.html` directly in your browser. Note: some Supabase features may behave differently without a proper HTTP server.
-
----
-
-## 6. Log In to the Case Portal
-
-After seeding the database:
-
-- **URL**: Click **"Client Portal"** on the homepage, or navigate to `cases.html`
-- **Email**: `admin@nexoralaw.com`
-- **Password**: The value you set in `database/seed.sql` (default placeholder: `YOUR_SECURE_ADMIN_PASSWORD`)
-
-> **Important**: Change the default password in `seed.sql` before running it in any real environment.
-
----
-
-## 7. Deploy to Vercel (Optional)
-
-### Automatic (recommended)
-
-1. Push your code to GitHub
-2. Go to [vercel.com](https://vercel.com) and click **Add New → Project**
-3. Import your GitHub repository
-4. Add environment variables in Vercel dashboard:
-   - `SUPABASE_URL`
-   - `SUPABASE_ANON_KEY`
-5. Click **Deploy**
-
-### Manual
+### Step 4: Verify Container Health & Status
 
 ```bash
-npm install -g vercel
-vercel deploy
+# Check running containers
+docker compose ps
+
+# View container logs
+docker compose logs -f
+
+# Test the health endpoint
+curl -I http://localhost:8080/health
+```
+
+Expected response:
+```
+HTTP/1.1 200 OK
+Content-Type: text/plain
+healthy
+```
+
+### Step 5: Access the Application
+
+Open your browser and navigate to:
+- **Landing Page & Consultation**: `http://localhost:8080`
+- **Case Management Portal**: `http://localhost:8080/cases.html`
+
+To stop the container:
+```bash
+docker compose down
 ```
 
 ---
 
-## 8. Configure Supabase Storage (for Document Vault)
+## 5. Deployment Target 2: VPS (Ubuntu Linux + Nginx)
 
-1. In your Supabase dashboard, go to **Storage**
-2. Click **New bucket**
-3. Name it `case-documents`
-4. Set it to **Private** (access is managed via signed URLs)
-5. The app will automatically use this bucket for document uploads in `cases.html`
+Follow these steps to deploy Nexora on an Ubuntu 20.04/22.04/24.04 LTS VPS with Nginx, custom domain name, and free Let's Encrypt SSL.
 
----
+### Step 1: Connect to VPS and Install System Packages
 
-## Troubleshooting
-
-| Issue | Solution |
-|---|---|
-| Login fails with "Invalid credentials" | Check that `seed.sql` ran successfully and credentials match `index.html` |
-| Supabase errors in console | Verify `SUPABASE_URL` and `SUPABASE_ANON_KEY` are correct in the HTML files |
-| RLS policy errors | Re-run `schema.sql` to ensure RLS policies are applied |
-| Documents not uploading | Create the `case-documents` bucket in Supabase Storage |
-| Blank page on Vercel | Check Vercel deployment logs; ensure `vercel.json` is in the root |
-
----
-
-## Project Structure
-
-```
-.
-├── index.html              # Main landing page + client login
-├── cases.html              # Case management dashboard
-├── accelerator.html        # Corporate practice page
-├── odegard.html            # Trial & injury practice page
-├── service-terms.html      # Terms of service
-├── license.html            # Commercial license
-├── seller-agreement.html   # Vendor agreement
-├── privacy.html            # Privacy policy
-├── supabase-setup.sql      # Combined schema + seed (one-step setup)
-├── database/
-│   ├── schema.sql          # Database schema only
-│   └── seed.sql            # Seed data only
-├── .env.example            # Environment variable template
-├── HowToSetup.md           # This file
-├── AGENTS.md               # AI agent guide
-├── CHANGELOG.md            # Version history
-├── README.md               # Project overview
-└── vercel.json             # Vercel config
+```bash
+# Update package list and install Nginx, Git, and Certbot
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y nginx git ufw certbot python3-certbot-nginx
 ```
 
+### Step 2: Configure the Firewall
+
+```bash
+sudo ufw allow 'OpenSSH'
+sudo ufw allow 'Nginx Full'
+sudo ufw enable
+```
+
+### Step 3: Deploy Application Files
+
+```bash
+# Create web root directory
+sudo mkdir -p /var/www/nexora-law-firm
+
+# Clone the repository (or copy extracted files)
+sudo git clone https://github.com/Jakia5876/Nexora-Law-Firm.git /var/www/nexora-law-firm
+
+# Set correct file ownership and permissions
+sudo chown -R www-data:www-data /var/www/nexora-law-firm
+sudo chmod -R 755 /var/www/nexora-law-firm
+```
+
+### Step 4: Configure Nginx Virtual Host
+
+Create a new Nginx server configuration:
+
+```bash
+sudo nano /etc/nginx/sites-available/nexora.conf
+```
+
+Paste the following block (replace `yourdomain.com` with your actual domain):
+
+```nginx
+server {
+    listen 80;
+    listen [::]:80;
+    server_name yourdomain.com www.yourdomain.com;
+
+    root /var/www/nexora-law-firm;
+    index index.html;
+
+    # Gzip compression for fast loading
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml image/svg+xml;
+
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    # HTML files — no-cache to guarantee latest version
+    location ~* \.html$ {
+        expires -1;
+        add_header Cache-Control "no-store, no-cache, must-revalidate";
+    }
+
+    # Static assets caching
+    location ~* \.(css|js|jpg|jpeg|png|webp|svg|ico|woff|woff2)$ {
+        expires 30d;
+        add_header Cache-Control "public, no-transform";
+    }
+
+    # Fallback to index.html
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
+
+Enable the site configuration and restart Nginx:
+
+```bash
+sudo ln -sf /etc/nginx/sites-available/nexora.conf /etc/nginx/sites-enabled/
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+### Step 5: Secure with Let's Encrypt SSL (HTTPS)
+
+```bash
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+```
+
+Certbot will automatically configure SSL certificates and automatic renewal.
+
 ---
 
-## Need Help?
+## 6. Alternative Target: Local Development & Vercel
 
-- Open an issue on [GitHub](https://github.com/Jakia5876/Nexora-Law-Firm/issues)
-- Refer to the [Supabase Docs](https://supabase.com/docs)
-- See `AGENTS.md` for contributor and AI agent guidance
+### Option A: Local Development Server
+
+```bash
+# Install development dependencies
+npm install
+
+# Start local server on http://localhost:8080
+npm run dev
+```
+
+### Option B: Deploy to Vercel
+
+1. Push your repository to GitHub / GitLab.
+2. Log in to [Vercel](https://vercel.com) and click **Add New → Project**.
+3. Import your repository. The included `vercel.json` will automatically configure routing.
+4. Click **Deploy**.
+
+---
+
+## 7. First Administrator Login
+
+Once the application is running and the database seed has been applied:
+
+1. Open `cases.html` (or click **Client Portal** on `index.html`).
+2. If prompted, click **Admin Login** or use the authentication modal.
+3. Enter the default administrator credentials:
+   - **Email**: `admin@nexoralaw.com`
+   - **Password**: The password defined in `database/seed.sql` (default placeholder: `YOUR_SECURE_ADMIN_PASSWORD`)
+4. Upon successful login, you have full administrative access to:
+   - View, create, and edit litigation cases
+   - Upload client case files to the Document Vault
+   - Manage hearing dates, court assignments, and case stages
+   - Add and assign lawyers and paralegals
+   - Review incoming client contact consultations
+
+### Changing the Default Admin Password
+
+To update the admin password to your own secure password:
+
+```sql
+-- Run this in the Supabase SQL Editor:
+UPDATE public.users 
+SET password = 'YOUR_NEW_SECURE_PASSWORD', 
+    updated_at = timezone('utc'::text, now())
+WHERE email = 'admin@nexoralaw.com';
+```
+
+---
+
+## 8. Branding & Customization Guide
+
+Nexora Law Firm is built for straightforward white-labeling and rebranding. Follow these steps to customize the firm's identity:
+
+### 1. Firm Name & Meta Tags
+Search and replace `Nexora Law Firm` across the HTML files:
+- `index.html` (Lines 10–30): Update `<title>`, `<meta name="description">`, and OpenGraph tags.
+- `cases.html` (Lines 15–25): Update `<title>` and portal heading.
+- Replace `Nexora` with your firm's name (e.g., `Sterling & Partners Legal Group`).
+
+### 2. Firm Logo & Favicon
+- Replace the logo image link in `index.html` (search for `id="brand-logo"` or `<img ... alt="Nexora">`).
+- Replace `/favicon.ico` or update the `<link rel="icon">` in the `<head>` of all HTML pages.
+- Add your SVG or high-resolution PNG brand mark (recommended size: `320x80px` for header).
+
+### 3. Color Palette & Styling
+The design system utilizes Tailwind CSS theme variables configured directly in the HTML `<head>`:
+```javascript
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        gold: '#c5a059',          // Accent color for buttons, badges, highlights
+        'gold-light': '#dfc289',  // Hover states
+        burgundy: '#6b1d2f',      // Primary branding & call-to-action
+        'burgundy-light': '#8e273e' // Button hover state
+      }
+    }
+  }
+}
+```
+Modify `#c5a059` and `#6b1d2f` to match your firm's brand colors (e.g., navy blue `#0f2b48` and silver `#9aa0a6`).
+
+### 4. Contact Details & Office Locations
+Update contact information in `index.html` footer and contact section:
+- **Phone**: Search `+1 (800) 555-0199` and update with your telephone number.
+- **Email**: Search `contact@nexoralaw.com` and update with your firm's intake address.
+- **Address**: Search `742 Evergreen Terrace, Suite 500, New York, NY 10001` and update with your physical office location.
+- **Office Hours**: Modify consultation hours in the contact card.
+
+### 5. Practice Areas & Lawyer Profiles
+- In `index.html`, navigate to the **Practice Areas** section to add or modify specialties (Corporate Law, Criminal Defense, Intellectual Property, Family Law, etc.).
+- In `cases.html`, practice areas can also be dynamically managed via the `case_type` database table.
+- Attorney portraits and bios can be updated in the **Attorneys / Team** section of `index.html`.
+
+---
+
+## 9. Supabase Storage for Private Document Vault
+
+The Case Management Portal includes an isolated client Document Vault for uploading pleadings, evidence, contracts, and court orders.
+
+1. Open your **Supabase Dashboard** and navigate to **Storage**.
+2. Click **New Bucket**.
+3. Name the bucket: `case-documents`
+4. Set the bucket privacy:
+   - **Private** (recommended for production — files are accessed via signed short-lived URLs)
+5. Under **Policies**, enable authenticated upload and read operations for legal staff.
+
+---
+
+## 10. Troubleshooting & FAQ
+
+| Problem | Cause | Solution |
+|---|---|---|
+| Database tables missing | `schema.sql` was not run | Run `database/schema.sql` in the Supabase SQL Editor. |
+| Foreign key constraint error during seed | `seed.sql` run before `schema.sql` | Always execute `schema.sql` completely before running `seed.sql`. |
+| Login rejected with "Invalid credentials" | Seed password mismatch | Verify user exists in `public.users` table; verify password matches. |
+| Docker port conflict | Another service using port 8080 | Change `PORT=8090` in your `.env` file and re-run `docker compose up -d`. |
+| VPS Nginx returns 403 Forbidden | Incorrect directory permissions | Run `sudo chown -R www-data:www-data /var/www/nexora-law-firm && sudo chmod -R 755 /var/www/nexora-law-firm`. |
+| Documents cannot be uploaded | `case-documents` bucket not created | Create a bucket named `case-documents` under Supabase Storage. |
+
+---
+
+## Need Support?
+
+- **Issues & Contributions**: [GitHub Repository](https://github.com/Jakia5876/Nexora-Law-Firm)
+- **Database Documentation**: Refer to comments inside `database/schema.sql`
+- **Contributor Guidelines**: See `AGENTS.md` and `CONTRIBUTING.md`

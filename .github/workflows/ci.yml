@@ -89,6 +89,8 @@ jobs:
             "vercel.json"
             "database/schema.sql"
             "database/seed.sql"
+            "Dockerfile"
+            "docker-compose.yml"
             "index.html"
             "cases.html"
           )
