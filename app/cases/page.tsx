@@ -106,10 +106,17 @@ export default async function CasesPortalPage({ searchParams }: CasesPageProps) 
         </div>
 
         <div className="flex items-center gap-3">
+          <a
+            href="/cases.html"
+            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-burgundy to-burgundy-light hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-1.5"
+          >
+            <FolderLock className="w-4 h-4 text-gold" />
+            <span>Client & Case Vault</span>
+          </a>
           {auth.isValid ? (
             <Link
               href="/admin"
-              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-burgundy to-burgundy-light hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-1.5"
+              className="px-4 py-2.5 rounded-xl glass-panel hover:bg-neutral-900 text-neutral-300 hover:text-gold text-xs font-semibold flex items-center gap-1.5 border border-neutral-800 transition-colors"
             >
               <ShieldCheck className="w-4 h-4 text-gold" />
               <span>Admin Console</span>
@@ -241,13 +248,13 @@ export default async function CasesPortalPage({ searchParams }: CasesPageProps) 
                       </span>
                     </td>
                     <td className="py-4 px-4 text-right">
-                      <Link
-                        href={`/admin/cases`}
+                      <a
+                        href="/cases.html?session=admin"
                         className="px-3 py-1.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-300 hover:text-gold border border-neutral-800 transition-colors inline-flex items-center gap-1.5 text-xs"
                       >
                         <FolderLock className="w-3.5 h-3.5 text-gold" />
                         <span>Manage Docket</span>
-                      </Link>
+                      </a>
                     </td>
                   </tr>
                 ))}
