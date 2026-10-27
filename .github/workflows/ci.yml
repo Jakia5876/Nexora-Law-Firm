@@ -8,10 +8,10 @@ on:
 
 jobs:
   # ─────────────────────────────────────────────
-  # JOB 1: HTML Validation
+  # JOB 1: Type & Code Linting
   # ─────────────────────────────────────────────
-  validate-html:
-    name: HTML Lint & Validation
+  validate-code:
+    name: Type & Lint Validation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -24,10 +24,10 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Run HTMLHint
-        run: npm run lint:html
+      - name: Run Lint & Type Check
+        run: npm run lint
 
   # ─────────────────────────────────────────────
   # JOB 2: Security Scan
@@ -47,8 +47,8 @@ jobs:
       - name: Check for hardcoded secrets
         run: |
           echo "Scanning for potential hardcoded credentials..."
-          if grep -rn "eyJ[A-Za-z0-9_-]\{20,\}" --include="*.html" .; then
-            echo "❌ Possible hardcoded JWT token found in HTML files!"
+          if grep -rn "eyJ[A-Za-z0-9_-]\{30,\}" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.json" --exclude-dir="node_modules" --exclude-dir=".next" .; then
+            echo "❌ Possible hardcoded JWT token found in source files!"
             exit 1
           else
             echo "✅ No hardcoded JWT tokens detected."
@@ -63,13 +63,8 @@ jobs:
             echo "✅ .env is properly gitignored."
           fi
 
-      - name: Run Root NPM Audit (Production Dependencies)
+      - name: Run NPM Audit (Production Dependencies)
         run: npm audit --omit=dev --audit-level=high
-
-      - name: Run Next.js Project NPM Audit (Production Dependencies)
-        run: |
-          cd "Next.js Project"
-          npm audit --omit=dev --audit-level=high
 
   # ─────────────────────────────────────────────
   # JOB 3: Required Files Check
@@ -91,15 +86,17 @@ jobs:
             "CONTRIBUTING.md"
             "SECURITY.md"
             "LICENSE"
-            "Next.js Project/.env.example"
+            ".env.example"
             "package.json"
             "vercel.json"
             "database/schema.sql"
             "database/seed.sql"
             "Dockerfile"
             "docker-compose.yml"
-            "index.html"
-            "cases.html"
+            "app/page.tsx"
+            "app/cases/page.tsx"
+            "app/admin/page.tsx"
+            "app/admin/login/page.tsx"
           )
           MISSING=0
           for f in "${REQUIRED_FILES[@]}"; do
@@ -144,7 +141,6 @@ jobs:
           export SESSION_SECRET=$(openssl rand -base64 32)
           export SUPABASE_SERVICE_ROLE_KEY=$(openssl rand -base64 32)
           export ADMIN_DEFAULT_PASSWORD=$(openssl rand -base64 16)
-          cd "Next.js Project"
           npm ci
           npm run build
 

@@ -5,18 +5,33 @@ import { adminLogoutAction } from '@/app/actions/admin';
 import { ShieldCheck, Scale, Users, Mail, LogOut } from 'lucide-react';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminDashboardPage() {
   const auth = await verifyAdminSession();
   if (!auth.isValid) {
     redirect('/admin/login');
   }
 
-  const supabase = getServiceSupabase();
-  const [{ data: cases }, { data: contacts }, { data: practiceAreas }] = await Promise.all([
-    supabase.from('cases').select('*').order('created_at', { ascending: false }),
-    supabase.from('contacts').select('*').order('created_at', { ascending: false }),
-    supabase.from('practice_areas').select('*'),
-  ]);
+  let cases: any[] = [];
+  let contacts: any[] = [];
+  let practiceAreas: any[] = [];
+
+  try {
+    if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      const supabase = getServiceSupabase();
+      const [{ data: cData }, { data: ctData }, { data: pData }] = await Promise.all([
+        supabase.from('cases').select('*').order('created_at', { ascending: false }),
+        supabase.from('contacts').select('*').order('created_at', { ascending: false }),
+        supabase.from('practice_areas').select('*'),
+      ]);
+      cases = cData || [];
+      contacts = ctData || [];
+      practiceAreas = pData || [];
+    }
+  } catch (err) {
+    console.error('Database query fallback:', err);
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">

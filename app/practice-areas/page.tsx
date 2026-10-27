@@ -5,11 +5,19 @@ import { Briefcase, ArrowRight, Scale } from 'lucide-react';
 export const revalidate = 60;
 
 export default async function PracticeAreasPage() {
-  const supabase = getServiceSupabase();
-  const { data: practiceAreas } = await supabase
-    .from('practice_areas')
-    .select('*')
-    .eq('status', 'active');
+  let practiceAreas: any[] | null = null;
+  try {
+    if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      const supabase = getServiceSupabase();
+      const { data } = await supabase
+        .from('practice_areas')
+        .select('*')
+        .eq('status', 'active');
+      practiceAreas = data;
+    }
+  } catch (err) {
+    console.error('Practice areas fetch fallback:', err);
+  }
 
   const areas = practiceAreas && practiceAreas.length > 0 ? practiceAreas : [
     {

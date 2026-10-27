@@ -5,8 +5,16 @@ import { Mail, Phone, ArrowRight, Award } from 'lucide-react';
 export const revalidate = 60;
 
 export default async function AttorneysPage() {
-  const supabase = getServiceSupabase();
-  const { data: attorneysData } = await supabase.from('attorneys').select('*').eq('status', 'active');
+  let attorneysData: any[] | null = null;
+  try {
+    if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      const supabase = getServiceSupabase();
+      const { data } = await supabase.from('attorneys').select('*').eq('status', 'active');
+      attorneysData = data;
+    }
+  } catch (err) {
+    console.error('Attorneys fetch fallback:', err);
+  }
 
   const attorneys = attorneysData && attorneysData.length > 0 ? attorneysData : [
     {

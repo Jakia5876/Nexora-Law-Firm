@@ -14,7 +14,6 @@ interface CasesPageProps {
 
 export default async function CasesPortalPage({ searchParams }: CasesPageProps) {
   const auth = await verifyAdminSession();
-  const supabase = getServiceSupabase();
   const params = searchParams ? await searchParams : {};
 
   // If authenticated as admin, load official firm docket
@@ -23,11 +22,18 @@ export default async function CasesPortalPage({ searchParams }: CasesPageProps) 
   let searchError: string | null = null;
 
   if (auth.isValid) {
-    const { data } = await supabase
-      .from('cases')
-      .select('*, court:court_id(court_name), case_type:case_type_id(case_type), assistant:assistant_id(assistant_name)')
-      .order('created_at', { ascending: false });
-    cases = data || [];
+    try {
+      if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        const supabase = getServiceSupabase();
+        const { data } = await supabase
+          .from('cases')
+          .select('*, court:court_id(court_name), case_type:case_type_id(case_type), assistant:assistant_id(assistant_name)')
+          .order('created_at', { ascending: false });
+        cases = data || [];
+      }
+    } catch (err) {
+      console.error('Cases fetch error:', err);
+    }
   } else if (params.case_no && params.verifier) {
     // Secondary-secret verified inquiry: requires case_no + client mobile verifier
     const caseRef = params.case_no.trim();
@@ -36,30 +42,40 @@ export default async function CasesPortalPage({ searchParams }: CasesPageProps) 
     if (verifier.length < 4) {
       searchError = 'Authentication failed: Please provide your full telephone number as verification.';
     } else {
-      const { data, error } = await supabase
-        .from('cases')
-        .select('case_no, status, filing_date, court:court_id(court_name), client_mobile')
-        .eq('case_no', caseRef)
-        .single();
+      try {
+        if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+          const supabase = getServiceSupabase();
+          const { data, error } = await supabase
+            .from('cases')
+            .select('case_no, status, filing_date, court:court_id(court_name), client_mobile')
+            .eq('case_no', caseRef)
+            .single();
 
-      if (error || !data) {
-        searchError = 'No matching case record found with the supplied reference number.';
-      } else {
-        // Verify secondary secret against client_mobile
-        const clientMobile = (data.client_mobile || '').toLowerCase().replace(/[^0-9]/g, '');
-        const cleanVerifier = verifier.replace(/[^0-9]/g, '');
+          if (error || !data) {
+            searchError = 'No matching case record found with the supplied reference number.';
+          } else {
+            // Verify secondary secret against client_mobile
+            const clientMobile = (data.client_mobile || '').toLowerCase().replace(/[^0-9]/g, '');
+            const cleanVerifier = verifier.replace(/[^0-9]/g, '');
 
-        if (!cleanVerifier || !clientMobile.includes(cleanVerifier)) {
-          searchError = 'Authentication failed: Provided verification details do not match the registered client record.';
+            if (!cleanVerifier || !clientMobile.includes(cleanVerifier)) {
+              searchError = 'Authentication failed: Provided verification details do not match the registered client record.';
+            } else {
+              // Return only minimal public status fields (no sensitive personal details)
+              searchedCase = {
+                case_no: data.case_no,
+                status: data.status,
+                filing_date: data.filing_date,
+                court: data.court,
+              };
+            }
+          }
         } else {
-          // Return only minimal public status fields (no sensitive personal details)
-          searchedCase = {
-            case_no: data.case_no,
-            status: data.status,
-            filing_date: data.filing_date,
-            court: data.court,
-          };
+          searchError = 'Database service is currently initializing. Please try again shortly.';
         }
+      } catch (err) {
+        console.error('Case search error:', err);
+        searchError = 'An error occurred while verifying the docket reference.';
       }
     }
   }
@@ -131,7 +147,7 @@ export default async function CasesPortalPage({ searchParams }: CasesPageProps) 
                 name="case_no"
                 required
                 placeholder="e.g. NX-2025-001"
-                defaultValue={searchParams?.case_no || ''}
+                defaultValue={params.case_no || ''}
                 className="w-full bg-[#07101E] border border-slate-700 rounded-lg px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-gold text-sm font-mono"
               />
             </div>
@@ -144,7 +160,7 @@ export default async function CasesPortalPage({ searchParams }: CasesPageProps) 
                 name="verifier"
                 required
                 placeholder="e.g. registered phone digits or access code"
-                defaultValue={searchParams?.verifier || ''}
+                defaultValue={params.verifier || ''}
                 className="w-full bg-[#07101E] border border-slate-700 rounded-lg px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-gold text-sm"
               />
             </div>
