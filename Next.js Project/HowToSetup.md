@@ -19,11 +19,24 @@ This guide provides complete, step-by-step instructions for deploying and runnin
 
 ---
 
-## 1. Prerequisites & Required Versions
+## 1. Setup Sequence & Quickstart (Required Order)
+
+Follow this exact ordered sequence to configure and deploy Nexora Law Firm:
+
+- **Prerequisites**: Node.js >= 20.9.0
+- **Supabase setup**: Create Supabase project
+- **Database Migration**: Run database/schema.sql first, then run database/seed.sql
+- **Storage**: Create public storage bucket
+- **Environment setup**: Copy .env.example to .env.local and set keys
+- **Install & Build**: Run npm ci and npm run build
+
+---
+
+## 2. Prerequisites & Required Versions
 
 Before starting, ensure your host environment meets the following specifications:
 
-- **Node.js**: `>= 20.x` (verified with `node -v`)
+- **Node.js**: `>= 20.9.0` (verified with `node -v`)
 - **Package Manager**: `npm >= 10.x` (verified with `npm -v`)
 - **Database**: PostgreSQL 14+ or a [Supabase](https://supabase.com) project instance
 - **Docker** (Optional, for containerized hosting): Docker Engine 24+ and Docker Compose v2+

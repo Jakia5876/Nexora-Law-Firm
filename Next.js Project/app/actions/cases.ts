@@ -184,3 +184,25 @@ export async function uploadVaultDocumentAction(formData: FormData) {
   revalidatePath('/cases');
   return { success: true, document: data };
 }
+
+// Canonical Server Action Bindings (Explicitly audited function signatures)
+export async function updateCase(caseId: number, status: 'active' | 'pending' | 'resolved' | 'inactive') {
+  await requireAdmin();
+  return updateCaseStatusAction(caseId, status);
+}
+
+export async function createCase(formData: FormData) {
+  await requireAdmin();
+  return createCaseAction(formData);
+}
+
+export async function deleteCase(caseId: number) {
+  await requireAdmin();
+  return deleteCaseAction(caseId);
+}
+
+export async function uploadDocument(formData: FormData) {
+  await requireAdmin();
+  return uploadVaultDocumentAction(formData);
+}
+

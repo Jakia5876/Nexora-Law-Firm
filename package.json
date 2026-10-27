@@ -25,16 +25,15 @@
     "static-site"
   ],
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.9.0"
   },
   "scripts": {
-    "build": "node -e \"console.log('Build OK: Static web distribution ready. For full-stack Next.js app, run build inside Next.js Project directory.')\"",
-    "start": "serve . -l 8080",
-    "dev": "serve . -l 8080",
-    "test": "htmlhint *.html",
-    "lint": "htmlhint *.html",
+    "dev": "npm --prefix \"Next.js Project\" run dev",
+    "build": "npm --prefix \"Next.js Project\" run build",
+    "start": "npm --prefix \"Next.js Project\" run start",
+    "lint": "npm --prefix \"Next.js Project\" run lint",
     "lint:html": "htmlhint *.html",
-    "validate": "htmlhint *.html"
+    "test": "npm --prefix \"Next.js Project\" run lint"
   },
   "devDependencies": {
     "htmlhint": "1.1.4",
