@@ -1,28 +1,40 @@
 # ==============================================================================
-# Nexora Law Firm — Production Container
-# Lightweight, high-performance static server powered by Nginx Alpine
+# Nexora Law Firm — Production Next.js Server Container
+# Multi-stage optimized Node.js 20 Alpine container
 # ==============================================================================
-FROM nginx:1.27-alpine
+FROM node:20-alpine AS base
 
-# Set working directory
-WORKDIR /usr/share/nginx/html
+# Install dependencies
+FROM base AS deps
+WORKDIR /app
+COPY "Next.js Project/package.json" "Next.js Project/package-lock.json*" ./
+RUN npm ci
 
-# Remove default nginx static assets
-RUN rm -rf ./*
+# Build application
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY "Next.js Project" ./
 
-# Copy website files to nginx html root
-COPY *.html ./
-COPY vercel.json ./
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
 
-# Copy nginx configuration
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+RUN npm run build
 
-# Expose standard HTTP port
-EXPOSE 80
+# Production runner
+FROM base AS runner
+WORKDIR /app
 
-# Healthcheck to verify the web server is responding
-HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-  CMD wget --quiet --tries=1 --spider http://localhost/health || exit 1
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
-# Start Nginx in foreground
-CMD ["nginx", "-g", "daemon off;"]
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public 2>/dev/null || true
+
+EXPOSE 3000
+
+CMD ["npm", "start"]

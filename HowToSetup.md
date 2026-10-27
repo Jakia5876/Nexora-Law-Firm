@@ -120,7 +120,7 @@ nano .env
 
 ### Step 3: Build and Run with Docker Compose
 
-Run the following command to build the production image and launch the container in the background:
+Run the following command to build the production Next.js image and launch the container in the background:
 
 ```bash
 docker compose up -d --build
@@ -136,21 +136,20 @@ docker compose ps
 docker compose logs -f
 
 # Test the health endpoint
-curl -I http://localhost:8080/health
+curl -I http://localhost:3000
 ```
 
 Expected response:
 ```
 HTTP/1.1 200 OK
-Content-Type: text/plain
-healthy
 ```
 
 ### Step 5: Access the Application
 
 Open your browser and navigate to:
-- **Landing Page & Consultation**: `http://localhost:8080`
-- **Case Management Portal**: `http://localhost:8080/cases.html`
+- **Next.js Application & Consultation**: `http://localhost:3000`
+- **Role-Gated Admin Portal**: `http://localhost:3000/admin`
+- **Case Management Portal**: `http://localhost:3000/cases`
 
 To stop the container:
 ```bash
@@ -285,10 +284,10 @@ npm run dev
 Once the application is running and the database seed has been applied:
 
 1. Open `cases.html` (or click **Client Portal** on `index.html`).
-2. If prompted, click **Admin Login** or use the authentication modal.
+2. If prompted, click **Admin Login** or use the authentication modal (or visit `/admin/login` on Next.js).
 3. Enter the default administrator credentials:
    - **Email**: `admin@nexoralaw.com`
-   - **Password**: The password defined in `database/seed.sql` (default placeholder: `YOUR_SECURE_ADMIN_PASSWORD`)
+   - **Password**: `DemoAdmin2026!` (configured in `database/seed.sql`)
 4. Upon successful login, you have full administrative access to:
    - View, create, and edit litigation cases
    - Upload client case files to the Document Vault

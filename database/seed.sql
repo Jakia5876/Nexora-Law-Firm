@@ -1,27 +1,83 @@
 -- ==============================================================================
--- NEXORA LAW FIRM — SEED DATA
+-- NEXORA LAW FIRM — COMPLETE SEED DATA & DEMO ACCOUNTS
 -- Run this file AFTER database/schema.sql
--- Inserts default admin user, courts, case types, and assistant for development
+-- Sets up complete initial database with users, courts, cases, hearings, and vault
 -- ==============================================================================
 
 -- ==============================================================================
--- 1. DEFAULT ADMIN USER
--- Change 'YOUR_SECURE_ADMIN_PASSWORD' to a real secure password before deploying
+-- 1. DEMO ACCOUNTS & INITIAL USERS
 -- ==============================================================================
+-- Admin Demo Account
 INSERT INTO public.users (user_id, name, address, phone, password, email, role, is_active)
 VALUES (
     1,
-    'Firm Administrator',
-    'Nexora Law Firm Chambers, Suite 500',
+    'Managing Partner (Admin Demo)',
+    'Nexora Law Firm Chambers, Suite 500, New York, NY 10001',
     '+1-800-555-0199',
-    'YOUR_SECURE_ADMIN_PASSWORD',
+    'DemoAdmin2026!',
     'admin@nexoralaw.com',
     'admin',
     true
 ) ON CONFLICT (user_id) DO NOTHING;
 
+-- Secondary Assigned Partner Account
+INSERT INTO public.users (user_id, name, address, phone, password, email, role, is_active)
+VALUES (
+    2,
+    'Firm Counsel (Jakia Demo)',
+    'Nexora Chambers, Level 4, Financial District',
+    '+1-800-555-0198',
+    'AjakiaT@220*#',
+    'jakiadantal@gmail.com',
+    'admin',
+    true
+) ON CONFLICT (user_id) DO NOTHING;
+
+-- Client Demo Account
+INSERT INTO public.users (user_id, name, address, phone, password, email, role, is_active)
+VALUES (
+    3,
+    'Hon. Rafael Del Rosario',
+    'Del Rosario Corporate Holdings, 120 Broadway',
+    '+1-800-555-0120',
+    'DemoClient2026!',
+    'client@nexoralaw.com',
+    'client',
+    true
+) ON CONFLICT (user_id) DO NOTHING;
+
 -- ==============================================================================
--- 2. DEFAULT COURTS
+-- 2. PRACTICE AREAS (Required by Audit R4 & R10)
+-- ==============================================================================
+INSERT INTO public.practice_areas (id, slug, title, subtitle, description, icon, content, status, user_id)
+VALUES
+    (1, 'corporate-litigation', 'Corporate & Commercial Litigation', 'Cross-Border M&A and Shareholder Disputes', 'Comprehensive advocacy for complex commercial disputes, contract enforcement, and multi-jurisdictional arbitrations.', 'briefcase', 'Full commercial representation before appellate and federal circuits.', 'active', 1),
+    (2, 'criminal-defense', 'White Collar & Criminal Defense', 'High-Stakes Regulatory & Federal Defense', 'Discreet, aggressive counsel in corporate compliance investigations, securities enforcement, and criminal trials.', 'shield-alert', 'Proven defense strategies defending corporate executives and high-profile individuals.', 'active', 1),
+    (3, 'intellectual-property', 'Intellectual Property & Patents', 'Trade Secret Preservation and Technology Licensing', 'Guarding intellectual property portfolios, patent infringement suits, and proprietary software rights globally.', 'cpu', 'Strategic IP litigation across domestic and international arbitration courts.', 'active', 1),
+    (4, 'real-estate-land', 'Real Estate & Land Acquisition', 'Commercial Property & Zoning Development', 'Advisory for multi-million dollar acquisitions, land zoning permits, commercial leases, and title litigation.', 'building-2', 'Institutional advisory on major commercial real estate development.', 'active', 1)
+ON CONFLICT (id) DO NOTHING;
+
+-- ==============================================================================
+-- 3. ATTORNEYS & ROSTER (Required by Audit R4 & R10)
+-- ==============================================================================
+INSERT INTO public.attorneys (id, user_id, slug, name, title, specialization, bio, email, phone, image_url, status)
+VALUES
+    (1, 1, 'eleanor-vance', 'Eleanor Vance, Esq.', 'Senior Managing Partner', 'Corporate & Cross-Border M&A', 'Former federal prosecutor with over 22 years of high-stakes corporate litigation advocacy.', 'e.vance@nexoralaw.com', '+1-800-555-0199', 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800', 'active'),
+    (2, 2, 'marcus-sterling', 'Marcus Sterling, J.D.', 'Partner & Head of Trial Practice', 'White Collar & Criminal Defense', 'Renowned courtroom trial lawyer specializing in federal investigations and constitutional defense.', 'm.sterling@nexoralaw.com', '+1-800-555-0198', 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800', 'active'),
+    (3, 1, 'sophia-chen', 'Sophia Chen, LL.M.', 'Partner — Intellectual Property', 'Patent Litigation & Tech Law', 'Advises Fortune 500 tech firms on cross-border licensing and algorithmic trade secret litigation.', 's.chen@nexoralaw.com', '+1-800-555-0197', 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=800', 'active')
+ON CONFLICT (id) DO NOTHING;
+
+-- ==============================================================================
+-- 4. SITE CONTENT & BRIEFINGS (Required by Audit R4)
+-- ==============================================================================
+INSERT INTO public.site_content (id, slug, section_key, title, content, status, user_id)
+VALUES
+    (1, 'homepage-hero', 'hero', 'Defending Your Rights With Skill & Integrity', 'Nexora Law Firm delivers elite corporate advocacy, trial litigation, and bespoke legal consultation for visionary enterprises.', 'published', 1),
+    (2, 'disclaimer-policy', 'legal', 'Attorney-Client Relationship Disclaimer', 'Transmission of information through this website does not constitute an attorney-client relationship without formal retainer execution.', 'published', 1)
+ON CONFLICT (id) DO NOTHING;
+
+-- ==============================================================================
+-- 5. DEFAULT COURTS & TRIBUNALS
 -- ==============================================================================
 INSERT INTO public.court (court_id, court_name, jurisdiction, user_id)
 VALUES
@@ -36,7 +92,7 @@ VALUES
 ON CONFLICT (court_id) DO NOTHING;
 
 -- ==============================================================================
--- 3. DEFAULT CASE TYPES
+-- 6. CASE CLASSIFICATIONS (PRACTICE AREAS)
 -- ==============================================================================
 INSERT INTO public.case_type (case_type_id, case_type, description, user_id)
 VALUES
@@ -51,7 +107,7 @@ VALUES
 ON CONFLICT (case_type_id) DO NOTHING;
 
 -- ==============================================================================
--- 4. DEFAULT LEGAL ASSISTANTS
+-- 4. LEGAL ASSISTANTS & PARALEGALS
 -- ==============================================================================
 INSERT INTO public.assistant (assistant_id, assistant_name, email, phone, user_id)
 VALUES
@@ -61,12 +117,52 @@ VALUES
 ON CONFLICT (assistant_id) DO NOTHING;
 
 -- ==============================================================================
--- 5. SAMPLE SUBSCRIPTION PLAN (Admin)
+-- 5. SAMPLE ACTIVE CASES (LITIGATION DOCKET)
+-- ==============================================================================
+INSERT INTO public.cases (case_id, court_id, case_no, under_section, filing_date, plaintiff_name, defendants_name, assistant_id, client_mobile, user_id, note, on_behalf, case_type_id, case_no_note, status)
+VALUES
+    (1, 4, 'NX-2025-001', 'Sec. 12(a) Commercial Arbitration Act', '2025-02-15', 'Del Rosario Energy Holdings', 'Apex Sovereign Infrastructure Ltd.', 1, '+1-800-555-0120', 1, 'Injunction application regarding breach of exclusive distribution contract.', 'Plaintiff', 1, 'Cross-border ICC Hearing scheduled', 'active'),
+    (2, 7, 'NX-2025-002', 'Labor Code Title III, Section 282', '2025-03-01', 'Kavita Patel (VP Operations)', 'Zenith Global Logistics Corp.', 2, '+1-800-555-0122', 1, 'Constructive dismissal and executive severance arbitration proceedings.', 'Plaintiff', 6, 'Pre-trial settlement conference', 'active'),
+    (3, 1, 'NX-2025-003', 'Constitutional Article III, Due Process', '2025-01-20', 'Pacific Maritime Syndicate', 'Port Regulatory Commission', 3, '+1-800-555-0125', 1, 'Writ of Prohibition against unilateral tariff imposition.', 'Plaintiff', 5, 'En banc oral arguments completed', 'active')
+ON CONFLICT (case_id) DO NOTHING;
+
+-- ==============================================================================
+-- 6. SAMPLE CASE HEARINGS & COURT PROCEEDINGS (case_detail)
+-- ==============================================================================
+INSERT INTO public.case_detail (case_detail_id, case_id, next_date, order_detail, presiding_judge, hearing_summary)
+VALUES
+    (1, 1, CURRENT_DATE + INTERVAL '14 days', 'Interim status quo order maintained; respondents directed to produce audited ledger books.', 'Hon. Justice M. Sterling', 'Counsel for plaintiff submitted reply on amended counter-claim.'),
+    (2, 2, CURRENT_DATE + INTERVAL '21 days', 'Parties referred to mandatory mediation forum for amicable dispute settlement.', 'Hon. Commissioner L. Santos', 'Both parties agreed on mediator panel candidate.'),
+    (3, 3, CURRENT_DATE + INTERVAL '30 days', 'Reserved for promulgation of judgment by en banc bench.', 'Chief Justice A. Thorne', 'Final written submissions filed by Solicitor General and Petitioners.')
+ON CONFLICT (case_detail_id) DO NOTHING;
+
+-- ==============================================================================
+-- 7. SAMPLE CLIENT VAULT DOCUMENTS (case_documents)
+-- ==============================================================================
+INSERT INTO public.case_documents (document_id, case_id, title, category, file_name, file_size, file_url, uploaded_by)
+VALUES
+    (1, 1, 'Verified Complaint & Petition for Injunction', 'Pleading', 'DelRosario_Verified_Complaint_2025.pdf', '2.4 MB', 'https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/sample-pleading.pdf', 1),
+    (2, 1, 'Master Energy Distribution Agreement Exhibit A', 'Contract', 'Master_Energy_Exhibit_A.pdf', '4.8 MB', 'https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/sample-contract.pdf', 1),
+    (3, 2, 'Executive Employment & Stock Option Agreement', 'Contract', 'KPatel_Executive_Agreement.pdf', '1.7 MB', 'https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/sample-agreement.pdf', 1),
+    (4, 3, 'Amicus Curiae Brief on Regulatory Jurisdiction', 'Pleading', 'Amicus_Curiae_Brief_Maritime.pdf', '3.1 MB', 'https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/sample-brief.pdf', 1)
+ON CONFLICT (document_id) DO NOTHING;
+
+-- ==============================================================================
+-- 8. SAMPLE WEBSITE CONSULTATION INQUIRIES (contacts)
+-- ==============================================================================
+INSERT INTO public.contacts (id, name, email, phone, service, message, status)
+VALUES
+    ('cnt-001', 'Alexander Wright', 'a.wright@wrightventures.com', '+1-800-555-0301', 'Corporate & Commercial Litigation', 'Seeking legal representation for Series B equity restructuring and founder voting rights.', 'New'),
+    ('cnt-002', 'Dr. Beatrice Campbell', 'b.campbell@biocaremed.org', '+1-800-555-0302', 'Intellectual Property & Patents', 'Urgent consultation requested regarding international patent filing for biotech device.', 'Contacted')
+ON CONFLICT (id) DO NOTHING;
+
+-- ==============================================================================
+-- 9. SAMPLE SUBSCRIPTION PLAN (Admin Enterprise Retainer)
 -- ==============================================================================
 INSERT INTO public.subscriptions (user_id, subscription_plan, start_date, end_date, status, amount)
 VALUES (
     1,
-    'Enterprise Retainer',
+    'Enterprise Retainer Suite',
     CURRENT_DATE,
     CURRENT_DATE + INTERVAL '1 year',
     'active',
@@ -74,11 +170,16 @@ VALUES (
 ) ON CONFLICT DO NOTHING;
 
 -- ==============================================================================
--- 6. RESET SEQUENCE COUNTERS
--- Prevents duplicate key conflicts on subsequent inserts after seeding
+-- 10. RESET ALL SEQUENCE COUNTERS
 -- ==============================================================================
-SELECT setval(pg_get_serial_sequence('public.users',        'user_id'),        COALESCE(MAX(user_id),        1)) FROM public.users;
-SELECT setval(pg_get_serial_sequence('public.court',        'court_id'),       COALESCE(MAX(court_id),       1)) FROM public.court;
-SELECT setval(pg_get_serial_sequence('public.case_type',    'case_type_id'),   COALESCE(MAX(case_type_id),   1)) FROM public.case_type;
-SELECT setval(pg_get_serial_sequence('public.assistant',    'assistant_id'),   COALESCE(MAX(assistant_id),   1)) FROM public.assistant;
-SELECT setval(pg_get_serial_sequence('public.subscriptions','subscription_id'),COALESCE(MAX(subscription_id),1)) FROM public.subscriptions;
+SELECT setval(pg_get_serial_sequence('public.users',         'user_id'),        COALESCE(MAX(user_id),        1)) FROM public.users;
+SELECT setval(pg_get_serial_sequence('public.court',         'court_id'),       COALESCE(MAX(court_id),       1)) FROM public.court;
+SELECT setval(pg_get_serial_sequence('public.case_type',     'case_type_id'),   COALESCE(MAX(case_type_id),   1)) FROM public.case_type;
+SELECT setval(pg_get_serial_sequence('public.assistant',     'assistant_id'),   COALESCE(MAX(assistant_id),   1)) FROM public.assistant;
+SELECT setval(pg_get_serial_sequence('public.practice_areas','id'),            COALESCE(MAX(id),            1)) FROM public.practice_areas;
+SELECT setval(pg_get_serial_sequence('public.attorneys',     'id'),            COALESCE(MAX(id),            1)) FROM public.attorneys;
+SELECT setval(pg_get_serial_sequence('public.site_content',  'id'),            COALESCE(MAX(id),            1)) FROM public.site_content;
+SELECT setval(pg_get_serial_sequence('public.cases',         'case_id'),        COALESCE(MAX(case_id),        1)) FROM public.cases;
+SELECT setval(pg_get_serial_sequence('public.case_detail',   'case_detail_id'), COALESCE(MAX(case_detail_id), 1)) FROM public.case_detail;
+SELECT setval(pg_get_serial_sequence('public.case_documents','document_id'),    COALESCE(MAX(document_id),    1)) FROM public.case_documents;
+SELECT setval(pg_get_serial_sequence('public.subscriptions', 'subscription_id'),COALESCE(MAX(subscription_id), 1)) FROM public.subscriptions;

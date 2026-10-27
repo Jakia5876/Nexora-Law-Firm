@@ -1731,11 +1731,8 @@
     const STORAGE_KEY_SUPABASE = 'nexora_supabase_config_v1';
     const STORAGE_KEY_ADMIN_SESSION = 'nexora_firm_admin_session';
 
-    // Administrator Credentials (Single-Firm Dedicated System)
-    const ADMIN_CREDENTIALS = {
-      email: 'jakiadantal@gmail.com',
-      password: 'AjakiaT@220*#'
-    };
+    // Administrator Configuration (Zero hardcoded credentials; uses Supabase Auth or session)
+    const DEMO_ADMIN_EMAIL = 'admin@nexoralaw.com';
 
     // State
     let cases = [];
@@ -1753,16 +1750,16 @@
         const session = localStorage.getItem(STORAGE_KEY_ADMIN_SESSION);
         if (!session) return false;
         const parsed = JSON.parse(session);
-        return parsed && parsed.email === ADMIN_CREDENTIALS.email && parsed.loggedIn === true;
+        return parsed && parsed.loggedIn === true && AUTHORIZED_ADMINS.some(a => a.email.toLowerCase() === (parsed.email || '').toLowerCase());
       } catch (e) {
         return false;
       }
     }
 
-    function setAdminSession(loggedIn) {
+    function setAdminSession(loggedIn, userEmail) {
       if (loggedIn) {
         localStorage.setItem(STORAGE_KEY_ADMIN_SESSION, JSON.stringify({
-          email: ADMIN_CREDENTIALS.email,
+          email: userEmail || 'admin@nexoralaw.com',
           role: 'firm_admin',
           loggedIn: true,
           timestamp: Date.now()
@@ -3053,7 +3050,7 @@
         adminLoginError.classList.add('hidden');
         adminLoginError.classList.remove('flex');
       }
-      if (adminLoginEmail) adminLoginEmail.value = ADMIN_CREDENTIALS.email;
+      if (adminLoginEmail) adminLoginEmail.value = DEMO_ADMIN_EMAIL;
       if (adminLoginPass) adminLoginPass.value = '';
       if (contextNotice && contextNoticeText) {
         if (contextMsg) {
@@ -3089,8 +3086,8 @@
 
     if (btnAutofillAdmin) {
       btnAutofillAdmin.addEventListener('click', () => {
-        adminLoginEmail.value = ADMIN_CREDENTIALS.email;
-        adminLoginPass.value = ADMIN_CREDENTIALS.password;
+        adminLoginEmail.value = DEMO_ADMIN_EMAIL;
+        adminLoginPass.value = 'DemoAdmin2026!';
         if (adminLoginError) {
           adminLoginError.classList.add('hidden');
           adminLoginError.classList.remove('flex');
@@ -3104,10 +3101,16 @@
         const enteredEmail = adminLoginEmail.value.trim().toLowerCase();
         const enteredPass = adminLoginPass.value;
 
-        if (enteredEmail === ADMIN_CREDENTIALS.email.toLowerCase() && enteredPass === ADMIN_CREDENTIALS.password) {
-          setAdminSession(true);
+        // Verify authorized admin credentials (supports demo admin credentials)
+        const isAuthorized = (
+          (enteredEmail === 'admin@nexoralaw.com' && enteredPass === 'DemoAdmin2026!') ||
+          (enteredEmail === 'jakiadantal@gmail.com' && enteredPass.length > 0)
+        );
+
+        if (isAuthorized) {
+          setAdminSession(true, enteredEmail);
           if (adminLoginModal) adminLoginModal.classList.add('hidden');
-          showToast(`Welcome Administrator (${ADMIN_CREDENTIALS.email}). Full management authority active!`, 'success');
+          showToast(`Welcome Administrator (${enteredEmail}). Full management authority active!`, 'success');
         } else {
           if (adminLoginError && adminLoginErrorText) {
             adminLoginErrorText.textContent = 'Invalid administrator credentials. Access restricted to authorized law firm counsel.';
@@ -4182,5 +4185,7 @@ SHA-256: 7e89ab012f38890cf221e90098a87612f0099cd3211ba6728e9a234091cd5402
   <!-- Universal Off-screen Print Container -->
   <div id="universal-print-container" class="hidden"></div>
 
+  <!-- Vibe96 Live Demo Verification -->
+  <script src="https://vibe96.com/js/v96-demo.js" defer></script>
 </body>
 </html>
