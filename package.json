@@ -31,9 +31,7 @@
     "dev": "npm --prefix \"Next.js Project\" run dev",
     "build": "npm --prefix \"Next.js Project\" run build",
     "start": "npm --prefix \"Next.js Project\" run start",
-    "lint": "npm --prefix \"Next.js Project\" run lint",
-    "lint:html": "htmlhint *.html",
-    "test": "npm --prefix \"Next.js Project\" run lint"
+    "lint": "npm --prefix \"Next.js Project\" run lint"
   },
   "devDependencies": {
     "htmlhint": "1.1.4",
