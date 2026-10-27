@@ -119,7 +119,7 @@ jobs:
     name: Deploy to Vercel
     runs-on: ubuntu-latest
     needs: [validate-html, security-scan, required-files]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.VERCEL_TOKEN != ''
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

@@ -32,7 +32,7 @@
     "start": "serve . -l 8080",
     "dev": "serve . -l 8080",
     "test": "node -e \"console.log('Tests passed: static assets and configuration verified.')\"",
-    "lint:html": "htmlhint *.html",
+    "lint:html": "htmlhint --config .htmlhintrc *.html",
     "lint:sql": "node -e \"console.log('SQL schema syntax valid')\"",
     "validate": "node -e \"console.log('Validation passed')\""
   },
