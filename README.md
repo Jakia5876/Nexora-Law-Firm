@@ -11,22 +11,16 @@
 
 ---
 
-## ✨ System Architecture & Applications
+## ✨ System Architecture & Application
 
-Nexora Law Firm features a dual-layer production architecture:
+Nexora Law Firm is a production-grade full-stack Next.js App Router application:
 
-1. **Next.js 16 App Router Application (`Next.js Project/`)**:
-   - Production React Server Components & Server Actions
-   - Role-gated administrative dashboard (`/admin`) and secure authentication (`/admin/login`)
-   - Strict intake data isolation: anonymous visitors can submit consultations (`anon` INSERT only), while reads/edits/deletions require server-verified admin sessions
-   - Dynamic practice area routes (`/practice-areas/[slug]`) and attorney directory (`/attorneys`)
-   - Pinned zero-vulnerability dependencies verified with `npm audit`
-
-2. **Static Web Previews**:
-   - High-conversion firm landing page (`index.html`) with practice showcase, attorney roster, and client inquiry form
-   - Case management dashboard preview (`cases.html`)
-   - Practice landing pages (`accelerator.html`, `odegard.html`)
-   - Commercial licensing & legal terms (`service-terms.html`, `license.html`, `seller-agreement.html`, `privacy.html`)
+- **Next.js 16 App Router Application**:
+  - Production React Server Components & Server Actions
+  - Role-gated administrative dashboard (`/admin`) and secure authentication (`/admin/login`)
+  - Strict intake data isolation: anonymous visitors can submit consultations (`anon` INSERT only), while reads/edits/deletions require server-verified admin sessions
+  - Dynamic practice area routes (`/practice-areas/[slug]`) and attorney directory (`/attorneys`)
+  - Pinned zero-vulnerability dependencies verified with `npm audit`
 
 ---
 
