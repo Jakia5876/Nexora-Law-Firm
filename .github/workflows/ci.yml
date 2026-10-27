@@ -83,7 +83,7 @@ jobs:
             "CONTRIBUTING.md"
             "SECURITY.md"
             "LICENSE"
-            ".env.example"
+            "Next.js Project/.env.example"
             "package.json"
             "vercel.json"
             "database/schema.sql"
