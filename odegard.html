@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Odegard Law Firm — Injury Lawyers | Relentless Representation</title>
+  <meta name="description" content="Odegard Law Firm - Relentless Representation. Over $100M recovered for injury victims. Available 24/7 for free case evaluations.">
+
+  <!-- Google Fonts: Inter (300, 400, 500) and Playfair Display (400, 500, 600 + italic) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            stone: {
+              50: '#F9F9F7',
+              100: '#F0EFEA',
+              200: '#E6E4DD',
+              300: '#D6D3CD',
+              400: '#A8A29E',
+              800: '#2C2B29',
+              900: '#1A1918',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Iconify Icon library v1.0.7 -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+  <style>
+    /* Custom Scrollbar: fixed 8px width and #D6D3CD thumb */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F9F9F7;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D6D3CD;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #A8A29E;
+    }
+
+    .scrollbar-none::-webkit-scrollbar { display: none; }
+    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Base Styling */
+    body {
+      background-color: #F9F9F7;
+      color: #1A1918;
+      font-family: 'Inter', sans-serif;
+    }
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* .custom-input utility: transparent bg, no top/side borders, 1px bottom border stone-200, no shadow on focus */
+    .custom-input {
+      background: transparent;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-bottom: 1px solid #E6E4DD;
+      border-radius: 0;
+      padding: 0.75rem 0;
+      color: #1A1918;
+      transition: border-color 300ms ease;
+    }
+    .custom-input:focus {
+      outline: none;
+      box-shadow: none;
+      border-bottom-color: #1A1918;
+    }
+
+    /* Grayscale filter with 0.9 contrast on hero image */
+    .hero-img-filter {
+      filter: grayscale(100%) contrast(0.9);
+      transition: transform 700ms ease, filter 700ms ease;
+    }
+    .hero-img-container:hover .hero-img-filter {
+      transform: scale(1.05);
+      filter: grayscale(80%) contrast(0.95);
+    }
+
+    /* Transitions rule: 300ms default */
+    * {
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body class="bg-stone-50 text-stone-900 font-sans antialiased selection:bg-stone-200 selection:text-stone-900">
+
+  <!-- VIBE96 TOP TEMPLATE SWITCHER BAR -->
+  <aside aria-label="Template switcher" class="bg-stone-900 text-stone-300 border-b border-stone-800 text-xs px-3 sm:px-6 h-10 flex items-center justify-between overflow-x-auto scrollbar-none whitespace-nowrap">
+    <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+      <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-stone-800 text-white font-medium text-[10px] sm:text-[11px] uppercase tracking-wider">
+        <iconify-icon icon="solar:shield-check-linear" width="14"></iconify-icon> Vibe96 Law Suite
+      </span>
+      <span class="hidden md:inline text-stone-400">Template Category:</span>
+      <strong class="text-stone-100 hidden sm:inline text-xs">Injury &amp; Trial Law Practice</strong>
+    </div>
+    <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+      <a href="index.html" class="px-2 sm:px-2.5 py-1 rounded bg-stone-800 hover:bg-stone-700 text-stone-300 transition-all text-[10px] sm:text-[11px]">Nexora Law (Full-Service)</a>
+      <a href="accelerator.html" class="px-2 sm:px-2.5 py-1 rounded bg-stone-800 hover:bg-stone-700 text-stone-300 transition-all text-[10px] sm:text-[11px]">Growth Blueprint</a>
+      <a href="odegard.html" class="px-2 sm:px-2.5 py-1 rounded bg-stone-50 text-stone-900 font-semibold transition-all text-[10px] sm:text-[11px]">Odegard Injury Law</a>
+    </div>
+  </aside>
+
+  <!-- SECTION 1: ANNOUNCEMENT BAR (BG: stone-900. Text: white, text-xs, uppercase, tracking-wide. Copy: "Available 24/7 for Free Case Evaluations") -->
+  <div class="bg-stone-900 text-white text-xs uppercase tracking-wide py-2.5 px-6 text-center z-0">
+    <span>Available 24/7 for Free Case Evaluations</span>
+  </div>
+
+  <!-- SECTION 2: NAVIGATION -->
+  <!-- sticky top-0 z-50, backdrop-blur-md, bg-stone-50/80, 80px height, max-w-7xl, px-6, justify-between -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-stone-50/80 border-b border-stone-200 h-20 transition-all duration-300">
+    <div class="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
+      
+      <!-- Logo: Flex-col, "ODEGARD LAW" (serif, 2xl, tracking-tighter), "Injury Lawyers" (0.65rem, uppercase, 0.2em tracking) -->
+      <a href="#hero" class="flex flex-col group">
+        <span class="font-serif text-2xl font-bold tracking-tighter text-stone-900 leading-none group-hover:text-stone-800 transition-colors duration-300">
+          ODEGARD LAW
+        </span>
+        <span class="text-[0.65rem] uppercase tracking-[0.2em] font-medium text-stone-600 mt-1 leading-none">
+          Injury Lawyers
+        </span>
+      </a>
+
+      <!-- Desktop Links: gap-8, text-sm, text-stone-600. Transition to stone-900 on hover (300ms) -->
+      <nav class="hidden md:flex items-center gap-8 text-sm text-stone-600 font-medium">
+        <a href="#practice-areas" class="hover:text-stone-900 transition-colors duration-300">Practice Areas</a>
+        <a href="#why-choose" class="hover:text-stone-900 transition-colors duration-300">Why Odegard</a>
+        <a href="#testimonials" class="hover:text-stone-900 transition-colors duration-300">Client Voices</a>
+        <a href="#contact" class="hover:text-stone-900 transition-colors duration-300">Contact</a>
+      </nav>
+
+      <!-- CTA: Phone link with solar:phone-calling-linear (18px) and "Free Consultation" button (stone-900, white text, rounded-sm) -->
+      <div class="flex items-center gap-6">
+        <a href="tel:18005550199" class="hidden sm:flex items-center gap-2 text-stone-800 hover:text-stone-950 font-medium text-sm transition-colors duration-300">
+          <iconify-icon icon="solar:phone-calling-linear" width="18" height="18" class="text-stone-900"></iconify-icon>
+          <span>(800) 555-0199</span>
+        </a>
+        <a href="#contact" class="px-5 py-2.5 bg-stone-900 hover:bg-stone-800 text-white text-xs uppercase tracking-wider font-semibold rounded-sm transition-colors duration-300 shadow-sm">
+          Free Consultation
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- SECTION 3: HERO -->
+  <!-- Grid: 2 columns (LG breakpoint), gap-16 -->
+  <section id="hero" class="py-20 lg:py-28 px-6 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      
+      <!-- Left Column: Copy & Stats -->
+      <div>
+        <!-- Badge: "No Fees Unless We Win" in inline-flex capsule with green-600 pulse dot -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-stone-200 bg-stone-100 text-stone-800 text-xs font-medium tracking-wide mb-8">
+          <span class="w-2 h-2 rounded-full bg-green-600 animate-pulse"></span>
+          <span>No Fees Unless We Win</span>
+        </div>
+
+        <!-- Heading: Playfair Display, text-5xl to 7xl. "Relentless" (block), "Representation." (italic, stone-400) -->
+        <h1 class="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-stone-900 leading-[1.05] mb-8">
+          <span class="block">Relentless</span>
+          <span class="italic font-normal text-stone-400">Representation.</span>
+        </h1>
+
+        <p class="text-stone-600 text-base sm:text-lg font-light leading-relaxed max-w-lg mb-10">
+          When catastrophic injury shatters your life, our trial lawyers stand between you and billion-dollar insurance conglomerates to win the justice you are owed.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-14">
+          <a href="#contact" class="px-8 py-4 bg-stone-900 hover:bg-stone-800 text-white text-xs uppercase tracking-wider font-semibold rounded-sm transition-colors duration-300 text-center flex items-center justify-center gap-2">
+            <span>Evaluate Your Case Free</span>
+            <iconify-icon icon="solar:arrow-right-linear" width="16" height="16"></iconify-icon>
+          </a>
+          <a href="#practice-areas" class="px-8 py-4 border border-stone-200 hover:border-stone-900 text-stone-900 text-xs uppercase tracking-wider font-semibold rounded-sm transition-colors duration-300 text-center">
+            View Case Results
+          </a>
+        </div>
+
+        <!-- Stats: Flex container with $100M+ (serif) and a profile avatar stack (4 overlapping circles: stone-200, 300, 400, and a stone-900 circle with "5k+" text) -->
+        <div class="flex items-center gap-8 pt-8 border-t border-stone-200">
+          <div>
+            <div class="font-serif text-3xl sm:text-4xl font-bold text-stone-900">$100M+</div>
+            <div class="text-xs uppercase tracking-wider text-stone-500 font-medium mt-1">Recovered for Clients</div>
+          </div>
+          <div class="h-10 w-px bg-stone-200"></div>
+          <div>
+            <div class="flex items-center -space-x-3 mb-1.5">
+              <div class="w-9 h-9 rounded-full bg-stone-200 border-2 border-stone-50 flex items-center justify-center text-[10px] font-bold text-stone-700">CL</div>
+              <div class="w-9 h-9 rounded-full bg-stone-300 border-2 border-stone-50 flex items-center justify-center text-[10px] font-bold text-stone-800">JR</div>
+              <div class="w-9 h-9 rounded-full bg-stone-400 border-2 border-stone-50 flex items-center justify-center text-[10px] font-bold text-white">MK</div>
+              <div class="w-9 h-9 rounded-full bg-stone-900 border-2 border-stone-50 flex items-center justify-center text-[10px] font-semibold text-white">5k+</div>
+            </div>
+            <div class="text-xs uppercase tracking-wider text-stone-500 font-medium">Families Championed</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Visual Container (500px/600px height, grayscale filter, 700ms scale-105 hover, quote overlay with Sarah J. citation) -->
+      <div class="hero-img-container relative h-[500px] lg:h-[600px] rounded-sm overflow-hidden border border-stone-200 group">
+        <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2400&auto=format&fit=crop" 
+             alt="Odegard Law Courtroom Pillars" 
+             class="hero-img-filter w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent"></div>
+        
+        <!-- Bottom-aligned text overlay with blockquote (italic) and Sarah J. citation -->
+        <div class="absolute bottom-6 left-6 right-6 text-white">
+          <blockquote class="font-serif italic text-base sm:text-lg text-stone-200 mb-2">
+            “Odegard Law treated me with profound respect while holding the trucking company accountable for every penny.”
+          </blockquote>
+          <cite class="text-xs uppercase tracking-widest font-sans font-semibold text-stone-400 not-italic block">
+            — Sarah J., $4.2M Semi-Truck Settlement
+          </cite>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 4: PRACTICE AREAS -->
+  <!-- Header: Flex with h2 and "View all areas" link + solar:arrow-right-up-linear.
+       Grid: 3 columns, gap-px using bg-stone-200 to create hair-line borders between cards.
+       Cards: bg-stone-50 padding-10. Icon circle (stone-100) flips to stone-900 with white icon on card hover. -->
+  <section id="practice-areas" class="py-24 px-6 max-w-7xl mx-auto border-t border-stone-200">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
+      <div>
+        <span class="text-xs uppercase tracking-widest font-semibold text-stone-500 block mb-2">Focused Litigation</span>
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-stone-900">Practice Areas</h2>
+      </div>
+      <a href="#contact" class="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-stone-900 hover:text-stone-600 transition-colors duration-300">
+        <span>View all areas</span>
+        <iconify-icon icon="solar:arrow-right-up-linear" width="16" height="16"></iconify-icon>
+      </a>
+    </div>
+
+    <!-- Hair-line Grid: 3 columns, gap-px using bg-stone-200 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-stone-200 border border-stone-200">
+      
+      <!-- Area 1: Car Accidents (solar:wheel-angle-linear) -->
+      <div class="group bg-stone-50 p-10 flex flex-col justify-between hover:bg-stone-100/50 transition-colors duration-300">
+        <div>
+          <div class="w-14 h-14 rounded-full bg-stone-100 group-hover:bg-stone-900 flex items-center justify-center text-stone-900 group-hover:text-white transition-colors duration-300 mb-8">
+            <iconify-icon icon="solar:wheel-angle-linear" width="28" height="28"></iconify-icon>
+          </div>
+          <h3 class="text-2xl font-serif font-bold text-stone-900 mb-3">Car Accidents</h3>
+          <p class="text-stone-600 text-sm leading-relaxed mb-6">
+            Aggressive investigation of distracted driving, highway collisions, and multi-vehicle crashes to maximize bodily injury payouts.
+          </p>
+        </div>
+        <a href="#contact" class="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-stone-900 group-hover:gap-2.5 transition-all duration-300">
+          <span>Case Review</span>
+          <iconify-icon icon="solar:arrow-right-linear" width="14" height="14"></iconify-icon>
+        </a>
+      </div>
+
+      <!-- Area 2: Trucking Accidents (solar:bus-linear) -->
+      <div class="group bg-stone-50 p-10 flex flex-col justify-between hover:bg-stone-100/50 transition-colors duration-300">
+        <div>
+          <div class="w-14 h-14 rounded-full bg-stone-100 group-hover:bg-stone-900 flex items-center justify-center text-stone-900 group-hover:text-white transition-colors duration-300 mb-8">
+            <iconify-icon icon="solar:bus-linear" width="28" height="28"></iconify-icon>
+          </div>
+          <h3 class="text-2xl font-serif font-bold text-stone-900 mb-3">Commercial Trucking</h3>
+          <p class="text-stone-600 text-sm leading-relaxed mb-6">
+            Holding interstate freight carriers, logistics companies, and black-box data analysts accountable for catastrophic semi-truck collisions.
+          </p>
+        </div>
+        <a href="#contact" class="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-stone-900 group-hover:gap-2.5 transition-all duration-300">
+          <span>Case Review</span>
+          <iconify-icon icon="solar:arrow-right-linear" width="14" height="14"></iconify-icon>
+        </a>
+      </div>
+
+      <!-- Area 3: Wrongful Death (solar:heart-pulse-linear) -->
+      <div class="group bg-stone-50 p-10 flex flex-col justify-between hover:bg-stone-100/50 transition-colors duration-300">
+        <div>
+          <div class="w-14 h-14 rounded-full bg-stone-100 group-hover:bg-stone-900 flex items-center justify-center text-stone-900 group-hover:text-white transition-colors duration-300 mb-8">
+            <iconify-icon icon="solar:heart-pulse-linear" width="28" height="28"></iconify-icon>
+          </div>
+          <h3 class="text-2xl font-serif font-bold text-stone-900 mb-3">Wrongful Death</h3>
+          <p class="text-stone-600 text-sm leading-relaxed mb-6">
+            Compassionate, unyielding advocacy securing the financial dignity and long-term support for families coping with fatal negligence.
+          </p>
+        </div>
+        <a href="#contact" class="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-stone-900 group-hover:gap-2.5 transition-all duration-300">
+          <span>Case Review</span>
+          <iconify-icon icon="solar:arrow-right-linear" width="14" height="14"></iconify-icon>
+        </a>
+      </div>
+
+      <!-- Area 4: Motorcycle Accidents (solar:scooter-linear) -->
+      <div class="group bg-stone-50 p-10 flex flex-col justify-between hover:bg-stone-100/50 transition-colors duration-300">
+        <div>
+          <div class="w-14 h-14 rounded-full bg-stone-100 group-hover:bg-stone-900 flex items-center justify-center text-stone-900 group-hover:text-white transition-colors duration-300 mb-8">
+            <iconify-icon icon="solar:scooter-linear" width="28" height="28"></iconify-icon>
+          </div>
+          <h3 class="text-2xl font-serif font-bold text-stone-900 mb-3">Motorcycle Injury</h3>
+          <p class="text-stone-600 text-sm leading-relaxed mb-6">
+            Dismantling unfair biases against riders to ensure full coverage for spinal injuries, surgeries, and specialized medical rehabilitation.
+          </p>
+        </div>
+        <a href="#contact" class="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-stone-900 group-hover:gap-2.5 transition-all duration-300">
+          <span>Case Review</span>
+          <iconify-icon icon="solar:arrow-right-linear" width="14" height="14"></iconify-icon>
+        </a>
+      </div>
+
+      <!-- Area 5: Dog Bites & Animal Attacks (solar:dog-linear) -->
+      <div class="group bg-stone-50 p-10 flex flex-col justify-between hover:bg-stone-100/50 transition-colors duration-300">
+        <div>
+          <div class="w-14 h-14 rounded-full bg-stone-100 group-hover:bg-stone-900 flex items-center justify-center text-stone-900 group-hover:text-white transition-colors duration-300 mb-8">
+            <iconify-icon icon="solar:dog-linear" width="28" height="28"></iconify-icon>
+          </div>
+          <h3 class="text-2xl font-serif font-bold text-stone-900 mb-3">Animal Attacks</h3>
+          <p class="text-stone-600 text-sm leading-relaxed mb-6">
+            Holding negligent owners strictly liable for traumatic lacerations, reconstructive procedures, and emotional anguish.
+          </p>
+        </div>
+        <a href="#contact" class="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-stone-900 group-hover:gap-2.5 transition-all duration-300">
+          <span>Case Review</span>
+          <iconify-icon icon="solar:arrow-right-linear" width="14" height="14"></iconify-icon>
+        </a>
+      </div>
+
+      <!-- Area 6: Slip & Fall (solar:shield-warning-linear) -->
+      <div class="group bg-stone-50 p-10 flex flex-col justify-between hover:bg-stone-100/50 transition-colors duration-300">
+        <div>
+          <div class="w-14 h-14 rounded-full bg-stone-100 group-hover:bg-stone-900 flex items-center justify-center text-stone-900 group-hover:text-white transition-colors duration-300 mb-8">
+            <iconify-icon icon="solar:shield-warning-linear" width="28" height="28"></iconify-icon>
+          </div>
+          <h3 class="text-2xl font-serif font-bold text-stone-900 mb-3">Premises Liability</h3>
+          <p class="text-stone-600 text-sm leading-relaxed mb-6">
+            Litigating unsafe commercial properties, dangerous building hazards, and negligent security resulting in catastrophic harm.
+          </p>
+        </div>
+        <a href="#contact" class="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-stone-900 group-hover:gap-2.5 transition-all duration-300">
+          <span>Case Review</span>
+          <iconify-icon icon="solar:arrow-right-linear" width="14" height="14"></iconify-icon>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 5: WHY CHOOSE / FORM -->
+  <!-- Section: bg-stone-900, text-stone-50.
+       Left: 3 item list with 24px solar icons. Text-sm font-light leading-relaxed.
+       Right: Form card bg-stone-50. Form Container: shadow-xl shadow-stone-950/20, rounded-sm. Use .custom-input. Radio buttons use peer sr-only with peer-checked:bg-stone-900 span labels. -->
+  <section id="why-choose" class="py-24 bg-stone-900 text-stone-50 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+        
+        <!-- Left Column: Why Choose (3 items with 24px solar icons) -->
+        <div class="lg:col-span-6 space-y-10">
+          <div>
+            <span class="text-xs uppercase tracking-widest font-semibold text-stone-400 block mb-2">Our Pledge</span>
+            <h2 class="text-3xl sm:text-5xl font-serif font-bold leading-tight mb-6">
+              Why Families Choose Odegard Law
+            </h2>
+            <p class="text-stone-400 text-base font-light leading-relaxed">
+              We operate as a trial-first boutique firm. Because insurance corporations know we prepare every case for jury verdict, their settlement offers are significantly higher.
+            </p>
+          </div>
+
+          <div class="space-y-8">
+            <!-- Item 1: solar:star-circle-linear -->
+            <div class="flex items-start gap-4">
+              <div class="text-stone-300 flex-shrink-0 mt-1">
+                <iconify-icon icon="solar:star-circle-linear" width="24" height="24"></iconify-icon>
+              </div>
+              <div>
+                <h4 class="font-serif font-bold text-lg text-stone-100 mb-1">Direct Partner Access</h4>
+                <p class="text-sm font-light text-stone-400 leading-relaxed">
+                  You work directly with lead trial counsel—never shuffled between call centers or unqualified junior caseworkers.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 2: solar:wallet-money-linear -->
+            <div class="flex items-start gap-4">
+              <div class="text-stone-300 flex-shrink-0 mt-1">
+                <iconify-icon icon="solar:wallet-money-linear" width="24" height="24"></iconify-icon>
+              </div>
+              <div>
+                <h4 class="font-serif font-bold text-lg text-stone-100 mb-1">Zero Out-Of-Pocket Expenses</h4>
+                <p class="text-sm font-light text-stone-400 leading-relaxed">
+                  We fund all court costs, medical expert witnesses, accident reconstruction, and jury exhibits. If we don't recover funds, you owe $0.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 3: solar:users-group-two-rounded-linear -->
+            <div class="flex items-start gap-4">
+              <div class="text-stone-300 flex-shrink-0 mt-1">
+                <iconify-icon icon="solar:users-group-two-rounded-linear" width="24" height="24"></iconify-icon>
+              </div>
+              <div>
+                <h4 class="font-serif font-bold text-lg text-stone-100 mb-1">Elite Medical Network</h4>
+                <p class="text-sm font-light text-stone-400 leading-relaxed">
+                  Immediate connection to world-class orthopedic surgeons, neurologists, and physical therapy clinics on medical liens.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Form Card bg-stone-50, shadow-xl shadow-stone-950/20, rounded-sm -->
+        <div id="contact" class="lg:col-span-6">
+          <div class="bg-stone-50 text-stone-900 p-8 sm:p-12 rounded-sm shadow-xl shadow-stone-950/20 border border-stone-200">
+            <h3 class="text-2xl font-serif font-bold text-stone-900 mb-2">Free Confidential Case Evaluation</h3>
+            <p class="text-xs text-stone-600 mb-8">Speak with our injury attorneys. Completely free, no obligation.</p>
+
+            <form id="odegard-form" class="space-y-6">
+              <!-- Radio buttons: peer sr-only with peer-checked:bg-stone-900 span labels -->
+              <div>
+                <label class="block text-xs uppercase tracking-wider font-semibold text-stone-500 mb-3">Case Category</label>
+                <div class="grid grid-cols-3 gap-2">
+                  <label class="cursor-pointer">
+                    <input type="radio" name="case-type" value="Auto" checked class="peer sr-only">
+                    <span class="block py-2 text-center text-xs font-medium border border-stone-200 rounded-sm peer-checked:bg-stone-900 peer-checked:text-white transition-colors duration-300">Auto Crash</span>
+                  </label>
+                  <label class="cursor-pointer">
+                    <input type="radio" name="case-type" value="Truck" class="peer sr-only">
+                    <span class="block py-2 text-center text-xs font-medium border border-stone-200 rounded-sm peer-checked:bg-stone-900 peer-checked:text-white transition-colors duration-300">Trucking</span>
+                  </label>
+                  <label class="cursor-pointer">
+                    <input type="radio" name="case-type" value="Other" class="peer sr-only">
+                    <span class="block py-2 text-center text-xs font-medium border border-stone-200 rounded-sm peer-checked:bg-stone-900 peer-checked:text-white transition-colors duration-300">Other Injury</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Inputs using .custom-input utility -->
+              <div>
+                <input type="text" id="odegard-name" required placeholder="Full Legal Name *" class="custom-input w-full text-sm">
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <input type="tel" id="odegard-phone" required placeholder="Phone Number *" class="custom-input w-full text-sm">
+                </div>
+                <div>
+                  <input type="email" id="odegard-email" required placeholder="Email Address *" class="custom-input w-full text-sm">
+                </div>
+              </div>
+
+              <div>
+                <textarea id="odegard-desc" rows="3" required placeholder="Brief description of when and where the accident happened *" class="custom-input w-full text-sm resize-none"></textarea>
+              </div>
+
+              <div id="odegard-status" class="text-xs font-medium min-h-[1rem]"></div>
+
+              <button type="submit" class="w-full py-4 bg-stone-900 hover:bg-stone-800 text-white text-xs uppercase tracking-wider font-semibold rounded-sm transition-colors duration-300 shadow-md flex items-center justify-center gap-2">
+                <span>Submit For Immediate Attorney Review</span>
+                <iconify-icon icon="solar:arrow-right-linear" width="16" height="16"></iconify-icon>
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: TESTIMONIALS -->
+  <!-- Heading "Client Voices" with circular nav buttons. Cards: White bg, border-stone-100, shadow-sm. 5-star yellow icons using solar:star-bold (16px). Avatars: 32px stone-200 circle with bold initials (M, J, D). -->
+  <section id="testimonials" class="py-24 px-6 max-w-7xl mx-auto border-b border-stone-200">
+    <div class="flex items-end justify-between mb-12">
+      <div>
+        <span class="text-xs uppercase tracking-widest font-semibold text-stone-500 block mb-2">Testimonials</span>
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-stone-900">Client Voices</h2>
+      </div>
+
+      <!-- Circular nav buttons -->
+      <div class="flex items-center gap-2">
+        <button class="w-10 h-10 rounded-full border border-stone-200 hover:border-stone-900 flex items-center justify-center text-stone-900 transition-colors duration-300">
+          <iconify-icon icon="solar:arrow-left-linear" width="18" height="18"></iconify-icon>
+        </button>
+        <button class="w-10 h-10 rounded-full border border-stone-200 hover:border-stone-900 flex items-center justify-center text-stone-900 transition-colors duration-300">
+          <iconify-icon icon="solar:arrow-right-linear" width="18" height="18"></iconify-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Card 1: M -->
+      <div class="bg-white p-8 rounded-sm border border-stone-100 shadow-sm flex flex-col justify-between">
+        <div>
+          <!-- 5-star yellow icons using solar:star-bold (16px) -->
+          <div class="flex items-center gap-1 text-amber-400 mb-6">
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+          </div>
+          <p class="text-stone-700 text-sm leading-relaxed mb-6 font-light">
+            “The insurance company offered $35,000 to settle my spinal injury. Odegard Law took the depositions, proved clear liability, and won $1.85 Million.”
+          </p>
+        </div>
+        <div class="flex items-center gap-3 pt-4 border-t border-stone-100">
+          <!-- 32px stone-200 circle with bold initials -->
+          <div class="w-8 h-8 rounded-full bg-stone-200 flex items-center justify-center font-bold text-xs text-stone-800">
+            M
+          </div>
+          <div>
+            <div class="font-serif font-bold text-sm text-stone-900">Michael R.</div>
+            <div class="text-[11px] text-stone-500">Motorcycle Collision Client</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: J -->
+      <div class="bg-white p-8 rounded-sm border border-stone-100 shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-1 text-amber-400 mb-6">
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+          </div>
+          <p class="text-stone-700 text-sm leading-relaxed mb-6 font-light">
+            “They treated my family with incredible empathy while fighting like lions in federal court. I cannot recommend this firm enough.”
+          </p>
+        </div>
+        <div class="flex items-center gap-3 pt-4 border-t border-stone-100">
+          <div class="w-8 h-8 rounded-full bg-stone-200 flex items-center justify-center font-bold text-xs text-stone-800">
+            J
+          </div>
+          <div>
+            <div class="font-serif font-bold text-sm text-stone-900">Jessica B.</div>
+            <div class="text-[11px] text-stone-500">Commercial Carrier Victim</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: D -->
+      <div class="bg-white p-8 rounded-sm border border-stone-100 shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-1 text-amber-400 mb-6">
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+            <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+          </div>
+          <p class="text-stone-700 text-sm leading-relaxed mb-6 font-light">
+            “No nonsense, transparent communication, and relentless determination. They covered all my surgical bills before taking their fee.”
+          </p>
+        </div>
+        <div class="flex items-center gap-3 pt-4 border-t border-stone-100">
+          <div class="w-8 h-8 rounded-full bg-stone-200 flex items-center justify-center font-bold text-xs text-stone-800">
+            D
+          </div>
+          <div>
+            <div class="font-serif font-bold text-sm text-stone-900">David G.</div>
+            <div class="text-[11px] text-stone-500">Wrongful Death Representative</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 7: FOOTER -->
+  <!-- 4 columns. Col 1 (Logo + Socials), Col 2 (Practice Areas), Col 3 (Firm links), Col 4 (Contact details with solar icons).
+       Bottom: Border-t stone-100, copyright text (10px), and secondary links (Privacy, Terms, Disclaimer). -->
+  <footer class="py-16 px-6 max-w-7xl mx-auto text-stone-600 text-xs">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+      
+      <!-- Col 1: Logo + Socials (brandico:facebook-rect, brandico:twitter-bird, brandico:instagram, brandico:linkedin) -->
+      <div class="space-y-4">
+        <a href="#hero" class="flex flex-col">
+          <span class="font-serif text-xl font-bold tracking-tighter text-stone-900 leading-none">
+            ODEGARD LAW
+          </span>
+          <span class="text-[0.6rem] uppercase tracking-[0.2em] font-medium text-stone-600 mt-1 leading-none">
+            Injury Lawyers
+          </span>
+        </a>
+        <p class="text-stone-500 text-xs leading-relaxed">
+          Championing the rights of catastrophic injury victims across state and federal courts with zero upfront fees.
+        </p>
+        <div class="flex items-center gap-4 text-stone-700 pt-2">
+          <a href="#" class="hover:text-stone-900 transition-colors duration-300" aria-label="Facebook">
+            <iconify-icon icon="brandico:facebook-rect" width="16" height="16"></iconify-icon>
+          </a>
+          <a href="#" class="hover:text-stone-900 transition-colors duration-300" aria-label="Twitter">
+            <iconify-icon icon="brandico:twitter-bird" width="16" height="16"></iconify-icon>
+          </a>
+          <a href="#" class="hover:text-stone-900 transition-colors duration-300" aria-label="Instagram">
+            <iconify-icon icon="brandico:instagram" width="16" height="16"></iconify-icon>
+          </a>
+          <a href="#" class="hover:text-stone-900 transition-colors duration-300" aria-label="LinkedIn">
+            <iconify-icon icon="brandico:linkedin" width="16" height="16"></iconify-icon>
+          </a>
+        </div>
+      </div>
+
+      <!-- Col 2: Practice Areas -->
+      <div>
+        <h4 class="font-serif font-bold text-sm text-stone-900 mb-4">Practice Areas</h4>
+        <ul class="space-y-2.5">
+          <li><a href="#practice-areas" class="hover:text-stone-900 transition-colors duration-300">Car Accidents</a></li>
+          <li><a href="#practice-areas" class="hover:text-stone-900 transition-colors duration-300">Commercial Trucking</a></li>
+          <li><a href="#practice-areas" class="hover:text-stone-900 transition-colors duration-300">Wrongful Death</a></li>
+          <li><a href="#practice-areas" class="hover:text-stone-900 transition-colors duration-300">Motorcycle Crashes</a></li>
+          <li><a href="#practice-areas" class="hover:text-stone-900 transition-colors duration-300">Animal Attacks</a></li>
+          <li><a href="#practice-areas" class="hover:text-stone-900 transition-colors duration-300">Premises Liability</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Firm Links -->
+      <div>
+        <h4 class="font-serif font-bold text-sm text-stone-900 mb-4">Firm Overview</h4>
+        <ul class="space-y-2.5">
+          <li><a href="#hero" class="hover:text-stone-900 transition-colors duration-300">About the Firm</a></li>
+          <li><a href="#why-choose" class="hover:text-stone-900 transition-colors duration-300">No Fee Guarantee</a></li>
+          <li><a href="#testimonials" class="hover:text-stone-900 transition-colors duration-300">Case Settlements</a></li>
+          <li><a href="#testimonials" class="hover:text-stone-900 transition-colors duration-300">Client Reviews</a></li>
+          <li><a href="#contact" class="hover:text-stone-900 transition-colors duration-300">Attorney Directory</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Contact Details with solar icons -->
+      <div>
+        <h4 class="font-serif font-bold text-sm text-stone-900 mb-4">Headquarters</h4>
+        <ul class="space-y-3">
+          <li class="flex items-start gap-2.5">
+            <iconify-icon icon="solar:map-point-linear" width="16" height="16" class="text-stone-900 flex-shrink-0 mt-0.5"></iconify-icon>
+            <span>700 5th Avenue, Suite 4100, Seattle, WA 98104</span>
+          </li>
+          <li class="flex items-center gap-2.5">
+            <iconify-icon icon="solar:phone-calling-linear" width="16" height="16" class="text-stone-900 flex-shrink-0"></iconify-icon>
+            <a href="tel:18005550199" class="hover:text-stone-900 transition-colors duration-300">(800) 555-0199</a>
+          </li>
+          <li class="flex items-center gap-2.5">
+            <iconify-icon icon="solar:letter-linear" width="16" height="16" class="text-stone-900 flex-shrink-0"></iconify-icon>
+            <a href="mailto:intake@odegardlaw.com" class="hover:text-stone-900 transition-colors duration-300">intake@odegardlaw.com</a>
+          </li>
+          <li class="flex items-center gap-2.5 text-stone-500 text-[11px]">
+            <iconify-icon icon="solar:clock-circle-linear" width="16" height="16" class="text-stone-900 flex-shrink-0"></iconify-icon>
+            <span>Available 24 Hours / 7 Days a Week</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Bottom: Border-t stone-100, copyright text (10px), and secondary links (Privacy, Terms, Disclaimer) -->
+    <div class="border-t border-stone-200/80 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-stone-500">
+      <p>© 2025 Odegard Law Firm P.C. All rights reserved.</p>
+      <div class="flex items-center gap-4">
+        <a href="#contact" class="hover:text-stone-800 transition-colors duration-300">Privacy Policy</a>
+        <span>•</span>
+        <a href="#contact" class="hover:text-stone-800 transition-colors duration-300">Terms of Representation</a>
+        <span>•</span>
+        <a href="#contact" class="hover:text-stone-800 transition-colors duration-300">Attorney Advertising Disclaimer</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.getElementById('odegard-form');
+    const status = document.getElementById('odegard-status');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      status.textContent = 'Transmitting case evaluation details...';
+      status.className = 'text-xs font-medium text-stone-700';
+      setTimeout(() => {
+        status.textContent = 'Case brief successfully received. An injury attorney will call you within 15 minutes.';
+        status.className = 'text-xs font-medium text-green-700';
+        form.reset();
+      }, 600);
+    });
+  </script>
+</body>
+</html>

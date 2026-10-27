@@ -1,59 +1,28 @@
 # ==============================================================================
-# Nexora Law Firm — Standalone Production Next.js Server Container
-# Multi-stage optimized Node.js 20 Alpine container with non-root runtime
+# Nexora Law Firm — Production Container
+# Lightweight, high-performance static server powered by Nginx Alpine
 # ==============================================================================
+FROM nginx:1.27-alpine
 
-FROM node:20-alpine AS base
-RUN apk add --no-cache libc6-compat
+# Set working directory
+WORKDIR /usr/share/nginx/html
 
-# Step 1: Install dependencies
-FROM base AS deps
-WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci
+# Remove default nginx static assets
+RUN rm -rf ./*
 
-# Step 2: Build application
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . ./
+# Copy website files to nginx html root
+COPY *.html ./
+COPY vercel.json ./
 
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV NODE_ENV=production
+# Copy nginx configuration
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Public build arguments (inlined at build time by Next.js compiler)
-ARG NEXT_PUBLIC_SUPABASE_URL
-ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
-ARG NEXT_PUBLIC_SITE_URL
-ARG NEXT_PUBLIC_STORAGE_BUCKET
+# Expose standard HTTP port
+EXPOSE 80
 
-ENV NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
-ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
-ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
-ENV NEXT_PUBLIC_STORAGE_BUCKET=${NEXT_PUBLIC_STORAGE_BUCKET}
+# Healthcheck to verify the web server is responding
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD wget --quiet --tries=1 --spider http://localhost/health || exit 1
 
-RUN npm run build
-
-# Step 3: Production runner (Lean standalone image with non-root user)
-FROM base AS runner
-WORKDIR /app
-
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-
-# Create non-root system user and group
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs
-
-# Copy public static assets and standalone server bundle
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-
-EXPOSE 3000
-
-CMD ["node", "server.js"]
+# Start Nginx in foreground
+CMD ["nginx", "-g", "daemon off;"]
