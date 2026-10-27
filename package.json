@@ -25,16 +25,16 @@
     "static-site"
   ],
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "node -e \"console.log('Build OK: Static web distribution ready.')\"",
+    "build": "node -e \"console.log('Build OK: Static web distribution ready. For full-stack Next.js app, run build inside Next.js Project directory.')\"",
     "start": "serve . -l 8080",
     "dev": "serve . -l 8080",
-    "test": "htmlhint --config .htmlhintrc *.html",
-    "lint": "htmlhint --config .htmlhintrc *.html",
-    "lint:html": "htmlhint --config .htmlhintrc *.html",
-    "validate": "htmlhint --config .htmlhintrc *.html"
+    "test": "htmlhint *.html",
+    "lint": "htmlhint *.html",
+    "lint:html": "htmlhint *.html",
+    "validate": "htmlhint *.html"
   },
   "devDependencies": {
     "htmlhint": "1.1.4",
@@ -45,8 +45,8 @@
   },
   "cdnDependencies": {
     "comment": "These CDN libraries are loaded at runtime in HTML files — no npm install needed",
-    "@supabase/supabase-js": "2.50.0",
-    "tailwindcss": "3.4.17",
+    "@supabase/supabase-js": "2.45.6",
+    "tailwindcss": "3.4.14",
     "lucide": "0.511.0"
   }
 }

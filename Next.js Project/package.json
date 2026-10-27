@@ -2,6 +2,9 @@
   "name": "nexora-law-firm-nextjs",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -29,6 +32,6 @@
     "typescript": "5.5.4"
   },
   "overrides": {
-    "@eslint/plugin-kit": "^0.7.3"
+    "@eslint/plugin-kit": "0.7.3"
   }
 }

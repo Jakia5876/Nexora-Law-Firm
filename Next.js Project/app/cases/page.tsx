@@ -6,15 +6,16 @@ import { FolderLock, Calendar, Scale, ShieldCheck, Search, KeyRound } from 'luci
 export const dynamic = 'force-dynamic';
 
 interface CasesPageProps {
-  searchParams?: {
+  searchParams?: Promise<{
     case_no?: string;
     verifier?: string;
-  };
+  }>;
 }
 
 export default async function CasesPortalPage({ searchParams }: CasesPageProps) {
   const auth = await verifyAdminSession();
   const supabase = getServiceSupabase();
+  const params = searchParams ? await searchParams : {};
 
   // If authenticated as admin, load official firm docket
   let cases: any[] = [];
@@ -27,32 +28,38 @@ export default async function CasesPortalPage({ searchParams }: CasesPageProps) 
       .select('*, court:court_id(court_name), case_type:case_type_id(case_type), assistant:assistant_id(assistant_name)')
       .order('created_at', { ascending: false });
     cases = data || [];
-  } else if (searchParams?.case_no && searchParams?.verifier) {
-    // Secondary-secret verified inquiry: requires case_no + client mobile/email verifier
-    const caseRef = searchParams.case_no.trim();
-    const verifier = searchParams.verifier.trim().toLowerCase();
+  } else if (params.case_no && params.verifier) {
+    // Secondary-secret verified inquiry: requires case_no + client mobile verifier
+    const caseRef = params.case_no.trim();
+    const verifier = params.verifier.trim().toLowerCase();
 
-    const { data, error } = await supabase
-      .from('cases')
-      .select('case_no, status, filing_date, court:court_id(court_name), client_mobile')
-      .eq('case_no', caseRef)
-      .single();
-
-    if (error || !data) {
-      searchError = 'No matching case record found with the supplied reference number.';
+    if (verifier.length < 4) {
+      searchError = 'Authentication failed: Please provide your full telephone number as verification.';
     } else {
-      // Verify secondary secret
-      const clientMobile = (data.client_mobile || '').toLowerCase();
-      if (!clientMobile.includes(verifier) && verifier !== 'verified') {
-        searchError = 'Authentication failed: Provided verification details do not match the registered client record.';
+      const { data, error } = await supabase
+        .from('cases')
+        .select('case_no, status, filing_date, court:court_id(court_name), client_mobile')
+        .eq('case_no', caseRef)
+        .single();
+
+      if (error || !data) {
+        searchError = 'No matching case record found with the supplied reference number.';
       } else {
-        // Return only minimal public status fields (no sensitive personal details)
-        searchedCase = {
-          case_no: data.case_no,
-          status: data.status,
-          filing_date: data.filing_date,
-          court: data.court,
-        };
+        // Verify secondary secret against client_mobile
+        const clientMobile = (data.client_mobile || '').toLowerCase().replace(/[^0-9]/g, '');
+        const cleanVerifier = verifier.replace(/[^0-9]/g, '');
+
+        if (!cleanVerifier || !clientMobile.includes(cleanVerifier)) {
+          searchError = 'Authentication failed: Provided verification details do not match the registered client record.';
+        } else {
+          // Return only minimal public status fields (no sensitive personal details)
+          searchedCase = {
+            case_no: data.case_no,
+            status: data.status,
+            filing_date: data.filing_date,
+            court: data.court,
+          };
+        }
       }
     }
   }

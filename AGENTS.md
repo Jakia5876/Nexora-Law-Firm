@@ -65,7 +65,7 @@ Nexora-Law-Firm/
 ## 🛠️ Tech Stack & Pinned Dependencies
 
 - **Framework**: Next.js 16.4.3 (App Router, Server Actions, Server Components)
-- **UI Library**: React 18.3.1
+- **UI Library**: React 19.3.1
 - **Styling**: Tailwind CSS 3.4.14 + PostCSS 8.5.32
 - **Icons**: Lucide React 0.453.0 & Lucide CDN for static previews
 - **Database / Backend**: Supabase (`@supabase/supabase-js` 2.118.0)

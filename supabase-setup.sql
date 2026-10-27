@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS public.practice_areas (
 CREATE INDEX IF NOT EXISTS idx_practice_areas_slug       ON public.practice_areas(slug);
 CREATE INDEX IF NOT EXISTS idx_practice_areas_status     ON public.practice_areas(status);
 CREATE INDEX IF NOT EXISTS idx_practice_areas_created_at ON public.practice_areas(created_at);
+CREATE INDEX IF NOT EXISTS idx_practice_areas_user       ON public.practice_areas(user_id);
 
 DROP TRIGGER IF EXISTS trg_practice_areas_updated_at ON public.practice_areas;
 CREATE TRIGGER trg_practice_areas_updated_at
@@ -126,6 +127,7 @@ CREATE INDEX IF NOT EXISTS idx_site_content_slug       ON public.site_content(sl
 CREATE INDEX IF NOT EXISTS idx_site_content_status     ON public.site_content(status);
 CREATE INDEX IF NOT EXISTS idx_site_content_created_at ON public.site_content(created_at);
 CREATE INDEX IF NOT EXISTS idx_site_content_key        ON public.site_content(section_key);
+CREATE INDEX IF NOT EXISTS idx_site_content_user       ON public.site_content(user_id);
 
 DROP TRIGGER IF EXISTS trg_site_content_updated_at ON public.site_content;
 CREATE TRIGGER trg_site_content_updated_at
@@ -309,13 +311,29 @@ CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON public.audit_logs(action);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_entity ON public.audit_logs(entity, entity_id);
 
 -- ==============================================================================
--- 16. ROW LEVEL SECURITY (RLS) POLICIES
+-- 16. TABLE: revoked_tokens (Persistent Session Revocation Store)
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS public.revoked_tokens (
+    jti         VARCHAR(100) PRIMARY KEY,
+    revoked_at  TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL,
+    expires_at  TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_revoked_tokens_jti ON public.revoked_tokens(jti);
+
+-- ==============================================================================
+-- 17. ROW LEVEL SECURITY (RLS) POLICIES
 -- Zero USING (true) loopholes on mutating operations (Required by Audit R4, R5, R6)
 -- ==============================================================================
 ALTER TABLE public.users          ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.practice_areas ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.attorneys      ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.site_content   ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.revoked_tokens ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow reading revoked tokens" ON public.revoked_tokens FOR SELECT TO anon, authenticated USING (true);
+CREATE POLICY "Allow recording revoked tokens" ON public.revoked_tokens FOR INSERT TO anon, authenticated WITH CHECK (jti IS NOT NULL);
+
 ALTER TABLE public.court          ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.case_type      ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.assistant      ENABLE ROW LEVEL SECURITY;

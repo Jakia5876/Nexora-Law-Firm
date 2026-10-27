@@ -19,83 +19,68 @@ This guide provides complete, step-by-step instructions for deploying and runnin
 
 ---
 
-## 1. Prerequisites
+## 1. Prerequisites & Required Versions
 
-Before starting, ensure you have:
+Before starting, ensure your host environment meets the following specifications:
 
-- A **PostgreSQL database** or a free [Supabase](https://supabase.com) project account
-- For Docker Target: **Docker Engine 24+** and **Docker Compose v2+** installed
-- For VPS Target: **Ubuntu 20.04/22.04/24.04 LTS** server with SSH root or sudo access
-- A web browser (Chrome, Firefox, Safari, or Edge)
-- Domain name pointed to your server IP (optional, required for production SSL)
+- **Node.js**: `>= 20.x` (verified with `node -v`)
+- **Package Manager**: `npm >= 10.x` (verified with `npm -v`)
+- **Database**: PostgreSQL 14+ or a [Supabase](https://supabase.com) project instance
+- **Docker** (Optional, for containerized hosting): Docker Engine 24+ and Docker Compose v2+
 
 ---
 
-## 2. Database Setup (PostgreSQL / Supabase)
+## 2. Ordered Setup Workflow
 
-Nexora Law Firm includes a full SQL database schema located at `database/schema.sql` and initial data at `database/seed.sql`.
+Follow this strict step-by-step sequence to deploy Nexora Law Firm:
 
-### Option A: Using the Supabase Dashboard (Fastest)
+### Step 1: Initialize Database Schema & Seed Data
+1. Sign in to your [Supabase Dashboard](https://app.supabase.com) and create a **New Project**.
+2. Navigate to the **SQL Editor** on the left menu.
+3. Open `database/schema.sql`, paste the full text into the query editor, and click **Run**. This establishes all tables (`cases`, `contacts`, `attorneys`, `practice_areas`, `users`, etc.), foreign keys, compound indexes, and Row Level Security (RLS) policies.
+4. Open `database/seed.sql`, paste into a new query, and click **Run** to load default firm data.
+   > **Note on Execution Order**: Always execute `database/schema.sql` first before running `database/seed.sql`.
 
-1. Sign in to your [Supabase Dashboard](https://app.supabase.com) and click **New Project**.
-2. Name your project (e.g., `nexora-law-firm`), set a secure database password, and select your region.
-3. Once the database is provisioned, open the **SQL Editor** from the left navigation bar.
-4. Click **New Query**, paste the complete contents of `database/schema.sql`, and click **Run**.
-5. Create another query, paste the contents of `database/seed.sql`, and click **Run**.
-   > **Note on Execution Order**: Always run `database/schema.sql` first to establish tables, constraints, indexes, and RLS policies before running `database/seed.sql`.
-   > 
-   > Alternatively, execute `supabase-setup.sql` which combines both schema and seed in one automated script.
-
-6. Verify that the following tables exist in the **Table Editor**:
-   - `users` (Admin, lawyer, and client accounts)
-   - `court` (Jurisdictions and tribunals)
-   - `case_type` (Corporate, litigation, IP, etc.)
-   - `assistant` (Paralegals and legal clerks)
-   - `cases` (Primary client case registry)
-   - `case_detail` (Hearing timeline and court orders)
-   - `case_documents` (Secure client document vault)
-   - `contacts` (Website consultations and inquiries)
-   - `subscriptions` (Billing plans and retainer records)
-
-### Option B: Using Standard PostgreSQL CLI
-
-If deploying against your own self-hosted PostgreSQL server:
-
+### Step 2: Configure Environment Variables
+Copy the template before running any build or server command:
 ```bash
-# Connect to your PostgreSQL instance and execute schema & seed
-psql -h localhost -U postgres -d nexora_db -f database/schema.sql
-psql -h localhost -U postgres -d nexora_db -f database/seed.sql
+cd "Next.js Project"
+cp .env.example .env.local
+```
+
+#### Build-Time vs. Runtime Variables Distinction
+- **Build-Time Variables (Public)**: Inlined into the client bundle during `npm run build`:
+  - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
+  - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase public anonymous API key
+  - `NEXT_PUBLIC_SITE_URL`: Base application URL
+- **Runtime-Only Secrets (Server-Side)**: Never inlined or exposed to client builds; read strictly at server runtime:
+  - `SESSION_SECRET`: 32+ character cryptographic key (generate with `openssl rand -base64 32`)
+  - `SUPABASE_SERVICE_ROLE_KEY`: Privileged Supabase key for administrative queries
+  - `ADMIN_EMAIL`: Administrative counsel email (defaults to `admin@nexoralaw.com`)
+  - `ADMIN_DEFAULT_PASSWORD` (or `ADMIN_PASSWORD_HASH`): Secure administrator password configured per deployment
+
+### Step 3: Install Dependencies
+Run a reproducible, lockfile-verified installation:
+```bash
+cd "Next.js Project"
+npm ci
+```
+
+### Step 4: Build and Launch Production Server
+```bash
+npm run build
+npm start
+# Next.js server starts at http://localhost:3000
 ```
 
 ---
 
-## 3. Environment Configuration (.env)
+## 3. Administrator Portal & Access
 
-1. Copy the example environment template:
-   ```bash
-   cp .env.example .env
-   ```
-
-2. Retrieve your API credentials from **Supabase Dashboard → Project Settings → API**:
-   - **Project URL** (e.g., `https://xyzproject.supabase.co`)
-   - **Anon / Public Key** (client-side API key)
-   - **Service Role Key** (server-only key for administrative operations)
-
-3. Update `.env` with your settings:
-   ```env
-   SUPABASE_URL=https://your-project-id.supabase.co
-   SUPABASE_ANON_KEY=your-supabase-anon-key-here
-   SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key-here
-   APP_ENV=production
-   APP_URL=https://yourdomain.com
-   PORT=8080
-   STORAGE_BUCKET=case-documents
-   ```
-
-4. Since Nexora is a pure client-side web application, also enter your Supabase URL and Anon Key directly into the portal:
-   - Open `cases.html` in your browser.
-   - Click the **Supabase Sync** icon in the header.
-   - Enter your **Project URL** and **Anon Key**, then click **Connect Supabase**. Credentials are saved securely to your local storage session.
+Authorized counsel can access the administrative case docket and lead vault:
+- **Admin Login URL**: `/admin/login`
+- **Authentication**: Verified server-side against `ADMIN_EMAIL` and `ADMIN_DEFAULT_PASSWORD` (or `ADMIN_PASSWORD_HASH`) set in your deployment environment variables. Zero credentials are hardcoded.
+- **Features**: Real-time litigation docket, client consultation intake review, hearing scheduling, and secure vault document uploads.
 
 ---
 

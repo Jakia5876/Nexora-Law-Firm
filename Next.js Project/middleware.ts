@@ -1,35 +1,40 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { ADMIN_COOKIE_NAME, verifyToken } from './lib/auth';
+import { ADMIN_COOKIE_NAME, verifyToken, buildLoginRedirect } from './lib/auth';
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const isAdminPage = pathname.startsWith('/admin') && pathname !== '/admin/login';
+  const isAdminApi = pathname.startsWith('/api/admin');
 
-  // Protect /admin routes (except /admin/login)
-  if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
-    const adminToken = request.cookies.get(ADMIN_COOKIE_NAME)?.value;
+  if (!isAdminPage && !isAdminApi) {
+    return NextResponse.next();
+  }
 
-    if (!adminToken) {
-      const loginUrl = new URL('/admin/login', request.url);
-      loginUrl.searchParams.set('redirect', pathname);
-      return NextResponse.redirect(loginUrl);
-    }
+  // Unified single verification path
+  const adminToken = request.cookies.get(ADMIN_COOKIE_NAME)?.value;
+  const { isValid } = adminToken ? await verifyToken(adminToken) : { isValid: false };
 
-    // Cryptographically verify HMAC-SHA256 JWT signature in Edge runtime
-    const { isValid } = await verifyToken(adminToken);
-    if (!isValid) {
-      const loginUrl = new URL('/admin/login', request.url);
-      loginUrl.searchParams.set('redirect', pathname);
-      loginUrl.searchParams.set('error', 'invalid_session');
-      const response = NextResponse.redirect(loginUrl);
-      // Clean invalid forged cookie
-      response.cookies.delete(ADMIN_COOKIE_NAME);
+  if (!isValid) {
+    if (isAdminApi) {
+      const response = NextResponse.json(
+        { error: 'Unauthorized: Valid administrator authentication required.' },
+        { status: adminToken ? 403 : 401 }
+      );
+      if (adminToken) response.cookies.delete(ADMIN_COOKIE_NAME);
       return response;
     }
+
+    // Admin UI route: build redirect using shared helper and clean cookie if invalid
+    const reason = adminToken ? 'invalid_session' : undefined;
+    const redirectUrl = buildLoginRedirect(request.url, pathname, reason);
+    const response = NextResponse.redirect(redirectUrl);
+    if (adminToken) response.cookies.delete(ADMIN_COOKIE_NAME);
+    return response;
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/api/admin/:path*'],
 };

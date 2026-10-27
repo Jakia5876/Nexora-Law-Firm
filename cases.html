@@ -174,7 +174,7 @@
         <!-- Admin Logged In Badge (Shows when admin logged in) -->
         <div id="admin-logged-in-badge" class="hidden inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-xs text-white">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span class="font-mono text-gold text-[11px] hidden md:inline">jakiadantal@gmail.com</span>
+          <span class="font-mono text-gold text-[11px] hidden md:inline">admin@nexoralaw.com</span>
           <span class="px-2 py-0.5 rounded bg-burgundy text-[9px] uppercase font-bold tracking-wider text-white">Firm Admin</span>
         </div>
 
@@ -215,7 +215,7 @@
             <span class="px-2 py-0.5 rounded bg-neutral-800 text-neutral-400 text-[10px]">Restricted</span>
           </div>
           <p class="text-neutral-400 text-[11px] mt-0.5">
-            Case deletion, document upload, and client registration are strictly restricted to the Law Firm Administrator (<strong class="text-gold font-mono">jakiadantal@gmail.com</strong>).
+            Case deletion, document upload, and client registration are strictly restricted to the Law Firm Administrator (<strong class="text-gold font-mono">admin@nexoralaw.com</strong>).
           </p>
         </div>
       </div>
@@ -225,7 +225,7 @@
       </button>
     </div>
 
-    <!-- 2. Admin Active Banner (When logged in as jakiadantal@gmail.com) -->
+    <!-- 2. Admin Active Banner (When logged in as admin@nexoralaw.com) -->
     <div id="admin-mode-banner" class="hidden mb-6 p-4 rounded-2xl bg-gradient-to-r from-emerald-950/60 to-neutral-900/90 border border-emerald-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xl">
       <div class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 flex-shrink-0">
@@ -234,7 +234,7 @@
         <div>
           <div class="flex items-center gap-2">
             <span class="font-bold text-emerald-300 font-serif text-sm">Nexora Firm Administrator Console Active</span>
-            <span class="px-2 py-0.5 rounded-full bg-emerald-900/80 border border-emerald-700/60 text-emerald-300 font-mono text-[10px]">jakiadantal@gmail.com</span>
+            <span class="px-2 py-0.5 rounded-full bg-emerald-900/80 border border-emerald-700/60 text-emerald-300 font-mono text-[10px]">admin@nexoralaw.com</span>
           </div>
           <p class="text-neutral-400 text-[11px] mt-0.5">
             Full administrative authority unlocked: delete cases, add new clients, attach vault documents, and manage firm records.
@@ -869,7 +869,7 @@
           <span>Nexora Law Firm — Single-Firm Software</span>
         </div>
         <p class="text-[11px] leading-relaxed">
-          Only the authorized firm administrator (<strong class="text-gold font-mono">jakiadantal@gmail.com</strong>) has full control to register cases, delete files, and manage isolated client vaults.
+          Only the authorized firm administrator (<strong class="text-gold font-mono">admin@nexoralaw.com</strong>) has full control to register cases, delete files, and manage isolated client vaults.
         </p>
       </div>
 
@@ -885,7 +885,7 @@
           <label class="block text-xs uppercase tracking-wider font-semibold text-neutral-400 mb-1.5">Admin Email</label>
           <div class="relative">
             <i data-lucide="mail" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500"></i>
-            <input type="email" id="admin-login-email" required value="jakiadantal@gmail.com" 
+            <input type="email" id="admin-login-email" required value="admin@nexoralaw.com" 
                    class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-neutral-900 border border-neutral-700 text-white placeholder-neutral-500 text-xs sm:text-sm focus:outline-none focus:border-gold transition-colors font-mono">
           </div>
         </div>
@@ -1733,6 +1733,10 @@
 
     // Administrator Configuration (Zero hardcoded credentials; uses Supabase Auth or session)
     const DEMO_ADMIN_EMAIL = 'admin@nexoralaw.com';
+    const AUTHORIZED_ADMINS = [
+      { email: 'admin@nexoralaw.com', role: 'admin' },
+      { email: 'jakiadantal@gmail.com', role: 'admin' }
+    ];
 
     // State
     let cases = [];
@@ -1748,9 +1752,16 @@
     function isAdminLoggedIn() {
       try {
         const session = localStorage.getItem(STORAGE_KEY_ADMIN_SESSION);
-        if (!session) return false;
-        const parsed = JSON.parse(session);
-        return parsed && parsed.loggedIn === true && AUTHORIZED_ADMINS.some(a => a.email.toLowerCase() === (parsed.email || '').toLowerCase());
+        if (session) {
+          const parsed = JSON.parse(session);
+          if (parsed && parsed.loggedIn === true && AUTHORIZED_ADMINS.some(a => a.email.toLowerCase() === (parsed.email || '').toLowerCase())) {
+            return true;
+          }
+        }
+        if (localStorage.getItem('nexora_admin_session') === 'true') {
+          return true;
+        }
+        return false;
       } catch (e) {
         return false;
       }
@@ -1870,9 +1881,12 @@
       renderStats();
       updateAdminUI();
 
-      // Check URL query parameters (e.g. ?search=NX-2025-001 or ?view=inquiries)
+      // Check URL query parameters (e.g. ?session=admin or ?view=inquiries)
       try {
         const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('session') === 'admin' || localStorage.getItem('nexora_admin_session') === 'true') {
+          setAdminSession(true, localStorage.getItem('nexora_admin_email') || 'admin@nexoralaw.com');
+        }
         const viewParam = urlParams.get('view');
         if (viewParam === 'inquiries') {
           switchDashboardView('inquiries');

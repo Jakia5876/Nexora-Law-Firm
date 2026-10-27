@@ -63,6 +63,14 @@ jobs:
             echo "✅ .env is properly gitignored."
           fi
 
+      - name: Run Root NPM Audit (Production Dependencies)
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Run Next.js Project NPM Audit (Production Dependencies)
+        run: |
+          cd "Next.js Project"
+          npm audit --omit=dev --audit-level=high
+
   # ─────────────────────────────────────────────
   # JOB 3: Required Files Check
   # ─────────────────────────────────────────────
@@ -110,3 +118,33 @@ jobs:
             echo ""
             echo "✅ All required files present."
           fi
+
+  # ─────────────────────────────────────────────
+  # JOB 4: Next.js Clean Build Validation
+  # ─────────────────────────────────────────────
+  build-nextjs:
+    name: Next.js Production Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies & verify build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: "https://your-project-id.supabase.co"
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: "placeholder-anon-key"
+          NEXT_PUBLIC_SITE_URL: "http://localhost:3000"
+        run: |
+          # Generate throwaway runtime secrets dynamically per-run
+          export SESSION_SECRET=$(openssl rand -base64 32)
+          export SUPABASE_SERVICE_ROLE_KEY=$(openssl rand -base64 32)
+          export ADMIN_DEFAULT_PASSWORD=$(openssl rand -base64 16)
+          cd "Next.js Project"
+          npm ci
+          npm run build
+

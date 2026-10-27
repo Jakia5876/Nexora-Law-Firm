@@ -1,38 +1,73 @@
 'use server';
 
-import { verifyAdminSession } from '@/lib/auth';
+import { z } from 'zod';
+import { requireAdmin, verifyAdminSession } from '@/lib/auth';
 import { getServiceSupabase } from '@/lib/supabase';
 import { revalidatePath } from 'next/cache';
 
+// Input Validation Schemas
+const CreateCaseSchema = z.object({
+  case_no: z.string().trim().min(2, 'Case number is required').max(100),
+  plaintiff_name: z.string().trim().min(2, 'Moving party / plaintiff name is required').max(150),
+  defendants_name: z.string().trim().min(2, 'Respondent / defendant name is required').max(150),
+  under_section: z.string().trim().max(150).default('General Law'),
+  court_id: z.coerce.number().int().positive().default(1),
+  case_type_id: z.coerce.number().int().positive().default(1),
+  client_mobile: z.string().trim().min(5, 'Valid contact number is required').max(30),
+});
+
+const UpdateCaseStatusSchema = z.object({
+  caseId: z.number().int().positive('Valid positive case ID is required'),
+  status: z.enum(['active', 'pending', 'resolved', 'inactive']),
+});
+
+const DeleteCaseSchema = z.object({
+  caseId: z.number().int().positive('Valid positive case ID is required'),
+});
+
+const UploadDocumentSchema = z.object({
+  caseId: z.coerce.number().int().positive('Valid positive case ID is required'),
+  title: z.string().trim().min(2, 'Document title is required').max(255),
+  category: z.string().trim().max(100).default('Pleading'),
+  fileName: z.string().trim().max(255).default('document.pdf'),
+  fileUrl: z.string().trim().url('Valid document URL is required'),
+});
+
 // Mutation 1: Create Case Docket (Server-side Role-Gated)
 export async function createCaseAction(formData: FormData) {
-  const auth = await verifyAdminSession();
-  if (!auth.isValid) {
-    throw new Error('Unauthorized: Server-side administrator verification required for case registration.');
+  // Guard 1: Verify admin session before any database interaction
+  const admin = await requireAdmin();
+  if (!admin || admin.role !== 'admin') {
+    return { success: false, error: 'Unauthorized: Administrator verification required.' };
   }
 
-  const caseNo = formData.get('case_no')?.toString().trim();
-  const plaintiff = formData.get('plaintiff_name')?.toString().trim();
-  const defendants = formData.get('defendants_name')?.toString().trim();
-  const section = formData.get('under_section')?.toString().trim() || 'General Law';
-  const courtId = Number(formData.get('court_id')) || 1;
-  const caseTypeId = Number(formData.get('case_type_id')) || 1;
-  const clientMobile = formData.get('client_mobile')?.toString().trim() || '+1-800-555-0100';
+  const raw = {
+    case_no: formData.get('case_no')?.toString(),
+    plaintiff_name: formData.get('plaintiff_name')?.toString(),
+    defendants_name: formData.get('defendants_name')?.toString(),
+    under_section: formData.get('under_section')?.toString() || 'General Law',
+    court_id: formData.get('court_id'),
+    case_type_id: formData.get('case_type_id'),
+    client_mobile: formData.get('client_mobile')?.toString() || '+1-800-555-0100',
+  };
 
-  if (!caseNo || !plaintiff || !defendants) {
-    return { success: false, error: 'Case number, moving party, and respondent fields are required.' };
+  const parsed = CreateCaseSchema.safeParse(raw);
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0]?.message || 'Invalid case docket input.' };
   }
+
+  const { case_no, plaintiff_name, defendants_name, under_section, court_id, case_type_id, client_mobile } = parsed.data;
 
   const supabase = getServiceSupabase();
   const { data, error } = await supabase.from('cases').insert([
     {
-      case_no: caseNo,
-      plaintiff_name: plaintiff,
-      defendants_name: defendants,
-      under_section: section,
-      court_id: courtId,
-      case_type_id: caseTypeId,
-      client_mobile: clientMobile,
+      case_no,
+      plaintiff_name,
+      defendants_name,
+      under_section,
+      court_id,
+      case_type_id,
+      client_mobile,
       user_id: 1,
       filing_date: new Date().toISOString().split('T')[0],
       status: 'active',
@@ -50,16 +85,25 @@ export async function createCaseAction(formData: FormData) {
 
 // Mutation 2: Update Case Status (Server-side Role-Gated)
 export async function updateCaseStatusAction(caseId: number, status: 'active' | 'pending' | 'resolved' | 'inactive') {
-  const auth = await verifyAdminSession();
-  if (!auth.isValid) {
-    throw new Error('Unauthorized: Server-side administrator verification required to modify case status.');
+  // Guard 1: Verify admin session before any database interaction
+  const admin = await requireAdmin();
+  if (!admin || admin.role !== 'admin') {
+    return { success: false, error: 'Unauthorized: Administrator verification required.' };
   }
+
+  const parsed = UpdateCaseStatusSchema.safeParse({ caseId, status });
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0]?.message || 'Invalid status parameters.' };
+  }
+
+  const validatedId = parsed.data.caseId;
+  const validatedStatus = parsed.data.status;
 
   const supabase = getServiceSupabase();
   const { error } = await supabase
     .from('cases')
-    .update({ status, updated_at: new Date().toISOString() })
-    .eq('case_id', caseId);
+    .update({ status: validatedStatus, updated_at: new Date().toISOString() })
+    .eq('case_id', validatedId);
 
   if (error) {
     return { success: false, error: error.message };
@@ -72,13 +116,21 @@ export async function updateCaseStatusAction(caseId: number, status: 'active' | 
 
 // Mutation 3: Delete Case Record (Server-side Role-Gated)
 export async function deleteCaseAction(caseId: number) {
-  const auth = await verifyAdminSession();
-  if (!auth.isValid) {
-    throw new Error('Unauthorized: Server-side administrator verification required to delete case records.');
+  // Guard 1: Verify admin session before any database interaction
+  const admin = await requireAdmin();
+  if (!admin || admin.role !== 'admin') {
+    return { success: false, error: 'Unauthorized: Administrator verification required.' };
   }
 
+  const parsed = DeleteCaseSchema.safeParse({ caseId });
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0]?.message || 'Invalid case ID for deletion.' };
+  }
+
+  const validatedId = parsed.data.caseId;
+
   const supabase = getServiceSupabase();
-  const { error } = await supabase.from('cases').delete().eq('case_id', caseId);
+  const { error } = await supabase.from('cases').delete().eq('case_id', validatedId);
 
   if (error) {
     return { success: false, error: error.message };
@@ -91,20 +143,26 @@ export async function deleteCaseAction(caseId: number) {
 
 // Mutation 4: Upload Vault Document (Server-side Role-Gated)
 export async function uploadVaultDocumentAction(formData: FormData) {
-  const auth = await verifyAdminSession();
-  if (!auth.isValid) {
-    throw new Error('Unauthorized: Only verified firm counsel can upload to client document vaults.');
+  // Guard 1: Verify admin session before any database interaction
+  const admin = await requireAdmin();
+  if (!admin || admin.role !== 'admin') {
+    return { success: false, error: 'Unauthorized: Administrator verification required.' };
   }
 
-  const caseId = Number(formData.get('case_id'));
-  const title = formData.get('title')?.toString().trim();
-  const category = formData.get('category')?.toString().trim() || 'Pleading';
-  const fileName = formData.get('file_name')?.toString().trim() || 'document.pdf';
-  const fileUrl = formData.get('file_url')?.toString().trim() || 'https://storage.placeholder.url';
+  const raw = {
+    caseId: formData.get('case_id'),
+    title: formData.get('title')?.toString(),
+    category: formData.get('category')?.toString() || 'Pleading',
+    fileName: formData.get('file_name')?.toString() || 'document.pdf',
+    fileUrl: formData.get('file_url')?.toString(),
+  };
 
-  if (!caseId || !title) {
-    return { success: false, error: 'Case ID and document title are required.' };
+  const parsed = UploadDocumentSchema.safeParse(raw);
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0]?.message || 'Invalid document vault parameters.' };
   }
+
+  const { caseId, title, category, fileName, fileUrl } = parsed.data;
 
   const supabase = getServiceSupabase();
   const { data, error } = await supabase.from('case_documents').insert([

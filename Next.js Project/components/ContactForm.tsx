@@ -19,6 +19,18 @@ export default function ContactForm() {
 
   return (
     <form action={handleSubmit} className="space-y-4">
+      {/* Bot mitigation honeypot field - visually hidden, rejected if filled */}
+      <div className="hidden" aria-hidden="true">
+        <label htmlFor="website_url">Website</label>
+        <input
+          type="text"
+          id="website_url"
+          name="website_url"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       {status.type === 'success' ? (
         <div className="p-4 rounded-xl bg-emerald-950/60 border border-emerald-600/50 text-emerald-200 text-xs flex items-center gap-3">
           <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />

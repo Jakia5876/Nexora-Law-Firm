@@ -2,8 +2,9 @@ import Link from 'next/link';
 import { ArrowLeft, ShieldCheck, Scale, CheckCircle2 } from 'lucide-react';
 import ContactForm from '@/components/ContactForm';
 
-export default function PracticeAreaDetailPage({ params }: { params: { slug: string } }) {
-  const formattedTitle = params.slug
+export default async function PracticeAreaDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const formattedTitle = resolvedParams.slug
     .split('-')
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
     .join(' ');

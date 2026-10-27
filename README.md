@@ -35,67 +35,69 @@ Nexora Law Firm features a dual-layer production architecture:
 | Layer | Technology |
 |---|---|
 | Framework | Next.js 16.4.3 (App Router, Server Actions, Server Components) |
-| UI Library | React 18.3.1 |
+| UI Library | React 19.3.1 |
 | Styling | Tailwind CSS 3.4.14 + Vanilla CSS |
 | Icons | Lucide React 0.453.0 / Lucide CDN |
 | Fonts | Google Fonts — Playfair Display, Inter |
 | Backend & DB | Supabase (PostgreSQL + Auth + Storage + RLS) |
 | Container | Docker (Node.js 20 Alpine) & Docker Compose |
 | Deployment | Vercel (Production Live Demo) |
-| CI/CD | GitHub Actions |
+| CI/CD | GitHub Actions (Build & Security Audit) |
 
 ---
 
-## 👥 Administrator Access & Security
+## 👥 Administrator Access & Authentication
 
-In accordance with production security standards, no default passwords are hardcoded:
-- **Admin Portal**: `/admin/login` or `cases.html`
-- **Default Admin Identification**: `admin@nexoralaw.com`
-- **Initial Password**: Configured via the `ADMIN_DEFAULT_PASSWORD` environment variable during deployment, and enforced to be rotated upon initial authentication.
+In accordance with strict production security standards, zero credentials or default passwords are hardcoded in documentation or source code:
+- **Admin Portal**: `/admin/login`
+- **Administrator Email**: Configured via the `ADMIN_EMAIL` environment variable (documented in `Next.js Project/.env.example`).
+- **Administrator Password**: Configured via the `ADMIN_DEFAULT_PASSWORD` environment variable (or hashed via `ADMIN_PASSWORD_HASH`). Must be provided securely per deployment.
+- **Session Verification**: Server-side Edge JWT with cryptographic HMAC-SHA256 signature verification and zero fallback keys.
 
 ---
 
-## ⚡ Quick Start
+## ⚡ Quick Start & App Selection
+
+The repository contains two operational modes. Follow the commands for your intended target:
 
 ### Prerequisites
 - **Node.js**: `>= 20.x`
 - **Package Manager**: `npm >= 10.x`
 - **Database**: PostgreSQL 14+ or a [Supabase](https://supabase.com) project instance
 
-### Option A: Next.js App Router Application (Recommended)
+### Option A: Next.js App Router Application (Primary Production App)
 
 1. **Initialize Database**:
-   Open your Supabase SQL Editor and execute `database/schema.sql` to establish tables and RLS policies, then run `database/seed.sql`.
+   Open your Supabase SQL Editor and execute `database/schema.sql` first to establish tables, foreign keys, indexes, and RLS policies, then run `database/seed.sql`.
 2. **Configure Environment**:
    ```bash
    cd "Next.js Project"
    cp .env.example .env.local
-   # Supply NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, and ADMIN_DEFAULT_PASSWORD
+   # Supply NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SESSION_SECRET, and ADMIN_DEFAULT_PASSWORD
    ```
 3. **Install Dependencies & Run**:
    ```bash
-   npm install
-   npm run dev
-   # Server listens at http://localhost:3000
-   ```
-4. **Production Build Verification**:
-   ```bash
+   cd "Next.js Project"
+   npm ci
    npm run build
    npm start
+   # Production server listens at http://localhost:3000
    ```
 
 ### Option B: Docker Container Deployment
 
 ```bash
 docker compose up -d --build
-# Next.js production server running at http://localhost:3000
+# Production containerized server running at http://localhost:3000
 ```
 
-### Option C: Zero-Build Static Preview
+### Option C: Zero-Build Static Web Previews (Root Directory)
 
 ```bash
+# Run at repository root:
+npm ci
 npm start
-# Serves static HTML preview on http://localhost:8080
+# Serves static preview templates on http://localhost:8080
 ```
 
 See [HowToSetup.md](HowToSetup.md) for full VPS (Ubuntu + Nginx) and Docker installation guides.

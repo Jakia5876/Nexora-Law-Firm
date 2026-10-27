@@ -1,16 +1,19 @@
 // ==============================================================================
 // Nexora Law Firm — Global Firm Configuration & Site Metadata
+// Sourced directly from typed environment configuration module (lib/config.ts)
 // ==============================================================================
 
+import { CONFIG } from './config';
+
 export const FIRM_CONFIG = {
-  name: 'Nexora Law Firm',
-  tagline: 'Advocates & Legal Consultants',
-  legalName: 'Nexora Legal Advocacy & Advisory Chambers LLC',
-  phone: process.env.FIRM_PHONE || '+1-800-555-0199',
-  email: process.env.FIRM_EMAIL || 'contact@nexoralaw.com',
-  address: process.env.FIRM_OFFICE_ADDRESS || '742 Evergreen Terrace, Suite 500, New York, NY 10001',
-  officeHours: 'Monday – Friday, 8:30 AM – 6:30 PM EST',
-  canonicalUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://nexoralaw.vercel.app',
+  name: CONFIG.firm.name,
+  tagline: CONFIG.firm.tagline,
+  legalName: CONFIG.firm.legalName,
+  phone: CONFIG.firm.phone,
+  email: CONFIG.firm.email,
+  address: CONFIG.firm.address,
+  officeHours: CONFIG.firm.officeHours,
+  canonicalUrl: CONFIG.firm.siteUrl,
   social: {
     linkedin: 'https://linkedin.com/company/nexora-law',
     twitter: 'https://twitter.com/nexoralaw',

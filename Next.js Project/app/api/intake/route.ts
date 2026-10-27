@@ -9,12 +9,13 @@ const IntakeSchema = z.object({
   phone: z.string().trim().max(30).optional().or(z.literal('')),
   service: z.string().trim().max(100).default('General Legal Consultation'),
   message: z.string().trim().max(2000, 'Message max 2000 characters').optional().or(z.literal('')),
+  website_url: z.string().optional(), // Anti-bot honeypot field
 }).refine((data) => Boolean(data.email || data.phone), {
   message: 'Either email address or telephone number is required.',
   path: ['email'],
 });
 
-// Simple in-memory rate limiter: max 10 submissions per 5 minutes per IP
+// In-memory rate limiter: max 10 submissions per 5 minutes per IP
 const intakeRateLimit = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT_MAX = 10;
 const RATE_LIMIT_WINDOW = 5 * 60 * 1000;
@@ -39,8 +40,20 @@ export async function POST(request: Request) {
     }
 
     const rawBody = await request.json();
-    const parseResult = IntakeSchema.safeParse(rawBody);
 
+    // Bot mitigation: Honeypot check
+    if (rawBody.website_url && String(rawBody.website_url).trim().length > 0) {
+      return NextResponse.json(
+        {
+          success: true,
+          inquiryId: 'cnt_filtered',
+          message: 'Your consultation inquiry has been submitted to firm counsel.',
+        },
+        { status: 200 }
+      );
+    }
+
+    const parseResult = IntakeSchema.safeParse(rawBody);
     if (!parseResult.success) {
       return NextResponse.json(
         { error: parseResult.error.issues[0]?.message || 'Invalid intake submission.' },
