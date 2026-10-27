@@ -1,8 +1,7 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/request';
-import { ADMIN_COOKIE_NAME } from './lib/auth';
+import { type NextRequest, NextResponse } from 'next/server';
+import { ADMIN_COOKIE_NAME, verifyToken } from './lib/auth';
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Protect /admin routes (except /admin/login)
@@ -13,6 +12,18 @@ export function middleware(request: NextRequest) {
       const loginUrl = new URL('/admin/login', request.url);
       loginUrl.searchParams.set('redirect', pathname);
       return NextResponse.redirect(loginUrl);
+    }
+
+    // Cryptographically verify HMAC-SHA256 JWT signature in Edge runtime
+    const { isValid } = await verifyToken(adminToken);
+    if (!isValid) {
+      const loginUrl = new URL('/admin/login', request.url);
+      loginUrl.searchParams.set('redirect', pathname);
+      loginUrl.searchParams.set('error', 'invalid_session');
+      const response = NextResponse.redirect(loginUrl);
+      // Clean invalid forged cookie
+      response.cookies.delete(ADMIN_COOKIE_NAME);
+      return response;
     }
   }
 

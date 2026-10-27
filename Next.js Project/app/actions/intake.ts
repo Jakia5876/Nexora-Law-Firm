@@ -1,6 +1,7 @@
 'use server';
 
-import { getServiceSupabase } from '@/lib/supabase';
+import { getClientSupabase } from '@/lib/supabase';
+import { z } from 'zod';
 
 export interface IntakeResult {
   success: boolean;
@@ -8,49 +9,60 @@ export interface IntakeResult {
   inquiryId?: string;
 }
 
-// Server Action: Public Legal Consultation Intake (Isolated Insertion)
+const IntakeActionSchema = z.object({
+  name: z.string().trim().min(2, 'Name must have at least 2 characters').max(100, 'Name cannot exceed 100 characters'),
+  email: z.string().trim().email('Invalid email address').max(120).optional().or(z.literal('')),
+  phone: z.string().trim().max(30).optional().or(z.literal('')),
+  service: z.string().trim().max(100).default('General Legal Inquiry'),
+  message: z.string().trim().max(2000, 'Message cannot exceed 2000 characters').optional().or(z.literal('')),
+}).refine((data) => Boolean(data.email || data.phone), {
+  message: 'Please provide either a phone number or email address for our counsel to respond.',
+  path: ['email'],
+});
+
+/**
+ * Server Action: Public Legal Consultation Intake
+ * Uses public anon client that respects the 'contacts' table anon INSERT-only RLS policy.
+ */
 export async function submitConsultationIntake(formData: FormData): Promise<IntakeResult> {
-  const name = formData.get('name')?.toString().trim();
-  const email = formData.get('email')?.toString().trim() || null;
-  const phone = formData.get('phone')?.toString().trim() || null;
-  const service = formData.get('service')?.toString().trim() || 'General Legal Inquiry';
-  const message = formData.get('message')?.toString().trim() || null;
+  const rawData = {
+    name: formData.get('name')?.toString() || '',
+    email: formData.get('email')?.toString() || '',
+    phone: formData.get('phone')?.toString() || '',
+    service: formData.get('service')?.toString() || 'General Legal Inquiry',
+    message: formData.get('message')?.toString() || '',
+  };
 
-  // Strict validation: Inquirer must supply at least a name
-  if (!name) {
+  const validation = IntakeActionSchema.safeParse(rawData);
+  if (!validation.success) {
     return {
       success: false,
-      message: 'Please provide your full legal name to submit an intake brief.',
+      message: validation.error.issues[0]?.message || 'Please check your submitted intake form fields.',
     };
   }
 
-  // Must provide at least one contact channel
-  if (!email && !phone) {
-    return {
-      success: false,
-      message: 'Please provide either a telephone number or email address for our counsel to respond.',
-    };
-  }
+  const { name, email, phone, service, message } = validation.data;
+  const recordId = 'cnt_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
 
-  const supabase = getServiceSupabase();
-  const recordId = 'cnt_' + Date.now();
+  // Uses public anon client enforcing contacts anon INSERT-only RLS policy
+  const supabase = getClientSupabase();
 
   try {
     const { error } = await supabase.from('contacts').insert([
       {
         id: recordId,
         name,
-        email,
-        phone,
-        service,
-        message,
+        email: email || null,
+        phone: phone || null,
+        service: service || 'General Legal Inquiry',
+        message: message || null,
         status: 'New',
         created_at: new Date().toISOString(),
       },
     ]);
 
     if (error) {
-      console.warn('Supabase intake insert encountered warning:', error.message);
+      console.warn('Supabase intake insert notice:', error.message);
     }
 
     return {

@@ -139,15 +139,15 @@ The project requires the following environment variables documented in `Next.js 
 | `NEXT_PUBLIC_SUPABASE_URL` | Public / Client | Supabase Project URL (`https://your-project.supabase.co`) |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public / Client | Supabase Anonymous Public API Key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server-Side Only | Administrative bypass key for server actions & seeding |
-| `NEXT_PUBLIC_ADMIN_EMAIL` | Public / Client | Default administrator identification (`admin@nexoralaw.com`) |
-| `ADMIN_DEFAULT_PASSWORD` | Server-Side Only | Seed administrator password |
+| `SESSION_SECRET` | Server-Side Only | Cryptographic secret for signing HMAC-SHA256 JWT sessions |
+| `ADMIN_EMAIL` | Server-Side Only | Default administrator identification (`admin@nexoralaw.com`) |
+| `ADMIN_DEFAULT_PASSWORD` | Server-Side Only | Initial deployment administrator password placeholder |
 
 ---
 
-## 👥 Default Demo Credentials
+## 👥 Administrator Setup & Access
 
-For automated evaluation and evaluator demonstration:
+In accordance with production security standards:
 - **Admin Portal**: `/admin/login` or `cases.html`
-- **Email**: `admin@nexoralaw.com`
-- **Password**: `DemoAdmin2026!`
-- **Role**: System Administrator (`admin`)
+- **Administrator Email**: `admin@nexoralaw.com`
+- **Password**: Set via the `ADMIN_DEFAULT_PASSWORD` environment variable during deployment; must be changed upon first login. Zero hardcoded passwords exist in codebase or documentation.

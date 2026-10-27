@@ -251,7 +251,8 @@ CREATE TABLE IF NOT EXISTS public.case_documents (
     uploaded_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_case_documents_case ON public.case_documents(case_id);
+CREATE INDEX IF NOT EXISTS idx_case_documents_case        ON public.case_documents(case_id);
+CREATE INDEX IF NOT EXISTS idx_case_documents_uploaded_by ON public.case_documents(uploaded_by);
 
 -- ==============================================================================
 -- 13. TABLE: contacts (Intake Target - Strictly Isolated)
@@ -303,6 +304,7 @@ CREATE TABLE IF NOT EXISTS public.audit_logs (
     created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+CREATE INDEX IF NOT EXISTS idx_audit_logs_user   ON public.audit_logs(user_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON public.audit_logs(action);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_entity ON public.audit_logs(entity, entity_id);
 
@@ -385,8 +387,8 @@ CREATE POLICY "Admin mutate site_content"
 -- ------------------------------------------------------------------------------
 -- POLICIES: users
 -- ------------------------------------------------------------------------------
-CREATE POLICY "Public view active users directory"
-    ON public.users FOR SELECT TO anon, authenticated
+CREATE POLICY "Authenticated view users directory"
+    ON public.users FOR SELECT TO authenticated
     USING (is_active = true);
 
 CREATE POLICY "Admin mutate users"

@@ -28,17 +28,20 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "build": "node -e \"console.log('Build OK: Static distribution ready.')\"",
+    "build": "node -e \"console.log('Build OK: Static web distribution ready.')\"",
     "start": "serve . -l 8080",
     "dev": "serve . -l 8080",
-    "test": "node -e \"console.log('Tests passed: static assets and configuration verified.')\"",
+    "test": "htmlhint --config .htmlhintrc *.html",
+    "lint": "htmlhint --config .htmlhintrc *.html",
     "lint:html": "htmlhint --config .htmlhintrc *.html",
-    "lint:sql": "node -e \"console.log('SQL schema syntax valid')\"",
-    "validate": "node -e \"console.log('Validation passed')\""
+    "validate": "htmlhint --config .htmlhintrc *.html"
   },
   "devDependencies": {
     "htmlhint": "1.1.4",
-    "serve": "14.2.4"
+    "serve": "14.2.6"
+  },
+  "overrides": {
+    "compression": "1.8.2"
   },
   "cdnDependencies": {
     "comment": "These CDN libraries are loaded at runtime in HTML files — no npm install needed",

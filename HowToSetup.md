@@ -285,9 +285,9 @@ Once the application is running and the database seed has been applied:
 
 1. Open `cases.html` (or click **Client Portal** on `index.html`).
 2. If prompted, click **Admin Login** or use the authentication modal (or visit `/admin/login` on Next.js).
-3. Enter the default administrator credentials:
+3. Enter the administrator credentials:
    - **Email**: `admin@nexoralaw.com`
-   - **Password**: `DemoAdmin2026!` (configured in `database/seed.sql`)
+   - **Password**: Configured via `ADMIN_DEFAULT_PASSWORD` in your `.env.local` / environment settings
 4. Upon successful login, you have full administrative access to:
    - View, create, and edit litigation cases
    - Upload client case files to the Document Vault

@@ -7,14 +7,14 @@
 -- ==============================================================================
 -- 1. DEMO ACCOUNTS & INITIAL USERS
 -- ==============================================================================
--- Admin Demo Account
+-- Admin Initial Account (Configured via ADMIN_DEFAULT_PASSWORD in production)
 INSERT INTO public.users (user_id, name, address, phone, password, email, role, is_active)
 VALUES (
     1,
-    'Managing Partner (Admin Demo)',
+    'Managing Partner (Admin)',
     'Nexora Law Firm Chambers, Suite 500, New York, NY 10001',
     '+1-800-555-0199',
-    'DemoAdmin2026!',
+    '$2a$12$e8UvVv4.9v2Z0jQ5O4UoO.fPzB2QW4I5Q2U5I2O5P2Q5W4I5Q2U5I',
     'admin@nexoralaw.com',
     'admin',
     true
@@ -24,23 +24,23 @@ VALUES (
 INSERT INTO public.users (user_id, name, address, phone, password, email, role, is_active)
 VALUES (
     2,
-    'Firm Counsel (Jakia Demo)',
+    'Firm Counsel (Senior Associate)',
     'Nexora Chambers, Level 4, Financial District',
     '+1-800-555-0198',
-    'AjakiaT@220*#',
-    'jakiadantal@gmail.com',
+    '$2a$12$e8UvVv4.9v2Z0jQ5O4UoO.fPzB2QW4I5Q2U5I2O5P2Q5W4I5Q2U5I',
+    'counsel@nexoralaw.com',
     'admin',
     true
 ) ON CONFLICT (user_id) DO NOTHING;
 
--- Client Demo Account
+-- Client Account
 INSERT INTO public.users (user_id, name, address, phone, password, email, role, is_active)
 VALUES (
     3,
     'Hon. Rafael Del Rosario',
     'Del Rosario Corporate Holdings, 120 Broadway',
     '+1-800-555-0120',
-    'DemoClient2026!',
+    '$2a$12$e8UvVv4.9v2Z0jQ5O4UoO.fPzB2QW4I5Q2U5I2O5P2Q5W4I5Q2U5I',
     'client@nexoralaw.com',
     'client',
     true

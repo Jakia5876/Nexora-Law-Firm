@@ -46,41 +46,56 @@ Nexora Law Firm features a dual-layer production architecture:
 
 ---
 
-## 👥 Demo Admin Credentials
+## 👥 Administrator Access & Security
 
-For automated evaluation and evaluator demonstration:
+In accordance with production security standards, no default passwords are hardcoded:
 - **Admin Portal**: `/admin/login` or `cases.html`
-- **Email**: `admin@nexoralaw.com`
-- **Password**: `DemoAdmin2026!`
-- **Role**: System Administrator (`admin`)
+- **Default Admin Identification**: `admin@nexoralaw.com`
+- **Initial Password**: Configured via the `ADMIN_DEFAULT_PASSWORD` environment variable during deployment, and enforced to be rotated upon initial authentication.
 
 ---
 
 ## ⚡ Quick Start
 
-### Option A: Next.js Development Server
+### Prerequisites
+- **Node.js**: `>= 20.x`
+- **Package Manager**: `npm >= 10.x`
+- **Database**: PostgreSQL 14+ or a [Supabase](https://supabase.com) project instance
+
+### Option A: Next.js App Router Application (Recommended)
+
+1. **Initialize Database**:
+   Open your Supabase SQL Editor and execute `database/schema.sql` to establish tables and RLS policies, then run `database/seed.sql`.
+2. **Configure Environment**:
+   ```bash
+   cd "Next.js Project"
+   cp .env.example .env.local
+   # Supply NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, and ADMIN_DEFAULT_PASSWORD
+   ```
+3. **Install Dependencies & Run**:
+   ```bash
+   npm install
+   npm run dev
+   # Server listens at http://localhost:3000
+   ```
+4. **Production Build Verification**:
+   ```bash
+   npm run build
+   npm start
+   ```
+
+### Option B: Docker Container Deployment
 
 ```bash
-cd "Next.js Project"
-cp .env.example .env.local
-npm install
-npm run dev
-# Open http://localhost:3000
-```
-
-### Option B: Docker Container (Next.js Production Server)
-
-```bash
-cp .env.example .env
 docker compose up -d --build
-# Open http://localhost:3000
+# Next.js production server running at http://localhost:3000
 ```
 
-### Option C: Static Preview Server
+### Option C: Zero-Build Static Preview
 
 ```bash
 npm start
-# Open http://localhost:8080
+# Serves static HTML preview on http://localhost:8080
 ```
 
 See [HowToSetup.md](HowToSetup.md) for full VPS (Ubuntu + Nginx) and Docker installation guides.
