@@ -1,5 +1,3 @@
-# Setup & Installation Guide - Nexora Law Firm
-
 ## Demo Accounts & Test Credentials (Datasheet)
 Live URL: https://nexoralaw.vercel.app/
 
@@ -14,6 +12,8 @@ Live URL: https://nexoralaw.vercel.app/
 - **Case Status:** In Progress (Corporate Legal Review)
 
 ---
+
+# Setup & Installation Guide - Nexora Law Firm
 
 
 ## Prerequisites
