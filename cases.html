@@ -141,7 +141,7 @@
       <strong class="text-neutral-200 hidden sm:inline text-xs">Case &amp; Client Document Vault</strong>
     </div>
     <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-      <a href="index.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">Main Site</a>
+      <a href="/" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">Main Site</a>
       <a href="cases.html" class="px-2 sm:px-2.5 py-1 rounded bg-burgundy text-white font-semibold text-[10px] sm:text-xs transition-all">Case Portal</a>
       <a href="service-terms.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">Terms</a>
       <a href="privacy.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">Privacy</a>
@@ -151,7 +151,7 @@
   <!-- NAVBAR -->
   <header class="fixed top-10 inset-x-0 h-16 sm:h-20 z-50 transition-all duration-300 backdrop-blur-xl bg-dark-900/90 border-b border-neutral-800/80">
     <div class="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between gap-4">
-      <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 group min-w-0">
+      <a href="/" class="flex items-center gap-2.5 sm:gap-3 group min-w-0">
         <div class="relative w-9 h-9 sm:w-11 sm:h-11 rounded-full border border-gold/40 shadow-md bg-gradient-to-br from-neutral-900 via-neutral-950 to-burgundy flex-shrink-0 flex items-center justify-center ring-1 ring-gold/20 group-hover:border-gold transition-all">
           <span class="font-serif font-extrabold text-gold text-base sm:text-lg tracking-wider">N</span>
         </div>
@@ -1742,7 +1742,7 @@
     ];
 
     // Local Storage Keys
-    const STORAGE_KEY_CASES = 'nexora_law_cases_v1';
+    const STORAGE_KEY_CASES = 'nexora_law_cases_v2';
     const STORAGE_KEY_INQUIRIES = 'nexora_law_inquiries_v1';
     const STORAGE_KEY_SUPABASE = 'nexora_supabase_config_v1';
     const STORAGE_KEY_ADMIN_SESSION = 'nexora_firm_admin_session';
@@ -2324,6 +2324,41 @@
     }
 
     // Render Table
+    
+    // Unified Action Handlers (Accessible with automatic admin auth prompting)
+    window.handleEditCase = function(caseId) {
+      if (isAdminLoggedIn()) {
+        openEditCaseModal(caseId);
+      } else {
+        openAdminLoginModal('Administrator Login Required: Please sign in to edit client & case details.');
+      }
+    };
+
+    window.handleDeleteCase = function(caseId) {
+      if (isAdminLoggedIn()) {
+        deleteCasePrompt(caseId);
+      } else {
+        openAdminLoginModal('Administrator Login Required: Only the firm administrator can delete cases.');
+      }
+    };
+
+    window.handleQuickToggleClose = function(caseId) {
+      if (isAdminLoggedIn()) {
+        quickToggleCaseClosed(caseId);
+      } else {
+        openAdminLoginModal('Administrator Login Required: Only the firm administrator can mark cases as Closed or Active.');
+      }
+    };
+
+    window.handleStatusChange = function(caseId, newStatus, selectEl) {
+      if (isAdminLoggedIn()) {
+        updateCaseStatusDirectly(caseId, newStatus);
+      } else {
+        openAdminLoginModal('Administrator Login Required: Only firm administrator can change case status.');
+        renderCasesTable(); // Reset dropdown visually
+      }
+    };
+
     function renderCasesTable() {
       const tbody = document.getElementById('cases-table-body');
       const emptyState = document.getElementById('no-cases-state');
@@ -2417,37 +2452,33 @@
           <!-- Status -->
           <td class="py-4 px-4">
             <div class="flex items-center gap-1.5 flex-wrap">
-              ${isAdminLoggedIn() ? `
-                <div class="relative inline-flex items-center">
-                  <select onchange="updateCaseStatusDirectly('${c.id}', this.value)" 
-                          class="appearance-none cursor-pointer pl-2.5 pr-6 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all focus:outline-none focus:ring-1 focus:ring-gold ${
-                            (c.status && (c.status.toLowerCase().includes('close') || c.status.toLowerCase().includes('settle'))) 
-                              ? 'bg-neutral-800 text-neutral-300 border border-neutral-600 hover:border-gold/50' 
-                              : (c.status && c.status.toLowerCase().includes('active'))
-                              ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 hover:border-emerald-500'
-                              : (c.status === 'In Trial')
-                              ? 'bg-red-950/80 text-red-400 border border-red-800/60 hover:border-red-500'
-                              : (c.status && c.status.toLowerCase().includes('hearing'))
-                              ? 'bg-amber-950/80 text-amber-400 border border-amber-800/60 hover:border-amber-500'
-                              : 'bg-blue-950/80 text-blue-300 border border-blue-800/60 hover:border-blue-500'
-                          }" title="Admin: Click to change case status directly">
-                    <option value="Active Counsel" ${ (c.status && c.status.toLowerCase().includes('active')) ? 'selected' : '' }>Active</option>
-                    <option value="In Trial" ${ c.status === 'In Trial' ? 'selected' : '' }>In Trial</option>
-                    <option value="Hearing Scheduled" ${ (c.status && c.status.toLowerCase().includes('hearing')) ? 'selected' : '' }>Hearing</option>
-                    <option value="Under Review" ${ (c.status && c.status.toLowerCase().includes('review')) ? 'selected' : '' }>Review</option>
-                    <option value="Settled / Closed" ${ (c.status && (c.status.toLowerCase().includes('close') || c.status.toLowerCase().includes('settle'))) ? 'selected' : '' }>Closed</option>
-                  </select>
-                  <i data-lucide="chevron-down" class="w-3 h-3 text-neutral-400 pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2"></i>
-                </div>
-                <!-- 1-Click Toggle to Mark as Closed / Re-open -->
-                <button onclick="quickToggleCaseClosed('${c.id}')" 
-                        class="p-1 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-gold border border-neutral-700/80 transition-all"
-                        title="${(c.status && (c.status.toLowerCase().includes('close') || c.status.toLowerCase().includes('settle'))) ? 'Click to Re-open case as Active' : 'Click to Mark case as Closed'}">
-                  <i data-lucide="${(c.status && (c.status.toLowerCase().includes('close') || c.status.toLowerCase().includes('settle'))) ? 'rotate-ccw' : 'check-circle'}" class="w-3.5 h-3.5"></i>
-                </button>
-              ` : `
-                ${getStatusBadge(c.status)}
-              `}
+              <div class="relative inline-flex items-center">
+                <select onchange="handleStatusChange('${c.id}', this.value, this)" 
+                        class="appearance-none cursor-pointer pl-2.5 pr-6 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all focus:outline-none focus:ring-1 focus:ring-gold ${
+                          (c.status && (c.status.toLowerCase().includes('close') || c.status.toLowerCase().includes('settle'))) 
+                            ? 'bg-neutral-800 text-neutral-300 border border-neutral-600 hover:border-gold/50' 
+                            : (c.status && c.status.toLowerCase().includes('active'))
+                            ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 hover:border-emerald-500'
+                            : (c.status === 'In Trial')
+                            ? 'bg-red-950/80 text-red-400 border border-red-800/60 hover:border-red-500'
+                            : (c.status && c.status.toLowerCase().includes('hearing'))
+                            ? 'bg-amber-950/80 text-amber-400 border border-amber-800/60 hover:border-amber-500'
+                            : 'bg-blue-950/80 text-blue-300 border border-blue-800/60 hover:border-blue-500'
+                        }" title="Click to change case status">
+                  <option value="Active Counsel" ${ (c.status && c.status.toLowerCase().includes('active')) ? 'selected' : '' }>Active</option>
+                  <option value="In Trial" ${ c.status === 'In Trial' ? 'selected' : '' }>In Trial</option>
+                  <option value="Hearing Scheduled" ${ (c.status && c.status.toLowerCase().includes('hearing')) ? 'selected' : '' }>Hearing</option>
+                  <option value="Under Review" ${ (c.status && c.status.toLowerCase().includes('review')) ? 'selected' : '' }>Review</option>
+                  <option value="Settled / Closed" ${ (c.status && (c.status.toLowerCase().includes('close') || c.status.toLowerCase().includes('settle'))) ? 'selected' : '' }>Closed</option>
+                </select>
+                <i data-lucide="chevron-down" class="w-3 h-3 text-neutral-400 pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2"></i>
+              </div>
+              <!-- 1-Click Toggle to Mark as Closed / Re-open -->
+              <button onclick="handleQuickToggleClose('${c.id}')" 
+                      class="p-1 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-gold border border-neutral-700/80 transition-all"
+                      title="${(c.status && (c.status.toLowerCase().includes('close') || c.status.toLowerCase().includes('settle'))) ? 'Click to Re-open case as Active' : 'Click to Mark case as Closed'}">
+                <i data-lucide="${(c.status && (c.status.toLowerCase().includes('close') || c.status.toLowerCase().includes('settle'))) ? 'rotate-ccw' : 'check-circle'}" class="w-3.5 h-3.5"></i>
+              </button>
             </div>
           </td>
 
@@ -2466,21 +2497,12 @@
               <button onclick="openClientVault('${c.id}')" title="Open Client Vault" class="p-2 rounded-lg bg-neutral-900 hover:bg-burgundy text-neutral-300 hover:text-white transition-all border border-neutral-800">
                 <i data-lucide="eye" class="w-4 h-4"></i>
               </button>
-              ${isAdminLoggedIn() ? `
-                <button onclick="openEditCaseModal('${c.id}')" title="Admin: Edit Client & Case Details" class="p-2 rounded-lg bg-neutral-900 hover:bg-gold/20 text-neutral-400 hover:text-gold border border-neutral-800 hover:border-gold/50 transition-all">
-                  <i data-lucide="edit-3" class="w-4 h-4"></i>
-                </button>
-                <button onclick="deleteCasePrompt('${c.id}')" title="Admin: Delete Case Record" class="p-2 rounded-lg bg-neutral-900 hover:bg-red-950 text-neutral-400 hover:text-red-400 hover:border-red-600 transition-all border border-neutral-800">
-                  <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
-              ` : `
-                <button onclick="openAdminLoginModal('Firm Administrator authentication required to edit case records.')" title="Locked: Administrator required to edit case records" class="p-2 rounded-lg bg-neutral-950/60 text-neutral-600 hover:text-neutral-400 border border-neutral-800/40 transition-colors">
-                  <i data-lucide="lock" class="w-4 h-4"></i>
-                </button>
-                <button onclick="openAdminLoginModal('Firm Administrator authentication required to delete cases.')" title="Locked: Only Administrator can delete records" class="p-2 rounded-lg bg-neutral-950/60 text-neutral-600 hover:text-neutral-400 border border-neutral-800/40 transition-colors">
-                  <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
-              `}
+              <button onclick="handleEditCase('${c.id}')" title="Edit Client & Case Details" class="p-2 rounded-lg bg-neutral-900 hover:bg-gold/20 text-neutral-400 hover:text-gold border border-neutral-800 hover:border-gold/50 transition-all">
+                <i data-lucide="edit-3" class="w-4 h-4"></i>
+              </button>
+              <button onclick="handleDeleteCase('${c.id}')" title="Delete Case Record" class="p-2 rounded-lg bg-neutral-900 hover:bg-red-950 text-neutral-400 hover:text-red-400 hover:border-red-600 transition-all border border-neutral-800">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
             </div>
           </td>
         `;
@@ -3127,8 +3149,8 @@
 
     if (btnAutofillAdmin) {
       btnAutofillAdmin.addEventListener('click', () => {
-        adminLoginEmail.value = DEMO_ADMIN_EMAIL;
-        adminLoginPass.value = 'DemoAdmin2026!';
+        adminLoginEmail.value = 'jakiadantal@gmail.com';
+        adminLoginPass.value = 'Admin2026!';
         if (adminLoginError) {
           adminLoginError.classList.add('hidden');
           adminLoginError.classList.remove('flex');
