@@ -9,12 +9,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc --noEmit"
+    "lint": "next lint"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.118.0",
-    "@types/node": "20.14.9",
-    "csstype": "3.1.3",
     "jose": "5.9.6",
     "lucide-react": "0.453.0",
     "next": "16.4.3",
@@ -27,6 +25,7 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "autoprefixer": "10.4.20",
+    "csstype": "3.1.3",
     "eslint": "9.14.0",
     "eslint-config-next": "16.4.3",
     "postcss": "8.5.32",

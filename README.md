@@ -1,30 +1,22 @@
-## Demo Accounts & Test Credentials (Datasheet)
-Live URL: https://nexoralaw.vercel.app/
+# Nexora Law Firm Platform
 
-| Role | Email | Password | Portal URL |
-|---|---|---|---|
-| Admin | admin@example.com | DemoAdmin2026! | `/admin/login` |
-| Client | client@example.com | DemoClient2026! | `/cases` |
-
-### Seeded Demo Data:
-- **Case Reference:** `NEX-2026-001`
-- **Client Email:** `client@example.com`
-- **Case Status:** In Progress (Corporate Legal Review)
-
----
-
-# Nexora Law Firm
-
-> A luxury, fully-responsive legal firm web application and multi-practice suite built for modern legal advocacy and consultation.
+Enterprise Legal Management Platform built with Next.js 16 (App Router), Tailwind CSS, and Supabase.
 
 [![CI](https://github.com/Jakia5876/Nexora-Law-Firm/actions/workflows/ci.yml/badge.svg)](https://github.com/Jakia5876/Nexora-Law-Firm/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](CHANGELOG.md)
 [![Demo](https://img.shields.io/badge/demo-live-brightgreen.svg)](https://nexoralaw.vercel.app/)
 
-**Live Demo**: [nexoralaw.vercel.app](https://nexoralaw.vercel.app/)
+## Live Demo Access
+- **Live Demo URL:** https://nexoralaw.vercel.app/
+- **Admin Portal:** `/admin/login`
+- **Client Portal:** `/cases`
+
+> **Note for Reviewers & Buyers:**
+> Demo access is pre-configured on the live deployment. Per security compliance standards, all production credentials and administrative passwords must be provisioned via environment variables (`ADMIN_DEFAULT_PASSWORD`, `SESSION_SECRET`) and are never committed to version control.
 
 ---
+
 
 
 

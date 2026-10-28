@@ -10,14 +10,13 @@ export const ADMIN_COOKIE_NAME = 'nexora_admin_token';
 // In-memory revocation cache for instant sub-millisecond lookups
 const inMemoryRevokedTokens = new Set<string>();
 
-// হার্ডকোডেড কোনো ডিফল্ট স্ট্রিং থাকবে না
+// Retrieve HMAC-SHA256 secret key from runtime configuration
 function getJwtSecretKey(): Uint8Array {
   const secret = CONFIG.admin.sessionSecret;
   return new TextEncoder().encode(secret);
 }
-const getJwtSecret = getJwtSecretKey;
 
-// টাইমিং-সেফ পাসওয়ার্ড ভেরিফিকেশন (প্লেইনটেক্সট === পরিহার)
+// Timing-safe password verification to prevent side-channel timing attacks
 export function verifyAdminPassword(inputPassword: string): boolean {
   const expectedPassword = CONFIG.admin.defaultPassword;
   

@@ -1,10 +1,10 @@
-## Demo Accounts & Test Credentials (Datasheet)
+## Demo Accounts & Test Access
 Live URL: https://nexoralaw.vercel.app/
 
-| Role | Email | Password | Portal URL |
-|---|---|---|---|
-| Admin | admin@example.com | DemoAdmin2026! | `/admin/login` |
-| Client | client@example.com | DemoClient2026! | `/cases` |
+| Role | Access URL | Credentials Reference |
+|---|---|---|
+| Admin | `/admin/login` | Configured via `ADMIN_EMAIL` & `ADMIN_DEFAULT_PASSWORD` |
+| Client | `/cases` | Case Reference: `NEX-2026-001`, Verifier: Registered Phone/Email |
 
 ### Seeded Demo Data:
 - **Case Reference:** `NEX-2026-001`
@@ -12,6 +12,7 @@ Live URL: https://nexoralaw.vercel.app/
 - **Case Status:** In Progress (Corporate Legal Review)
 
 ---
+
 
 # Setup & Installation Guide - Nexora Law Firm
 
