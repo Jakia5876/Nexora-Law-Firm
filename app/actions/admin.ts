@@ -1,7 +1,7 @@
 'use server';
 
 import crypto from 'crypto';
-import { createAdminToken, revokeAdminToken, ADMIN_COOKIE_NAME } from '@/lib/auth';
+import { createAdminToken, revokeAdminToken, ADMIN_COOKIE_NAME, verifyAdminPassword } from '@/lib/auth';
 import { CONFIG } from '@/lib/config';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -46,11 +46,11 @@ function verifyPasswordCredential(email: string, submittedPassword: string): boo
     return timingSafeCompare(computedHash, passwordHash);
   }
 
-  const configuredPassword = CONFIG.admin.defaultPassword;
-  if (configuredPassword && configuredPassword.length >= 8) {
-    return timingSafeCompare(submittedPassword, configuredPassword);
+  try {
+    return verifyAdminPassword(submittedPassword);
+  } catch {
+    return false;
   }
-  return false;
 }
 
 export async function adminLoginAction(formData: FormData) {

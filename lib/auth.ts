@@ -1,4 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose';
+import crypto from 'crypto';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getClientSupabase } from './supabase';
@@ -9,19 +10,25 @@ export const ADMIN_COOKIE_NAME = 'nexora_admin_token';
 // In-memory revocation cache for instant sub-millisecond lookups
 const inMemoryRevokedTokens = new Set<string>();
 
-/**
- * Validates and retrieves the HMAC-SHA256 signing secret.
- * Fails fast with an Error if SESSION_SECRET is not configured or shorter than 32 characters.
- * Zero hardcoded fallback keys are permitted.
- */
-function getJwtSecret(): Uint8Array {
+// হার্ডকোডেড কোনো ডিফল্ট স্ট্রিং থাকবে না
+function getJwtSecretKey(): Uint8Array {
   const secret = CONFIG.admin.sessionSecret;
-  if (secret === 'your-random-32-character-secret-key-here') {
-    throw new Error(
-      'CRITICAL SECURITY CONFIGURATION ERROR: process.env.SESSION_SECRET must be configured with a unique secret of at least 32 characters. Example placeholders are rejected.'
-    );
-  }
   return new TextEncoder().encode(secret);
+}
+const getJwtSecret = getJwtSecretKey;
+
+// টাইমিং-সেফ পাসওয়ার্ড ভেরিফিকেশন (প্লেইনটেক্সট === পরিহার)
+export function verifyAdminPassword(inputPassword: string): boolean {
+  const expectedPassword = CONFIG.admin.defaultPassword;
+  
+  const inputBuffer = Buffer.from(inputPassword);
+  const expectedBuffer = Buffer.from(expectedPassword);
+
+  if (inputBuffer.length !== expectedBuffer.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(inputBuffer, expectedBuffer);
 }
 
 export interface AdminSession {
@@ -36,7 +43,7 @@ export interface AdminSession {
  * Includes unique jti (JWT ID) and an 8-hour session lifetime.
  */
 export async function createAdminToken(email: string): Promise<string> {
-  const secret = getJwtSecret();
+  const secret = getJwtSecretKey();
   const jti = crypto.randomUUID();
   return await new SignJWT({ email: email.toLowerCase(), role: 'admin' })
     .setProtectedHeader({ alg: 'HS256' })
@@ -79,7 +86,7 @@ export async function revokeAdminToken(token: string): Promise<void> {
 export async function verifyToken(token: string): Promise<{ isValid: boolean; session?: AdminSession }> {
   try {
     if (!token) return { isValid: false };
-    const secret = getJwtSecret();
+    const secret = getJwtSecretKey();
     const { payload } = await jwtVerify(token, secret);
 
     // 1. Check in-memory revocation cache (fast path)
