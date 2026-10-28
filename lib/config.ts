@@ -4,18 +4,29 @@
 // ==============================================================================
 
 export const CONFIG = {
-  // Administrator Identification
+  supabase: {
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+    anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+    serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || '',
+  },
   admin: {
-    email: (process.env.ADMIN_EMAIL || 'admin@nexoralaw.com').trim().toLowerCase(),
-    defaultPassword: process.env.ADMIN_DEFAULT_PASSWORD || '',
+    email: process.env.ADMIN_EMAIL || 'admin@example.com',
+    get defaultPassword(): string {
+      const pwd = process.env.ADMIN_DEFAULT_PASSWORD;
+      if (!pwd) {
+        throw new Error('ADMIN_DEFAULT_PASSWORD is required in environment variables');
+      }
+      return pwd;
+    },
+    get sessionSecret(): string {
+      const secret = process.env.SESSION_SECRET;
+      if (!secret || secret.length < 32) {
+        throw new Error('SESSION_SECRET must be at least 32 characters in environment variables');
+      }
+      return secret;
+    },
   },
-
-  // Security Configuration
-  security: {
-    sessionSecret: process.env.SESSION_SECRET || '',
-  },
-
-  // Firm Branding & Contact Details (sourced from environment with luxury fallbacks)
+  // Firm Branding & Contact Details
   firm: {
     name: process.env.FIRM_NAME || 'Nexora Law Firm',
     tagline: 'Advocates & Legal Consultants',
@@ -27,13 +38,6 @@ export const CONFIG = {
     siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://nexoralaw.vercel.app',
     storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET || 'case-documents',
   },
-
-  // Supabase Credentials
-  supabase: {
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://your-project-id.supabase.co',
-    anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
-    serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || '',
-  },
-} as const;
+};
 
 export type AppConfig = typeof CONFIG;

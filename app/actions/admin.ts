@@ -46,7 +46,7 @@ function verifyPasswordCredential(email: string, submittedPassword: string): boo
     return timingSafeCompare(computedHash, passwordHash);
   }
 
-  const configuredPassword = CONFIG.admin.defaultPassword || process.env.ADMIN_DEFAULT_PASSWORD;
+  const configuredPassword = CONFIG.admin.defaultPassword;
   if (configuredPassword && configuredPassword.length >= 8) {
     return timingSafeCompare(submittedPassword, configuredPassword);
   }

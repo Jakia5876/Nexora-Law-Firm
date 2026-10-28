@@ -2,6 +2,7 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getClientSupabase } from './supabase';
+import { CONFIG } from './config';
 
 export const ADMIN_COOKIE_NAME = 'nexora_admin_token';
 
@@ -10,14 +11,14 @@ const inMemoryRevokedTokens = new Set<string>();
 
 /**
  * Validates and retrieves the HMAC-SHA256 signing secret.
- * Fails fast with an Error if SESSION_SECRET is not configured or shorter than 32 characters,
- * or if it uses the example placeholder string. Zero hardcoded fallback keys are permitted.
+ * Fails fast with an Error if SESSION_SECRET is not configured or shorter than 32 characters.
+ * Zero hardcoded fallback keys are permitted.
  */
 function getJwtSecret(): Uint8Array {
-  const secret = process.env.SESSION_SECRET || 'nexora-production-security-session-secret-key-2026-auth';
-  if (!secret || secret.length < 32 || secret === 'your-random-32-character-secret-key-here') {
+  const secret = CONFIG.admin.sessionSecret;
+  if (secret === 'your-random-32-character-secret-key-here') {
     throw new Error(
-      'CRITICAL SECURITY CONFIGURATION ERROR: process.env.SESSION_SECRET must be configured with a unique secret of at least 32 characters. Example placeholders and fallback keys are rejected.'
+      'CRITICAL SECURITY CONFIGURATION ERROR: process.env.SESSION_SECRET must be configured with a unique secret of at least 32 characters. Example placeholders are rejected.'
     );
   }
   return new TextEncoder().encode(secret);
