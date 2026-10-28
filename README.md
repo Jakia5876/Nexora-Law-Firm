@@ -40,12 +40,12 @@ Nexora Law Firm is a production-grade full-stack Next.js App Router application:
 
 ---
 
-## 👥 Administrator Access & Demo Credentials
+## 👥 Administrator Access
+
+### Admin Setup
+Set `ADMIN_DEFAULT_PASSWORD` and `SESSION_SECRET` in your `.env.local` or host settings before logging in at `/admin/login`.
 
 - **Admin Portal**: `/admin/login` or `/cases.html?session=admin`
-- **Audit Demo Admin Email**: `admin@example.com`
-- **Audit Demo Password**: `DemoAdmin2026!`
-- **Authorized Counsel Identity**: `jakiadantal@gmail.com`
 - **Session Verification**: Server-side Edge JWT with cryptographic HMAC-SHA256 signature verification, timing-safe credential validation, and brute-force throttling.
 
 ---

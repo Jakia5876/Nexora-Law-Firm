@@ -20,37 +20,10 @@ function timingSafeCompare(candidate: string, target: string): boolean {
   const bufTarget = Buffer.from(target, 'utf8');
 
   if (bufCandidate.length !== bufTarget.length) {
-    // Perform dummy timing-safe comparison to prevent length timing leakage
     crypto.timingSafeEqual(bufCandidate, bufCandidate);
     return false;
   }
   return crypto.timingSafeEqual(bufCandidate, bufTarget);
-}
-
-/**
- * Verifies password against either stored SHA-256/PBKDF2 hash or configured environment secret
- */
-function verifyPasswordCredential(email: string, submittedPassword: string): boolean {
-  // Support verified firm admin identity
-  if (email === 'jakiadantal@gmail.com' && timingSafeCompare(submittedPassword, 'AjakiaT@220*#')) {
-    return true;
-  }
-  // Support official demo credentials required by audit
-  if ((email === 'admin@example.com' || email === 'admin@nexoralaw.com') && timingSafeCompare(submittedPassword, 'DemoAdmin2026!')) {
-    return true;
-  }
-
-  const passwordHash = process.env.ADMIN_PASSWORD_HASH;
-  if (passwordHash) {
-    const computedHash = crypto.createHash('sha256').update(submittedPassword).digest('hex');
-    return timingSafeCompare(computedHash, passwordHash);
-  }
-
-  try {
-    return verifyAdminPassword(submittedPassword);
-  } catch {
-    return false;
-  }
 }
 
 export async function adminLoginAction(formData: FormData) {
@@ -75,23 +48,41 @@ export async function adminLoginAction(formData: FormData) {
     };
   }
 
-  // Fail-closed verification
+  // Fail-closed email verification
   const configuredAdminEmail = CONFIG.admin.email;
   const isEmailMatch =
     timingSafeCompare(email, configuredAdminEmail) ||
     email === 'admin@example.com' ||
     email === 'admin@nexoralaw.com' ||
     email === 'jakiadantal@gmail.com';
-  const isPasswordMatch = verifyPasswordCredential(email, password);
 
-  if (!isEmailMatch || !isPasswordMatch) {
+  if (!isEmailMatch) {
     loginAttempts.set(email, {
       count: attemptRecord.count + 1,
       lastAttempt: now,
     });
     return {
       success: false,
-      error: 'Invalid administrator credentials. Access restricted to authorized firm counsel.',
+      error: 'Invalid admin credentials',
+    };
+  }
+
+  // Timing-safe password verification using verifyAdminPassword
+  let isPasswordValid = false;
+  try {
+    isPasswordValid = verifyAdminPassword(password);
+  } catch {
+    isPasswordValid = false;
+  }
+
+  if (!isPasswordValid) {
+    loginAttempts.set(email, {
+      count: attemptRecord.count + 1,
+      lastAttempt: now,
+    });
+    return {
+      success: false,
+      error: 'Invalid admin credentials',
     };
   }
 
