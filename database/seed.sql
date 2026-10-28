@@ -183,3 +183,13 @@ SELECT setval(pg_get_serial_sequence('public.cases',         'case_id'),        
 SELECT setval(pg_get_serial_sequence('public.case_detail',   'case_detail_id'), COALESCE(MAX(case_detail_id), 1)) FROM public.case_detail;
 SELECT setval(pg_get_serial_sequence('public.case_documents','document_id'),    COALESCE(MAX(document_id),    1)) FROM public.case_documents;
 SELECT setval(pg_get_serial_sequence('public.subscriptions', 'subscription_id'),COALESCE(MAX(subscription_id), 1)) FROM public.subscriptions;
+
+-- ==============================================================================
+-- 11. DEMO CLIENT & CASE REFERENCE (Datasheet / Audit Verification)
+-- ==============================================================================
+-- Seed Demo Accounts and Case Data
+INSERT INTO cases (case_number, title, status, client_name, client_email, created_at)
+VALUES
+('NEX-2026-001', 'Corporate Acquisition Filing', 'in_progress', 'Demo Client', 'client@example.com', NOW())
+ON CONFLICT (case_number) DO NOTHING;
+

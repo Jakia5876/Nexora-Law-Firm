@@ -53,7 +53,13 @@ export async function POST(request: Request) {
       );
     }
 
-    const parseResult = IntakeSchema.safeParse(rawBody);
+    const normalizedBody = {
+      ...rawBody,
+      name: rawBody.name || rawBody.client_name,
+      service: rawBody.service || rawBody.case_type || 'General Legal Consultation',
+    };
+
+    const parseResult = IntakeSchema.safeParse(normalizedBody);
     if (!parseResult.success) {
       return NextResponse.json(
         { error: parseResult.error.issues[0]?.message || 'Invalid intake submission.' },

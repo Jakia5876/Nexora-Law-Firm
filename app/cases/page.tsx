@@ -47,24 +47,28 @@ export default async function CasesPortalPage({ searchParams }: CasesPageProps) 
           const supabase = getServiceSupabase();
           const { data, error } = await supabase
             .from('cases')
-            .select('case_no, status, filing_date, court:court_id(court_name), client_mobile')
-            .eq('case_no', caseRef)
+            .select('case_no, case_number, title, status, filing_date, court:court_id(court_name), client_mobile, client_email')
+            .or(`case_no.eq.${caseRef},case_number.eq.${caseRef}`)
             .single();
 
           if (error || !data) {
             searchError = 'No matching case record found with the supplied reference number.';
           } else {
-            // Verify secondary secret against client_mobile
+            // Verify secondary secret against client_mobile or client_email
             const clientMobile = (data.client_mobile || '').toLowerCase().replace(/[^0-9]/g, '');
+            const clientEmail = (data.client_email || '').toLowerCase().trim();
             const cleanVerifier = verifier.replace(/[^0-9]/g, '');
 
-            if (!cleanVerifier || !clientMobile.includes(cleanVerifier)) {
+            const isPhoneMatch = cleanVerifier.length >= 4 && clientMobile.includes(cleanVerifier);
+            const isEmailMatch = clientEmail.length > 0 && clientEmail === verifier.trim().toLowerCase();
+
+            if (!isPhoneMatch && !isEmailMatch) {
               searchError = 'Authentication failed: Provided verification details do not match the registered client record.';
             } else {
               // Return only minimal public status fields (no sensitive personal details)
               searchedCase = {
-                case_no: data.case_no,
-                status: data.status,
+                case_no: data.case_number || data.case_no,
+                status: data.status === 'in_progress' ? 'In Progress (Corporate Legal Review)' : data.status,
                 filing_date: data.filing_date,
                 court: data.court,
               };

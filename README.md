@@ -11,6 +11,22 @@
 
 ---
 
+## Demo Accounts & Test Credentials (Datasheet)
+Live URL: https://nexoralaw.vercel.app/
+
+| Role | Email | Password | Portal URL |
+|---|---|---|---|
+| Admin | admin@example.com | DemoAdmin2026! | `/admin/login` |
+| Client | client@example.com | DemoClient2026! | `/cases` |
+
+### Seeded Demo Data:
+- **Case Reference:** `NEX-2026-001`
+- **Client Email:** `client@example.com`
+- **Case Status:** In Progress (Corporate Legal Review)
+
+---
+
+
 ## ✨ System Architecture & Application
 
 Nexora Law Firm is a production-grade full-stack Next.js App Router application:

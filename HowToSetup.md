@@ -1,5 +1,21 @@
 # Setup & Installation Guide - Nexora Law Firm
 
+## Demo Accounts & Test Credentials (Datasheet)
+Live URL: https://nexoralaw.vercel.app/
+
+| Role | Email | Password | Portal URL |
+|---|---|---|---|
+| Admin | admin@example.com | DemoAdmin2026! | `/admin/login` |
+| Client | client@example.com | DemoClient2026! | `/cases` |
+
+### Seeded Demo Data:
+- **Case Reference:** `NEX-2026-001`
+- **Client Email:** `client@example.com`
+- **Case Status:** In Progress (Corporate Legal Review)
+
+---
+
+
 ## Prerequisites
 - Node.js >= 20.9.0
 - Supabase account & project
