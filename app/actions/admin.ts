@@ -12,18 +12,13 @@ const MAX_ATTEMPTS = 5;
 const LOCKOUT_MS = 15 * 60 * 1000; // 15-minute lockout
 
 /**
- * Constant-time string comparison to prevent timing attacks
+ * Constant-time string comparison without leaking length
  */
 function timingSafeCompare(candidate: string, target: string): boolean {
   if (!candidate || !target) return false;
-  const bufCandidate = Buffer.from(candidate, 'utf8');
-  const bufTarget = Buffer.from(target, 'utf8');
-
-  if (bufCandidate.length !== bufTarget.length) {
-    crypto.timingSafeEqual(bufCandidate, bufCandidate);
-    return false;
-  }
-  return crypto.timingSafeEqual(bufCandidate, bufTarget);
+  const aHash = crypto.createHash('sha256').update(candidate).digest();
+  const bHash = crypto.createHash('sha256').update(target).digest();
+  return crypto.timingSafeEqual(aHash, bHash);
 }
 
 export async function adminLoginAction(formData: FormData) {
