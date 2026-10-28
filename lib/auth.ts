@@ -156,6 +156,7 @@ export async function requireAdmin(redirectTo: string = '/admin/login'): Promise
   const auth = await verifyAdminSession();
   if (!auth.isValid || !auth.session) {
     redirect(redirectTo);
+    throw new Error('Unauthorized: Admin session required');
   }
   return auth.session;
 }
