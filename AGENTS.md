@@ -4,60 +4,66 @@ This document provides definitive guidance for AI coding agents (Claude, Gemini,
 
 ---
 
+## Build & Test Architecture
+- Package manager: npm (lockfile v3 pinned)
+- Layout: Flat Next.js App Router structure at repository root.
+- Tests: Vitest suite configured, run with `npm run test` or `npm run lint`
+
+---
+
 ## 📁 Project Architecture & App Router Structure
 
-Nexora Law Firm features a dual-layer architecture:
-1. **Next.js App Router Application (`Next.js Project/`)**: Full-stack Next.js web application utilizing React Server Components, Server Actions, Edge Middleware, and Supabase database isolation.
-2. **Static Web Previews**: Zero-dependency standalone HTML files (`index.html`, `cases.html`, etc.) for instant client preview and CDN hosting.
+Nexora Law Firm features a production-grade full-stack architecture:
+1. **Next.js App Router Application (`./`)**: Full-stack Next.js web application utilizing React Server Components, Server Actions, Edge Middleware, and Supabase database isolation.
 
 ```
 Nexora-Law-Firm/
-├── Next.js Project/                   # Primary Next.js App Router Application
-│   ├── app/
-│   │   ├── layout.tsx                 # Root layout with fonts, metadata, Vibe96 verification
-│   │   ├── page.tsx                   # Public homepage & hero presentation
-│   │   ├── globals.css                # Global Tailwind CSS directives & color tokens
-│   │   ├── practice-areas/
-│   │   │   ├── page.tsx               # Practice areas directory
-│   │   │   └── [slug]/page.tsx        # Dynamic individual practice area page
-│   │   ├── attorneys/page.tsx         # Attorney roster & bios
-│   │   ├── cases/page.tsx             # Public case status inquiry portal
-│   │   ├── admin/
-│   │   │   ├── page.tsx               # Role-gated admin case dashboard
-│   │   │   └── login/page.tsx         # Admin authentication login
-│   │   ├── actions/
-│   │   │   ├── intake.ts              # Public consultation intake server action
-│   │   │   ├── cases.ts               # Role-verified case management server actions
-│   │   │   └── admin.ts               # Admin session authentication & cookie actions
-│   │   └── api/
-│   │       ├── intake/route.ts        # POST endpoint for consultation intake
-│   │       └── admin/cases/route.ts   # Role-gated administrative case API
-│   ├── components/
-│   │   ├── Navbar.tsx                 # Responsive navigation bar
-│   │   ├── Footer.tsx                 # Site footer with practice links & disclaimers
-│   │   └── ContactForm.tsx            # Isolated public intake consultation form
-│   ├── lib/
-│   │   ├── supabase.ts                # Client & admin Supabase SDK initializers
-│   │   └── auth.ts                    # Server-side admin role & session verification
-│   ├── middleware.ts                  # Edge middleware route guard for /admin/*
-│   ├── .env.example                   # Environment configuration template
-│   ├── package.json                   # Pinned patched dependencies (Next.js, Supabase)
-│   ├── package-lock.json              # Committed lockfile (0 audit vulnerabilities)
-│   ├── tailwind.config.ts             # Tailwind CSS theme extension
-│   ├── tsconfig.json                  # Strict TypeScript configuration
-│   └── Dockerfile                     # Production Node.js 20 container image
+├── app/
+│   ├── layout.tsx                 # Root layout with fonts, metadata, Vibe96 verification
+│   ├── page.tsx                   # Public homepage & hero presentation
+│   ├── globals.css                # Global Tailwind CSS directives & color tokens
+│   ├── practice-areas/
+│   │   ├── page.tsx               # Practice areas directory
+│   │   └── [slug]/page.tsx        # Dynamic individual practice area page
+│   ├── attorneys/page.tsx         # Attorney roster & bios
+│   ├── cases/page.tsx             # Public case status inquiry portal
+│   ├── admin/
+│   │   ├── page.tsx               # Role-gated admin case dashboard
+│   │   └── login/page.tsx         # Admin authentication login
+│   ├── actions/
+│   │   ├── intake.ts              # Public consultation intake server action
+│   │   ├── cases.ts               # Role-verified case management server actions
+│   │   └── admin.ts               # Admin session authentication & cookie actions
+│   └── api/
+│       ├── intake/route.ts        # POST endpoint for consultation intake
+│       └── admin/cases/route.ts   # Role-gated administrative case API
+├── components/
+│   ├── Navbar.tsx                 # Responsive navigation bar
+│   ├── Footer.tsx                 # Site footer with practice links & disclaimers
+│   └── ContactForm.tsx            # Isolated public intake consultation form
+├── lib/
+│   ├── supabase.ts                # Client & admin Supabase SDK initializers
+│   ├── auth.ts                    # Server-side admin role & session verification
+│   └── config.ts                  # Central configuration
+├── middleware.ts                  # Edge middleware route guard for /admin/*
+├── .env.example                   # Environment configuration template
+├── package.json                   # Pinned patched dependencies (Next.js, Supabase)
+├── package-lock.json              # Committed lockfile (0 audit vulnerabilities)
+├── tailwind.config.ts             # Tailwind CSS theme extension
+├── tsconfig.json                  # Strict TypeScript configuration
+├── next.config.mjs                # Next.js standalone output configuration
 ├── database/
-│   ├── schema.sql                     # Complete PostgreSQL DDL (tables, FKs, RLS, indexes)
-│   └── seed.sql                       # Initial seed data (admin, attorneys, practices, demo)
+│   ├── schema.sql                 # Complete PostgreSQL DDL (tables, FKs, RLS, indexes)
+│   └── seed.sql                   # Initial seed data (admin, attorneys, practices, demo)
 ├── docs/
-│   ├── erd.md                         # Entity-Relationship Diagram & RLS policy notes
-│   └── architecture.md                # System design & multi-layer architecture guide
-├── .env.example                       # Root environment variable documentation
-├── CHANGELOG.md                       # Version history starting at 1.0.0
-├── HowToSetup.md                      # Deployment instructions (VPS, Docker, Cloud)
-├── LICENSE-NOTE.md                    # Commercial licensing and third-party notices
-├── docker-compose.yml                 # Multi-container orchestration (Next.js server)
-└── Dockerfile                         # Next.js production runtime container
+│   ├── api.md                     # REST API & Server Actions documentation
+│   ├── erd.md                     # Entity-Relationship Diagram & RLS policy notes
+│   └── architecture.md            # System design & multi-layer architecture guide
+├── CHANGELOG.md                   # Version history starting at 1.0.0
+├── HowToSetup.md                  # Deployment instructions (VPS, Docker, Cloud)
+├── LICENSE-NOTE.md                # Commercial licensing and third-party notices
+├── docker-compose.yml             # Container orchestration (Next.js server)
+└── Dockerfile                     # Next.js production runtime container
 ```
 
 ---
@@ -82,8 +88,8 @@ Nexora-Law-Firm/
 
 ### 2. Practice Content Location
 - **Database Tables**: Practice areas are stored in `practice_areas` with indexed `slug`, `status`, and `created_at`.
-- **Dynamic Routing**: Managed in `Next.js Project/app/practice-areas/[slug]/page.tsx` with static fallback previews for Corporate, Trial, Intellectual Property, and Real Estate.
-- **Attorney Profiles**: Stored in `attorneys` table and rendered via `Next.js Project/app/attorneys/page.tsx`.
+- **Dynamic Routing**: Managed in `app/practice-areas/[slug]/page.tsx` with static fallback previews for Corporate, Trial, Intellectual Property, and Real Estate.
+- **Attorney Profiles**: Stored in `attorneys` table and rendered via `app/attorneys/page.tsx`.
 
 ---
 
@@ -109,9 +115,6 @@ Nexora-Law-Firm/
 
 ### Next.js Application
 ```bash
-# Navigate to Next.js project
-cd "Next.js Project"
-
 # Run ESLint / Next lint
 npm run lint
 
@@ -122,17 +125,11 @@ npm audit
 npm run build
 ```
 
-### Static HTML Linting
-```bash
-# Run htmlhint across all static templates
-npx htmlhint "**/*.html"
-```
-
 ---
 
 ## 🔑 Environment Variables
 
-The project requires the following environment variables documented in `Next.js Project/.env.example`:
+The project requires the following environment variables documented in `.env.example`:
 
 | Variable | Scope | Description |
 |---|---|---|
@@ -140,7 +137,7 @@ The project requires the following environment variables documented in `Next.js 
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public / Client | Supabase Anonymous Public API Key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server-Side Only | Administrative bypass key for server actions & seeding |
 | `SESSION_SECRET` | Server-Side Only | Cryptographic secret for signing HMAC-SHA256 JWT sessions |
-| `ADMIN_EMAIL` | Server-Side Only | Default administrator identification (`admin@nexoralaw.com`) |
+| `ADMIN_EMAIL` | Server-Side Only | Default administrator identification (`admin@example.com`) |
 | `ADMIN_DEFAULT_PASSWORD` | Server-Side Only | Initial deployment administrator password placeholder |
 
 ---
@@ -148,6 +145,6 @@ The project requires the following environment variables documented in `Next.js 
 ## 👥 Administrator Setup & Access
 
 In accordance with production security standards:
-- **Admin Portal**: `/admin/login` or `cases.html`
-- **Administrator Email**: `admin@nexoralaw.com`
+- **Admin Portal**: `/admin/login` or `/cases`
+- **Administrator Email**: `admin@example.com`
 - **Password**: Set via the `ADMIN_DEFAULT_PASSWORD` environment variable during deployment; must be changed upon first login. Zero hardcoded passwords exist in codebase or documentation.

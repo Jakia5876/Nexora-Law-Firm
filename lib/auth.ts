@@ -1,4 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose';
+import crypto from 'crypto';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getClientSupabase, getServiceSupabase } from './supabase';
@@ -15,17 +16,15 @@ function getJwtSecretKey(): Uint8Array {
   return new TextEncoder().encode(secret);
 }
 
-// Timing-safe password verification to prevent side-channel timing attacks
+// Timing-safe password compare without leaking length
 export function verifyAdminPassword(inputPassword: string): boolean {
-  const expectedPassword = CONFIG.admin.defaultPassword;
-  if (!inputPassword || !expectedPassword) return false;
-  if (inputPassword.length !== expectedPassword.length) return false;
-  
-  let mismatch = 0;
-  for (let i = 0; i < inputPassword.length; i++) {
-    mismatch |= inputPassword.charCodeAt(i) ^ expectedPassword.charCodeAt(i);
-  }
-  return mismatch === 0;
+  const defaultPassword = process.env.ADMIN_DEFAULT_PASSWORD || '';
+  if (!defaultPassword) return false;
+
+  const aHash = crypto.createHash('sha256').update(inputPassword).digest();
+  const bHash = crypto.createHash('sha256').update(defaultPassword).digest();
+
+  return crypto.timingSafeEqual(aHash, bHash);
 }
 
 export interface AdminSession {
