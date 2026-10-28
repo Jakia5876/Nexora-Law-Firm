@@ -31,7 +31,7 @@ if (Test-Path $finalZip) {
 }
 
 Write-Host "Compressing archive to $tempZip..."
-Compress-Archive -Path $dest -DestinationPath $tempZip -Force
+Compress-Archive -Path "$dest\*" -DestinationPath $tempZip -Force
 Copy-Item -Path $tempZip -Destination $finalZip -Force
 Remove-Item -Recurse -Force $tempDir
 

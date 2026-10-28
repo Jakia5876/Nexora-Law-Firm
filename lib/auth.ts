@@ -1,8 +1,7 @@
 import { SignJWT, jwtVerify } from 'jose';
-import crypto from 'crypto';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { getClientSupabase } from './supabase';
+import { getClientSupabase, getServiceSupabase } from './supabase';
 import { CONFIG } from './config';
 
 export const ADMIN_COOKIE_NAME = 'nexora_admin_token';
@@ -19,15 +18,14 @@ function getJwtSecretKey(): Uint8Array {
 // Timing-safe password verification to prevent side-channel timing attacks
 export function verifyAdminPassword(inputPassword: string): boolean {
   const expectedPassword = CONFIG.admin.defaultPassword;
+  if (!inputPassword || !expectedPassword) return false;
+  if (inputPassword.length !== expectedPassword.length) return false;
   
-  const inputBuffer = Buffer.from(inputPassword);
-  const expectedBuffer = Buffer.from(expectedPassword);
-
-  if (inputBuffer.length !== expectedBuffer.length) {
-    return false;
+  let mismatch = 0;
+  for (let i = 0; i < inputPassword.length; i++) {
+    mismatch |= inputPassword.charCodeAt(i) ^ expectedPassword.charCodeAt(i);
   }
-
-  return crypto.timingSafeEqual(inputBuffer, expectedBuffer);
+  return mismatch === 0;
 }
 
 export interface AdminSession {
@@ -43,7 +41,9 @@ export interface AdminSession {
  */
 export async function createAdminToken(email: string): Promise<string> {
   const secret = getJwtSecretKey();
-  const jti = crypto.randomUUID();
+  const jti = typeof globalThis.crypto?.randomUUID === 'function'
+    ? globalThis.crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).substring(2)}`;
   return await new SignJWT({ email: email.toLowerCase(), role: 'admin' })
     .setProtectedHeader({ alg: 'HS256' })
     .setJti(jti)
@@ -63,8 +63,8 @@ export async function revokeAdminToken(token: string): Promise<void> {
       // 1. Mark in memory cache immediately
       inMemoryRevokedTokens.add(session.jti);
 
-      // 2. Persist to PostgreSQL database
-      const supabase = getClientSupabase();
+      // 2. Persist to PostgreSQL database using privileged service role client
+      const supabase = getServiceSupabase();
       await supabase.from('revoked_tokens').insert([
         {
           jti: session.jti,
@@ -93,10 +93,10 @@ export async function verifyToken(token: string): Promise<{ isValid: boolean; se
       return { isValid: false };
     }
 
-    // 2. Check persistent database revocation store (cross-instance verification)
+    // 2. Check persistent database revocation store using service role client
     if (payload.jti) {
       try {
-        const supabase = getClientSupabase();
+        const supabase = getServiceSupabase();
         const { data } = await supabase
           .from('revoked_tokens')
           .select('jti')

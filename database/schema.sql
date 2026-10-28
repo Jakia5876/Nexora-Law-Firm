@@ -363,8 +363,8 @@ ALTER TABLE public.attorneys      ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.site_content   ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.revoked_tokens ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Allow reading revoked tokens" ON public.revoked_tokens FOR SELECT TO anon, authenticated USING (true);
-CREATE POLICY "Allow recording revoked tokens" ON public.revoked_tokens FOR INSERT TO anon, authenticated WITH CHECK (jti IS NOT NULL);
+CREATE POLICY "Service role access on revoked tokens" ON public.revoked_tokens FOR ALL TO service_role USING (true) WITH CHECK (true);
+CREATE POLICY "Authenticated read revoked tokens" ON public.revoked_tokens FOR SELECT TO authenticated USING (true);
 
 ALTER TABLE public.court          ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.case_type      ENABLE ROW LEVEL SECURITY;

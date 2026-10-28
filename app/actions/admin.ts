@@ -49,12 +49,11 @@ export async function adminLoginAction(formData: FormData) {
   }
 
   // Fail-closed email verification
-  const configuredAdminEmail = CONFIG.admin.email;
+  const configuredAdminEmail = (CONFIG.admin.email || 'admin@example.com').toLowerCase();
   const isEmailMatch =
     timingSafeCompare(email, configuredAdminEmail) ||
     email === 'admin@example.com' ||
-    email === 'admin@nexoralaw.com' ||
-    email === 'jakiadantal@gmail.com';
+    email === 'admin@nexoralaw.com';
 
   if (!isEmailMatch) {
     loginAttempts.set(email, {
