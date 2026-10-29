@@ -1,5 +1,4 @@
 import { SignJWT, jwtVerify } from 'jose';
-import crypto from 'crypto';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getClientSupabase, getServiceSupabase } from './supabase';
@@ -14,17 +13,6 @@ const inMemoryRevokedTokens = new Set<string>();
 function getJwtSecretKey(): Uint8Array {
   const secret = CONFIG.admin.sessionSecret;
   return new TextEncoder().encode(secret);
-}
-
-// Timing-safe password compare without leaking length
-export function verifyAdminPassword(inputPassword: string): boolean {
-  const defaultPassword = process.env.ADMIN_DEFAULT_PASSWORD || '';
-  if (!defaultPassword) return false;
-
-  const aHash = crypto.createHash('sha256').update(inputPassword).digest();
-  const bHash = crypto.createHash('sha256').update(defaultPassword).digest();
-
-  return crypto.timingSafeEqual(aHash, bHash);
 }
 
 export interface AdminSession {

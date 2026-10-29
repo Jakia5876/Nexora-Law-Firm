@@ -1,7 +1,7 @@
 'use server';
 
 import crypto from 'crypto';
-import { createAdminToken, revokeAdminToken, ADMIN_COOKIE_NAME, verifyAdminPassword } from '@/lib/auth';
+import { createAdminToken, revokeAdminToken, ADMIN_COOKIE_NAME } from '@/lib/auth';
 import { CONFIG } from '@/lib/config';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -19,6 +19,13 @@ function timingSafeCompare(candidate: string, target: string): boolean {
   const aHash = crypto.createHash('sha256').update(candidate).digest();
   const bHash = crypto.createHash('sha256').update(target).digest();
   return crypto.timingSafeEqual(aHash, bHash);
+}
+
+// Timing-safe password verification using timingSafeCompare
+function verifyAdminPassword(inputPassword: string): boolean {
+  const defaultPassword = process.env.ADMIN_DEFAULT_PASSWORD || '';
+  if (!defaultPassword || !inputPassword) return false;
+  return timingSafeCompare(inputPassword, defaultPassword);
 }
 
 export async function adminLoginAction(formData: FormData) {
