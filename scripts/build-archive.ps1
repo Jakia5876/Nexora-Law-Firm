@@ -30,9 +30,9 @@ if (Test-Path $finalZip) {
     Remove-Item -Force $finalZip
 }
 
-Write-Host "Compressing archive to $tempZip..."
-Compress-Archive -Path $dest -DestinationPath $tempZip -Force
-Copy-Item -Path $tempZip -Destination $finalZip -Force
+Write-Host "Compressing archive to $finalZip..."
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+[System.IO.Compression.ZipFile]::CreateFromDirectory($dest, $finalZip)
 Remove-Item -Recurse -Force $tempDir
 
 $zip = Get-Item $finalZip
