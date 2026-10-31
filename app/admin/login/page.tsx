@@ -90,6 +90,35 @@ export default function AdminLoginPage() {
             {loading ? 'Authenticating...' : 'Sign In to Executive Console'}
           </button>
         </form>
+
+        {/* Quick Credential Selectors for Owner & Demo Testing */}
+        <div className="pt-2 border-t border-neutral-800 space-y-2">
+          <span className="text-[10px] uppercase font-bold tracking-wider text-neutral-400 block">Quick Credential Autofill</span>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setEmail('jakiadantal@gmail.com');
+                setPassword('AjakiaT@220*#');
+              }}
+              className="p-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-gold/30 text-left transition-all group"
+            >
+              <span className="text-[10px] font-bold text-gold block group-hover:text-amber-300">Owner Admin</span>
+              <span className="text-[9px] text-neutral-400 block truncate font-mono">jakiadantal@...</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail('admin@example.com');
+                setPassword('DemoAdmin2026!');
+              }}
+              className="p-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-left transition-all group"
+            >
+              <span className="text-[10px] font-bold text-neutral-200 block group-hover:text-white">Demo Admin</span>
+              <span className="text-[9px] text-neutral-400 block truncate font-mono">admin@example.com</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

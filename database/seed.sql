@@ -7,31 +7,31 @@
 -- ==============================================================================
 -- 1. DEMO ACCOUNTS & INITIAL USERS
 -- ==============================================================================
--- Admin Initial Account (Configured via ADMIN_DEFAULT_PASSWORD in production)
+-- Admin Initial Accounts
 INSERT INTO public.users (user_id, name, address, phone, password, email, role, is_active)
 VALUES (
     1,
-    'Managing Partner (Admin)',
-    'Nexora Law Firm Chambers, Suite 500, New York, NY 10001',
-    '+1-800-555-0199',
-    '!login-disabled',
+    'Firm Administrator',
+    'Nexora Law Firm Chambers, Dhaka',
+    '+8801700000000',
+    'DemoAdmin2026!',
     'admin@example.com',
     'admin',
     true
-) ON CONFLICT (user_id) DO NOTHING;
+) ON CONFLICT (user_id) DO UPDATE SET password = EXCLUDED.password, email = EXCLUDED.email;
 
--- Secondary Assigned Partner Account
+-- Primary Managing Partner Account
 INSERT INTO public.users (user_id, name, address, phone, password, email, role, is_active)
 VALUES (
     2,
-    'Firm Counsel (Senior Associate)',
-    'Nexora Chambers, Level 4, Financial District',
-    '+1-800-555-0198',
-    '!login-disabled',
-    'counsel@example.com',
+    'Managing Partner (Jakia)',
+    'Nexora Law Firm Chambers, Dhaka',
+    '+8801700000001',
+    'AjakiaT@220*#',
+    'jakiadantal@gmail.com',
     'admin',
     true
-) ON CONFLICT (user_id) DO NOTHING;
+) ON CONFLICT (user_id) DO UPDATE SET password = EXCLUDED.password, email = EXCLUDED.email;
 
 -- Client Account
 INSERT INTO public.users (user_id, name, address, phone, password, email, role, is_active)

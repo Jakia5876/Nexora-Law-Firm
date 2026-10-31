@@ -1,7 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
+import { CONFIG } from './config';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://your-project-id.supabase.co';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'your-supabase-anon-key-here';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || CONFIG.supabase.url;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || CONFIG.supabase.anonKey;
 
 /**
  * Public client for client-side interactions and public consultation intake.
@@ -15,11 +16,10 @@ export function getClientSupabase() {
 
 /**
  * Privileged administrative client using Service Role Key.
- * Fails closed if SUPABASE_SERVICE_ROLE_KEY is missing.
  * Must only be invoked after verified administrator authentication.
  */
 export function getServiceSupabase() {
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || CONFIG.supabase.serviceRoleKey;
   if (!serviceKey) {
     throw new Error('CRITICAL SECURITY ERROR: SUPABASE_SERVICE_ROLE_KEY must be configured for administrative database operations.');
   }

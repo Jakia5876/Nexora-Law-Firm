@@ -1,7 +1,16 @@
 'use server';
 
-import { createAdminToken, revokeAdminToken, ADMIN_COOKIE_NAME, verifyAdminPassword, safeEqual, createThrottle } from '@/lib/auth';
+import {
+  createAdminToken,
+  revokeAdminToken,
+  ADMIN_COOKIE_NAME,
+  verifyAdminPassword,
+  safeEqual,
+  createThrottle,
+  verifyPasswordHash,
+} from '@/lib/auth';
 import { CONFIG } from '@/lib/config';
+import { getServiceSupabase } from '@/lib/supabase';
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -29,17 +38,53 @@ export async function adminLoginAction(formData: FormData) {
     };
   }
 
-  // Check email AND password every time (no early exit that reveals which one was wrong)
-  let emailOk = false;
-  let passwordOk = false;
-  try {
-    emailOk = safeEqual(email, CONFIG.admin.email.trim().toLowerCase());
-    passwordOk = verifyAdminPassword(password);
-  } catch (err) {
-    console.error('Admin login misconfiguration:', err instanceof Error ? err.message : err);
+  let authenticated = false;
+
+  // 1. Direct check: Primary Firm Administrator (Jakia)
+  if (safeEqual(email, 'jakiadantal@gmail.com') && safeEqual(password, 'AjakiaT@220*#')) {
+    authenticated = true;
   }
 
-  if (!emailOk || !passwordOk) {
+  // 2. Direct check: Live Portfolio Demo Administrator
+  if (!authenticated && safeEqual(email, 'admin@example.com') && safeEqual(password, 'DemoAdmin2026!')) {
+    authenticated = true;
+  }
+
+  // 3. Environment Variable overrides (if customized in deployment)
+  if (!authenticated) {
+    try {
+      const configuredEmail = (CONFIG.admin.email || '').trim().toLowerCase();
+      if (configuredEmail && safeEqual(email, configuredEmail) && verifyAdminPassword(password)) {
+        authenticated = true;
+      }
+    } catch (err) {
+      console.error('Admin login env check error:', err instanceof Error ? err.message : err);
+    }
+  }
+
+  // 4. Supabase Database `public.users` table check
+  if (!authenticated) {
+    try {
+      const supabase = getServiceSupabase();
+      const { data: dbUser, error: dbError } = await supabase
+        .from('users')
+        .select('user_id, email, password, role, is_active')
+        .ilike('email', email)
+        .eq('role', 'admin')
+        .eq('is_active', true)
+        .maybeSingle();
+
+      if (!dbError && dbUser) {
+        if (safeEqual(password, dbUser.password) || verifyPasswordHash(password, dbUser.password)) {
+          authenticated = true;
+        }
+      }
+    } catch (dbErr) {
+      console.error('Admin DB lookup error:', dbErr);
+    }
+  }
+
+  if (!authenticated) {
     throttle.fail(key);
     return { success: false, error: 'Invalid admin credentials' };
   }
