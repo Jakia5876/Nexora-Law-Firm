@@ -119,7 +119,7 @@ erDiagram
         varchar on_behalf
         bigint case_type_id FK
         varchar case_no_note
-        text status "active, pending, resolved, inactive"
+        text status "active, inactive"
         timestamptz created_at
         timestamptz updated_at
     }
@@ -232,7 +232,7 @@ Central docket registry recording all ongoing and resolved legal matters.
 - **`client_mobile`** (VARCHAR(30), NOT NULL): Client identification mobile number.
 - **`user_id`** (BIGINT, FK -> `users.user_id`): Lead attorney reference.
 - **`case_type_id`** (BIGINT, FK -> `case_type.case_type_id`): Specialty reference.
-- **`status`** (TEXT, CHECK): Current state (`active`, `pending`, `resolved`, `inactive`).
+- **`status`** (TEXT, CHECK): Current state (`active`, `inactive`).
 
 ### 2.6 `case_detail`
 Chronological hearing proceedings diary, courtroom orders, and judge notes.
@@ -293,3 +293,16 @@ Immutable compliance and governance audit trail recording all mutating actions.
    - `users`, `court`, and `case_type` cannot be deleted if referenced by existing active `cases`, preserving the integrity of legal records.
 3. **Nullified References (`ON DELETE SET NULL`)**:
    - Removing an `assistant` or `uploaded_by` user safely unlinks the record without destroying case data.
+
+### 2.x `revoked_tokens`
+Session revocation store (server-side only; RLS enabled, no policies).
+- **`jti`** (VARCHAR(100), PK): Revoked JWT identifier.
+- **`revoked_at`** (TIMESTAMPTZ, NOT NULL): Time of revocation.
+- **`expires_at`** (TIMESTAMPTZ, NOT NULL, indexed): Token expiry; rows past this date are purged.
+
+### 2.y Client portal tables (migration 002)
+- **`client_accounts`** (`client_id` PK, `email` unique case-insensitive, `full_name`, `mobile`, `password_hash`, `is_active`, `last_login_at`).
+- **`client_case_access`** (PK `client_id` + `case_id`; both FKs `ON DELETE CASCADE`): which client may see which case.
+- **`case_events`** (`event_id` PK, `case_id` FK cascade, `event_type`, `title`, `description`, `event_date`, `client_visible`): case timeline.
+- **`notifications`** (`notification_id` PK, `client_id` FK cascade, `case_id` FK set null, `subject`, `body`, `email_status`, `read_at`).
+All four tables have RLS enabled and no policies (service-role access only).

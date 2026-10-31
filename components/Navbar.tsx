@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Scale, ShieldCheck, FolderLock } from 'lucide-react';
 
-export default function Navbar() {
+export default function Navbar({ shortName, subtitle }: { shortName: string; subtitle: string }) {
   return (
     <nav className="fixed top-0 inset-x-0 z-50 glass-panel border-b border-gold/20 bg-neutral-950/90 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
@@ -13,10 +13,10 @@ export default function Navbar() {
           </div>
           <div className="flex flex-col">
             <span className="font-serif font-bold text-lg tracking-wider text-white group-hover:text-gold transition-colors">
-              NEXORA
+              {shortName}
             </span>
             <span className="text-[9px] uppercase tracking-widest text-gold font-sans font-semibold">
-              Law Firm Chambers
+              {subtitle}
             </span>
           </div>
         </Link>
@@ -24,10 +24,11 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-8 text-xs font-medium uppercase tracking-wider text-neutral-300">
           <Link href="/practice-areas" className="hover:text-gold transition-colors">Practice Areas</Link>
           <Link href="/attorneys" className="hover:text-gold transition-colors">Attorneys</Link>
-          <Link href="/cases" className="hover:text-gold transition-colors flex items-center gap-1.5">
+          <Link href="/client" className="hover:text-gold transition-colors flex items-center gap-1.5">
             <FolderLock className="w-3.5 h-3.5 text-gold" />
             Client Portal
           </Link>
+          <Link href="/cases" className="hover:text-gold transition-colors">Case Status</Link>
           <Link href="/admin" className="hover:text-gold transition-colors flex items-center gap-1.5 text-amber-300/80">
             <ShieldCheck className="w-3.5 h-3.5" />
             Admin Suite

@@ -95,7 +95,11 @@ export async function submitConsultationIntake(formData: FormData): Promise<Inta
     ]);
 
     if (error) {
-      console.warn('Supabase intake insert notice:', error.message);
+      console.error('Supabase intake insert failed:', error.message);
+      return {
+        success: false,
+        message: 'We could not record your inquiry right now. Please call our chambers directly.',
+      };
     }
 
     return {
@@ -106,7 +110,7 @@ export async function submitConsultationIntake(formData: FormData): Promise<Inta
   } catch (err: any) {
     return {
       success: false,
-      message: err?.message || 'Transmission encountered an error. Please contact our chambers directly.',
+      message: 'Transmission encountered an error. Please contact our chambers directly.',
     };
   }
 }

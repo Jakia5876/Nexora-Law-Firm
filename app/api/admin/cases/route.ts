@@ -15,7 +15,7 @@ const CaseCreateSchema = z.object({
 
 const CaseUpdateSchema = z.object({
   case_id: z.coerce.number().int().positive('Valid case ID is required'),
-  status: z.enum(['active', 'pending', 'resolved', 'inactive']).optional(),
+  status: z.enum(['active', 'inactive']).optional(),
   under_section: z.string().trim().max(150).optional(),
 });
 

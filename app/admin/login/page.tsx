@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { adminLoginAction } from '@/app/actions/admin';
-import { ShieldCheck, KeyRound, Mail, Sparkles, AlertCircle } from 'lucide-react';
+import { ShieldCheck, KeyRound, Mail, AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function AdminLoginPage() {
@@ -27,12 +27,6 @@ export default function AdminLoginPage() {
       setError(res?.error || 'Invalid administrator credentials.');
       setLoading(false);
     }
-  }
-
-  function handleAutofill() {
-    setEmail('admin@example.com');
-    setPassword('DemoAdmin2026!');
-    setError(null);
   }
 
   return (
@@ -87,14 +81,6 @@ export default function AdminLoginPage() {
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={handleAutofill}
-            className="w-full py-2 px-3 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-[11px] text-neutral-300 hover:text-gold flex items-center justify-center gap-1.5 transition-colors"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-gold" />
-            <span>Fill Demo Admin Credentials</span>
-          </button>
 
           <button
             type="submit"

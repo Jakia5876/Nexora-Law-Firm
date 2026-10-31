@@ -38,7 +38,7 @@
 ```json
 {
   "case_id": 1,
-  "status": "in_progress",
+  "status": "inactive",
   "under_section": "Sec. 12(a) Commercial Arbitration Act"
 }
 ```
@@ -57,3 +57,20 @@
 - `updateCaseStatusAction(formData: FormData)`: Updates case status and revalidates `/cases` and `/admin`.
 - `deleteCaseAction(formData: FormData)`: Deletes specified docket entry and triggers cache revalidation.
 - `uploadCaseDocumentAction(formData: FormData)`: Attaches client vault document record with metadata.
+
+---
+
+## Server actions (v1.1.0)
+
+All admin actions call `requireAdmin()` first; client actions call `requireClient()` (or are the login itself).
+
+| Action | File | Auth | Purpose |
+|---|---|---|---|
+| `adminLoginAction` / `adminLogoutAction` | `app/actions/admin.ts` | public / admin | Admin session |
+| `createCaseAction`, `updateCaseStatusAction`, `deleteCaseAction`, `uploadVaultDocumentAction` | `app/actions/cases.ts` | admin | Case management (status change also writes a timeline entry and notifies clients) |
+| `addCaseEventAction`, `deleteCaseEventAction` | `app/actions/events.ts` | admin | Case timeline |
+| `createClientAction`, `resetClientPasswordAction`, `setClientActiveAction`, `grantCaseAccessAction`, `revokeCaseAccessAction` | `app/actions/clients.ts` | admin | Client accounts and per-case access |
+| `clientLoginAction`, `clientLogoutAction`, `markNotificationsReadAction` | `app/actions/client.ts` | public / client | Client portal session and notifications |
+| `submitConsultationIntake` | `app/actions/intake.ts` | public | Consultation intake (anon INSERT only) |
+
+Pages: `/client`, `/client/login`, `/client/cases/[caseId]` (client session + access list), `/admin/cases`, `/admin/cases/[caseId]`, `/admin/clients` (admin session).

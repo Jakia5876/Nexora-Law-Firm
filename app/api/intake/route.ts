@@ -86,7 +86,8 @@ export async function POST(request: Request) {
     ]);
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error('Intake insert failed:', error.message);
+      return NextResponse.json({ error: 'Unable to record your inquiry right now. Please call our chambers directly.' }, { status: 500 });
     }
 
     return NextResponse.json(
@@ -98,6 +99,7 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (err: any) {
-    return NextResponse.json({ error: err?.message || 'Server error processing intake' }, { status: 500 });
+    console.error('Intake route error:', err?.message);
+    return NextResponse.json({ error: 'Server error processing intake' }, { status: 500 });
   }
 }

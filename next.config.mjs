@@ -1,18 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
   reactStrictMode: true,
-  async rewrites() {
-    return [
+  output: 'standalone',
+  images: {
+    remotePatterns: [
       {
-        source: '/index.html',
-        destination: '/',
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
       },
       {
-        source: '/index',
-        destination: '/',
+        protocol: 'https',
+        hostname: '**.supabase.co',
       },
-    ];
+      {
+        protocol: 'https',
+        hostname: 'ui-avatars.com',
+      },
+    ],
   },
 };
 

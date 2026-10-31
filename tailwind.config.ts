@@ -10,14 +10,14 @@ const config: Config = {
     extend: {
       colors: {
         gold: {
-          DEFAULT: '#c5a059',
-          light: '#dfc289',
-          dark: '#9a7c3e',
+          DEFAULT: 'rgb(var(--c-gold) / <alpha-value>)',
+          light: 'rgb(var(--c-gold-light) / <alpha-value>)',
+          dark: 'rgb(var(--c-gold-dark) / <alpha-value>)',
         },
         burgundy: {
-          DEFAULT: '#6b1d2f',
-          light: '#8e273e',
-          dark: '#4a1320',
+          DEFAULT: 'rgb(var(--c-burgundy) / <alpha-value>)',
+          light: 'rgb(var(--c-burgundy-light) / <alpha-value>)',
+          dark: 'rgb(var(--c-burgundy-dark) / <alpha-value>)',
         },
         obsidian: {
           DEFAULT: '#0d0d0d',

@@ -55,13 +55,20 @@ export default async function AdminDashboardPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <a
-            href="/cases.html?session=admin"
+          <Link
+            href="/admin/cases"
             className="px-4 py-2 rounded-xl bg-gradient-to-r from-burgundy to-burgundy-light hover:brightness-110 text-white font-bold text-xs flex items-center gap-2 border border-gold/40 shadow-lg transition-all"
           >
-            <ShieldCheck className="w-4 h-4 text-gold" />
-            <span>Client & Case Document Vault</span>
-          </a>
+            <Scale className="w-4 h-4 text-gold" />
+            <span>Cases & Timelines</span>
+          </Link>
+          <Link
+            href="/admin/clients"
+            className="px-4 py-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-200 hover:text-gold font-bold text-xs flex items-center gap-2 border border-neutral-800 transition-colors"
+          >
+            <Users className="w-4 h-4 text-gold" />
+            <span>Client Accounts</span>
+          </Link>
           <form action={adminLogoutAction}>
             <button
               type="submit"

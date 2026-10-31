@@ -1,31 +1,15 @@
 'use server';
 
-import crypto from 'crypto';
-import { createAdminToken, revokeAdminToken, ADMIN_COOKIE_NAME } from '@/lib/auth';
+import { createAdminToken, revokeAdminToken, ADMIN_COOKIE_NAME, verifyAdminPassword, safeEqual, createThrottle } from '@/lib/auth';
 import { CONFIG } from '@/lib/config';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-// In-memory brute-force rate-limiting map for login attempts (per email + IP)
-const loginAttempts = new Map<string, { count: number; lastAttempt: number }>();
-const MAX_ATTEMPTS = 5;
-const LOCKOUT_MS = 15 * 60 * 1000; // 15-minute lockout
+const throttle = createThrottle();
 
-/**
- * Constant-time string comparison without leaking length
- */
-function timingSafeCompare(candidate: string, target: string): boolean {
-  if (!candidate || !target) return false;
-  const aHash = crypto.createHash('sha256').update(candidate).digest();
-  const bHash = crypto.createHash('sha256').update(target).digest();
-  return crypto.timingSafeEqual(aHash, bHash);
-}
-
-// Timing-safe password verification using timingSafeCompare
-function verifyAdminPassword(inputPassword: string): boolean {
-  const defaultPassword = process.env.ADMIN_DEFAULT_PASSWORD || '';
-  if (!defaultPassword || !inputPassword) return false;
-  return timingSafeCompare(inputPassword, defaultPassword);
+async function clientIp(): Promise<string> {
+  const h = await headers();
+  return h.get('x-forwarded-for')?.split(',')[0].trim() || h.get('x-real-ip') || 'unknown';
 }
 
 export async function adminLoginAction(formData: FormData) {
@@ -33,74 +17,42 @@ export async function adminLoginAction(formData: FormData) {
   const password = formData.get('password')?.toString();
 
   if (!email || !password) {
+    return { success: false, error: 'Please enter both administrator email and password.' };
+  }
+
+  const key = `${await clientIp()}|${email}`;
+  const lockedFor = throttle.lockedMinutes(key);
+  if (lockedFor > 0) {
     return {
       success: false,
-      error: 'Please enter both administrator email and password.',
+      error: `Too many failed login attempts. Access temporarily locked. Please retry after ${lockedFor} minutes.`,
     };
   }
 
-  // Brute-force throttling & lockout check
-  const now = Date.now();
-  const attemptRecord = loginAttempts.get(email) || { count: 0, lastAttempt: now };
-  if (attemptRecord.count >= MAX_ATTEMPTS && now - attemptRecord.lastAttempt < LOCKOUT_MS) {
-    const minutesRemaining = Math.ceil((LOCKOUT_MS - (now - attemptRecord.lastAttempt)) / 60000);
-    return {
-      success: false,
-      error: `Too many failed login attempts. Access temporarily locked. Please retry after ${minutesRemaining} minutes.`,
-    };
-  }
-
-  // Fail-closed email verification
-  const configuredAdminEmail = (CONFIG.admin.email || 'admin@example.com').toLowerCase();
-  const isEmailMatch =
-    timingSafeCompare(email, configuredAdminEmail) ||
-    email === 'admin@example.com' ||
-    email === 'admin@nexoralaw.com';
-
-  if (!isEmailMatch) {
-    loginAttempts.set(email, {
-      count: attemptRecord.count + 1,
-      lastAttempt: now,
-    });
-    return {
-      success: false,
-      error: 'Invalid admin credentials',
-    };
-  }
-
-  // Timing-safe password verification using verifyAdminPassword
-  let isPasswordValid = false;
+  // Check email AND password every time (no early exit that reveals which one was wrong)
+  let emailOk = false;
+  let passwordOk = false;
   try {
-    isPasswordValid = verifyAdminPassword(password);
-  } catch {
-    isPasswordValid = false;
+    emailOk = safeEqual(email, CONFIG.admin.email.trim().toLowerCase());
+    passwordOk = verifyAdminPassword(password);
+  } catch (err) {
+    console.error('Admin login misconfiguration:', err instanceof Error ? err.message : err);
   }
 
-  if (!isPasswordValid) {
-    loginAttempts.set(email, {
-      count: attemptRecord.count + 1,
-      lastAttempt: now,
-    });
-    return {
-      success: false,
-      error: 'Invalid admin credentials',
-    };
+  if (!emailOk || !passwordOk) {
+    throttle.fail(key);
+    return { success: false, error: 'Invalid admin credentials' };
   }
 
-  // Reset rate limiting counter upon successful authentication
-  loginAttempts.delete(email);
+  throttle.clear(key);
 
-  // Issue cryptographically signed HMAC-SHA256 JWT
   const token = await createAdminToken(email);
-
-  // Set secure HTTP-only cookie using async cookies() API (Next.js 15+)
-  const cookieStore = await cookies();
-  cookieStore.set(ADMIN_COOKIE_NAME, token, {
+  (await cookies()).set(ADMIN_COOKIE_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     path: '/',
-    maxAge: 60 * 60 * 8, // 8-hour session lifetime
+    maxAge: CONFIG.admin.sessionTtlSeconds,
   });
 
   return { success: true };

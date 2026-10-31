@@ -1,9 +1,11 @@
 'use server';
 
 import { z } from 'zod';
-import { requireAdmin, verifyAdminSession } from '@/lib/auth';
+import { requireAdmin } from '@/lib/auth';
 import { getServiceSupabase } from '@/lib/supabase';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+import { notifyCaseClients } from '@/lib/notify';
 
 // Input Validation Schemas
 const CreateCaseSchema = z.object({
@@ -18,7 +20,7 @@ const CreateCaseSchema = z.object({
 
 const UpdateCaseStatusSchema = z.object({
   caseId: z.number().int().positive('Valid positive case ID is required'),
-  status: z.enum(['active', 'pending', 'resolved', 'inactive']),
+  status: z.enum(['active', 'inactive']),
 });
 
 const DeleteCaseSchema = z.object({
@@ -59,6 +61,11 @@ export async function createCaseAction(formData: FormData) {
   const { case_no, plaintiff_name, defendants_name, under_section, court_id, case_type_id, client_mobile } = parsed.data;
 
   const supabase = getServiceSupabase();
+
+  // The case belongs to the same firm user that owns the chosen court (no hard-coded user id)
+  const { data: court } = await supabase.from('court').select('user_id').eq('court_id', court_id).maybeSingle();
+  if (!court) return { success: false, error: 'Selected court was not found.' };
+
   const { data, error } = await supabase.from('cases').insert([
     {
       case_no,
@@ -68,7 +75,7 @@ export async function createCaseAction(formData: FormData) {
       court_id,
       case_type_id,
       client_mobile,
-      user_id: 1,
+      user_id: court.user_id,
       filing_date: new Date().toISOString().split('T')[0],
       status: 'active',
     },
@@ -80,11 +87,11 @@ export async function createCaseAction(formData: FormData) {
 
   revalidatePath('/cases');
   revalidatePath('/admin/cases');
-  return { success: true, case: data };
+  return { success: true, message: `Case ${case_no} created.`, case: data };
 }
 
 // Mutation 2: Update Case Status (Server-side Role-Gated)
-export async function updateCaseStatusAction(caseId: number, status: 'active' | 'pending' | 'resolved' | 'inactive') {
+export async function updateCaseStatusAction(caseId: number, status: 'active' | 'inactive') {
   // Guard 1: Verify admin session before any database interaction
   const admin = await requireAdmin();
   if (!admin || admin.role !== 'admin') {
@@ -100,18 +107,29 @@ export async function updateCaseStatusAction(caseId: number, status: 'active' | 
   const validatedStatus = parsed.data.status;
 
   const supabase = getServiceSupabase();
-  const { error } = await supabase
+  const { data: updated, error } = await supabase
     .from('cases')
     .update({ status: validatedStatus, updated_at: new Date().toISOString() })
-    .eq('case_id', validatedId);
+    .eq('case_id', validatedId)
+    .select('case_no')
+    .maybeSingle();
 
   if (error) {
     return { success: false, error: error.message };
   }
+  if (!updated) {
+    return { success: false, error: 'Case not found.' };
+  }
+
+  // Record the change on the client-visible timeline and notify the linked clients
+  const title = `Case status changed to ${validatedStatus}`;
+  await supabase.from('case_events').insert([{ case_id: validatedId, event_type: 'status', title, client_visible: true }]);
+  const notified = await notifyCaseClients(validatedId, updated.case_no, title, `The status of case ${updated.case_no} is now ${validatedStatus}.`);
 
   revalidatePath('/cases');
   revalidatePath('/admin/cases');
-  return { success: true };
+  revalidatePath(`/admin/cases/${validatedId}`);
+  return { success: true, message: `Status updated. ${notified} client(s) notified.` };
 }
 
 // Mutation 3: Delete Case Record (Server-side Role-Gated)
@@ -171,9 +189,7 @@ export async function uploadVaultDocumentAction(formData: FormData) {
       title,
       category,
       file_name: fileName,
-      file_size: '1.5 MB',
       file_url: fileUrl,
-      uploaded_by: 1,
     },
   ]).select().single();
 
@@ -185,24 +201,16 @@ export async function uploadVaultDocumentAction(formData: FormData) {
   return { success: true, document: data };
 }
 
-// Canonical Server Action Bindings (Explicitly audited function signatures)
-export async function updateCase(caseId: number, status: 'active' | 'pending' | 'resolved' | 'inactive') {
-  await requireAdmin();
+// FormData wrappers used by the admin pages (each re-checks the admin session through the action it calls)
+export async function setCaseStatusFormAction(formData: FormData) {
+  const caseId = Number(formData.get('case_id'));
+  const status = formData.get('status')?.toString();
+  if (status !== 'active' && status !== 'inactive') return { success: false, error: 'Choose a valid status.' };
   return updateCaseStatusAction(caseId, status);
 }
 
-export async function createCase(formData: FormData) {
-  await requireAdmin();
-  return createCaseAction(formData);
+export async function deleteCaseFormAction(formData: FormData) {
+  const result = await deleteCaseAction(Number(formData.get('case_id')));
+  if (result.success) redirect('/admin/cases');
+  return result;
 }
-
-export async function deleteCase(caseId: number) {
-  await requireAdmin();
-  return deleteCaseAction(caseId);
-}
-
-export async function uploadDocument(formData: FormData) {
-  await requireAdmin();
-  return uploadVaultDocumentAction(formData);
-}
-

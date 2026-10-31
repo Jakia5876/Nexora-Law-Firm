@@ -29,6 +29,12 @@ jobs:
       - name: Run Lint & Type Check
         run: npm run lint
 
+      - name: Run unit tests
+        run: npm test
+
+      - name: Dependency audit (production)
+        run: npm run audit:prod
+
   # ─────────────────────────────────────────────
   # JOB 2: Security Scan
   # ─────────────────────────────────────────────

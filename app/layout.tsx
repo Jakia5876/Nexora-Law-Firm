@@ -3,6 +3,8 @@ import { Playfair_Display, Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { CONFIG } from '@/lib/config';
+import { brandCssVars } from '@/lib/brand';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -17,9 +19,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Nexora Law Firm | Advocates & Legal Consultants',
+  title: `${CONFIG.firm.name} | ${CONFIG.firm.tagline}`,
   description: 'Premier legal counsel in Corporate Litigation, Cross-Border M&A, Intellectual Property, and Trial Defense.',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://nexoralaw.vercel.app'),
+  metadataBase: new URL(CONFIG.firm.siteUrl),
 };
 
 export default function RootLayout({
@@ -28,9 +30,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable} scroll-smooth`}>
+    <html
+      lang="en"
+      className={`${playfair.variable} ${inter.variable} scroll-smooth`}
+      style={brandCssVars(CONFIG.firm.primaryColor, CONFIG.firm.accentColor) as React.CSSProperties}
+    >
       <body className="bg-neutral-950 text-neutral-100 min-h-screen flex flex-col font-sans antialiased">
-        <Navbar />
+        <Navbar shortName={CONFIG.firm.shortName} subtitle={CONFIG.firm.subtitle} />
         <main className="flex-1 pt-20">
           {children}
         </main>

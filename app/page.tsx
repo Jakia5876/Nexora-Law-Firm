@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import ContactForm from '@/components/ContactForm';
+import { CONFIG } from '@/lib/config';
 import { Scale, ShieldCheck, Briefcase, Award, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export default function HomePage() {
@@ -43,7 +44,7 @@ export default function HomePage() {
           </h1>
 
           <p className="text-base sm:text-lg text-neutral-300 max-w-2xl mx-auto font-light leading-relaxed">
-            Nexora Law Firm delivers strategic corporate litigation, cross-border M&amp;A advisory, and private client vault security for visionary corporations and leaders.
+            {CONFIG.firm.name} delivers strategic corporate litigation, cross-border M&amp;A advisory, and private client vault security for visionary corporations and leaders.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">

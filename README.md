@@ -1,35 +1,44 @@
-# Nexora Law Firm Platform
+## Demo Access
+Live URL: https://nexoralaw.vercel.app/
 
-Enterprise Legal Management Platform built with Next.js 16 (App Router), Tailwind CSS, and Supabase.
+Demo credentials are **not published in this repository**. They are supplied
+separately in the buyer datasheet / on request (see `SECURITY.md`).
+Seeded demo case reference: `NEX-2026-001`.
+
+
+# Nexora Case Manager
+
+> **Case management and client portal software for law firms.** Staff manage cases and timelines; clients sign in to follow their own matters and get notified when something changes. A configurable demo firm website is included.
 
 [![CI](https://github.com/Jakia5876/Nexora-Law-Firm/actions/workflows/ci.yml/badge.svg)](https://github.com/Jakia5876/Nexora-Law-Firm/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](CHANGELOG.md)
 [![Demo](https://img.shields.io/badge/demo-live-brightgreen.svg)](https://nexoralaw.vercel.app/)
 
-## Live Demo Access
-- **Live Demo URL:** https://nexoralaw.vercel.app/
-- **Admin Portal:** `/admin/login`
-- **Client Portal:** `/cases`
+**Live Demo**: [nexoralaw.vercel.app](https://nexoralaw.vercel.app/)
 
-> **Note for Reviewers & Buyers:**
-> Demo access is pre-configured on the live deployment. Per security compliance standards, all production credentials and administrative passwords must be provisioned via environment variables (`ADMIN_DEFAULT_PASSWORD`, `SESSION_SECRET`) and are never committed to version control.
+## What you get
 
----
+| Module | Who uses it | What it does |
+|---|---|---|
+| **Case register** (`/admin/cases`) | Firm staff | Open, search and manage cases; update status; document links |
+| **Case timeline** (`/admin/cases/[id]`) | Firm staff | Add hearings, orders and notes; choose what clients may see |
+| **Client accounts** (`/admin/clients`) | Firm staff | Create client logins (temporary password shown once), reset, deactivate, grant access per case |
+| **Client portal** (`/client`) | Clients | Sign in, see only their own cases, read the timeline, see notifications |
+| **Notifications** | Clients | Stored in the portal; optional email through Resend (generic text, no case details) |
+| **Branding** | The buyer | Firm name, tagline, colors and contact details come from environment variables |
+| **Public intake & status check** | Visitors | Consultation form (anon insert only) and a case-status lookup (case no. + mobile) |
+| **Demo firm website** | Optional | Home, practice areas, attorneys: sample content you can replace or remove |
 
+## Security model
+- Separate admin and client sessions (different JWT roles and cookies); a client token can never pass the admin guard.
+- Every admin server action and API route verifies the session itself; middleware is a second layer.
+- Clients are checked against an explicit access list on every page (no guessable ids).
+- Passwords are salted scrypt hashes; login is throttled; session revocation fails closed.
+- All tables have RLS enabled and the private ones have no policies: data is reached only through server code.
 
-
-
-## ✨ System Architecture & Application
-
-Nexora Law Firm is a production-grade full-stack Next.js App Router application:
-
-- **Next.js 16 App Router Application**:
-  - Production React Server Components & Server Actions
-  - Role-gated administrative dashboard (`/admin`) and secure authentication (`/admin/login`)
-  - Strict intake data isolation: anonymous visitors can submit consultations (`anon` INSERT only), while reads/edits/deletions require server-verified admin sessions
-  - Dynamic practice area routes (`/practice-areas/[slug]`) and attorney directory (`/attorneys`)
-  - Pinned zero-vulnerability dependencies verified with `npm audit`
+## Configure the branding
+Set `FIRM_NAME`, `FIRM_SHORT_NAME`, `FIRM_SUBTITLE`, `FIRM_TAGLINE`, `BRAND_PRIMARY_COLOR`, `BRAND_ACCENT_COLOR` and the `FIRM_*` contact variables (see `.env.example`). The sample page copy lives in `app/page.tsx` and `app/attorneys/`.
 
 ---
 
@@ -52,9 +61,9 @@ Nexora Law Firm is a production-grade full-stack Next.js App Router application:
 ## 👥 Administrator Access
 
 ### Admin Setup
-Set `ADMIN_DEFAULT_PASSWORD` and `SESSION_SECRET` in your `.env.local` or host settings before logging in at `/admin/login`.
+Set `ADMIN_PASSWORD_HASH` (or `ADMIN_DEFAULT_PASSWORD`) and `SESSION_SECRET` in your `.env.local` or host settings before logging in at `/admin/login`.
 
-- **Admin Portal**: `/admin/login` or `/cases.html?session=admin`
+- **Admin Portal**: `/admin/login`
 - **Session Verification**: Server-side Edge JWT with cryptographic HMAC-SHA256 signature verification, timing-safe credential validation, and brute-force throttling.
 
 ---
@@ -68,39 +77,28 @@ The repository contains two operational modes. Follow the commands for your inte
 - **Package Manager**: `npm >= 10.x`
 - **Database**: PostgreSQL 14+ or a [Supabase](https://supabase.com) project instance
 
-### Option A: Next.js App Router Application (Primary Production App)
+### Option A: Next.js App (Vercel or local)
 
-1. **Initialize Database**:
-   Open your Supabase SQL Editor and execute `database/schema.sql` first to establish tables, foreign keys, indexes, and RLS policies, then run `database/seed.sql`.
+1. **Initialize Database**: In the Supabase SQL Editor run `database/schema.sql`, then `database/seed.sql`.
 2. **Configure Environment**:
    ```bash
-   cd "Next.js Project"
    cp .env.example .env.local
-   # Supply NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SESSION_SECRET, and ADMIN_DEFAULT_PASSWORD
+   # Set NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY,
+   # SESSION_SECRET (>= 32 chars), ADMIN_EMAIL and ADMIN_PASSWORD_HASH (npm run hash-password)
    ```
-3. **Install Dependencies & Run**:
+3. **Install & Run**:
    ```bash
-   cd "Next.js Project"
    npm ci
    npm run build
    npm start
-   # Production server listens at http://localhost:3000
+   # http://localhost:3000
    ```
 
-### Option B: Docker Container Deployment
+### Option B: Docker
 
 ```bash
 docker compose up -d --build
-# Production containerized server running at http://localhost:3000
-```
-
-### Option C: Zero-Build Static Web Previews (Root Directory)
-
-```bash
-# Run at repository root:
-npm ci
-npm start
-# Serves static preview templates on http://localhost:8080
+# http://localhost:3000
 ```
 
 See [HowToSetup.md](HowToSetup.md) for full VPS (Ubuntu + Nginx) and Docker installation guides.
@@ -111,41 +109,25 @@ See [HowToSetup.md](HowToSetup.md) for full VPS (Ubuntu + Nginx) and Docker inst
 
 ```
 .
-├── Next.js Project/           # Next.js App Router application
-│   ├── app/                   # App Router pages, server actions, and API routes
-│   ├── components/            # Reusable UI components
-│   ├── lib/                   # Supabase clients & server auth utilities
-│   ├── middleware.ts          # Edge middleware role guard
-│   ├── .env.example           # Environment configuration template
-│   ├── package.json           # Pinned dependencies
-│   ├── package-lock.json      # Committed lockfile (0 audit vulnerabilities)
-│   └── Dockerfile             # Standalone Next.js container
-├── index.html                 # Main landing page + client login
-├── cases.html                 # Case management dashboard
-├── accelerator.html           # Corporate practice page
-├── odegard.html               # Trial & injury practice page
-├── service-terms.html         # Terms of service
-├── license.html               # Commercial license
-├── seller-agreement.html      # Vendor agreement
-├── privacy.html               # Privacy policy
-├── supabase-setup.sql         # Combined schema + seed (one-step setup)
+├── app/                       # App Router pages, server actions, API routes
+├── components/                # Reusable UI components
+├── lib/                       # Supabase clients, config & server auth utilities
+├── middleware.ts              # Edge middleware admin guard
 ├── database/
-│   ├── schema.sql             # Database schema (tables, triggers, RLS)
-│   └── seed.sql               # Initial seed data
-├── docs/
-│   ├── erd.md                 # Entity Relationship Diagram & table schema
-│   └── architecture.md        # Architecture overview
-├── Dockerfile                 # Production Next.js server container
-├── docker-compose.yml         # 1-command Docker Compose orchestration
-├── .github/workflows/ci.yml   # GitHub Actions CI pipeline
-├── .env.example               # Root environment variable template
-├── HowToSetup.md              # Step-by-step setup guide (VPS + Docker)
-├── LICENSE-NOTE.md            # Commercial licensing terms for buyers
-├── CLAUDE.md                  # AI assistant coding guide
-├── AGENTS.md                  # AI agent & contributor guide
-├── CHANGELOG.md               # Version history (starts at 1.0.0)
-├── LICENSE                    # MIT License
-└── README.md                  # This file
+│   ├── schema.sql             # Tables, indexes, RLS
+│   └── seed.sql               # Demo seed data
+├── docs/                      # api.md, erd.md, architecture.md
+├── docker/nginx.conf
+├── Dockerfile
+├── docker-compose.yml
+├── .github/workflows/ci.yml
+├── .env.example
+├── package.json / package-lock.json
+├── HowToSetup.md
+├── AGENTS.md / CLAUDE.md
+├── CHANGELOG.md
+├── LICENSE / LICENSE-NOTE.md / SECURITY.md
+└── README.md
 ```
 
 ---

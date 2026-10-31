@@ -39,7 +39,7 @@ export default async function CasesPortalPage({ searchParams }: CasesPageProps) 
     const caseRef = params.case_no.trim();
     const verifier = params.verifier.trim().toLowerCase();
 
-    if (verifier.length < 4) {
+    if (verifier.replace(/[^0-9]/g, '').length < 7) {
       searchError = 'Authentication failed: Please provide your full telephone number as verification.';
     } else {
       try {
@@ -47,28 +47,27 @@ export default async function CasesPortalPage({ searchParams }: CasesPageProps) 
           const supabase = getServiceSupabase();
           const { data, error } = await supabase
             .from('cases')
-            .select('case_no, case_number, title, status, filing_date, court:court_id(court_name), client_mobile, client_email')
-            .or(`case_no.eq.${caseRef},case_number.eq.${caseRef}`)
-            .single();
+            .select('case_no, status, filing_date, court:court_id(court_name), client_mobile')
+            .eq('case_no', caseRef)
+            .limit(1)
+            .maybeSingle();
 
           if (error || !data) {
             searchError = 'No matching case record found with the supplied reference number.';
           } else {
-            // Verify secondary secret against client_mobile or client_email
+            // Verify secondary secret against the registered client mobile number
             const clientMobile = (data.client_mobile || '').toLowerCase().replace(/[^0-9]/g, '');
-            const clientEmail = (data.client_email || '').toLowerCase().trim();
             const cleanVerifier = verifier.replace(/[^0-9]/g, '');
 
-            const isPhoneMatch = cleanVerifier.length >= 4 && clientMobile.includes(cleanVerifier);
-            const isEmailMatch = clientEmail.length > 0 && clientEmail === verifier.trim().toLowerCase();
+            const isPhoneMatch = cleanVerifier.length >= 7 && clientMobile.endsWith(cleanVerifier);
 
-            if (!isPhoneMatch && !isEmailMatch) {
+            if (!isPhoneMatch) {
               searchError = 'Authentication failed: Provided verification details do not match the registered client record.';
             } else {
               // Return only minimal public status fields (no sensitive personal details)
               searchedCase = {
-                case_no: data.case_number || data.case_no,
-                status: data.status === 'in_progress' ? 'In Progress (Corporate Legal Review)' : data.status,
+                case_no: data.case_no,
+                status: data.status,
                 filing_date: data.filing_date,
                 court: data.court,
               };
@@ -110,13 +109,13 @@ export default async function CasesPortalPage({ searchParams }: CasesPageProps) 
         </div>
 
         <div className="flex items-center gap-3">
-          <a
-            href="/cases.html"
+          <Link
+            href="/client"
             className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-burgundy to-burgundy-light hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-1.5"
           >
             <FolderLock className="w-4 h-4 text-gold" />
-            <span>Client & Case Vault</span>
-          </a>
+            <span>Client Portal Sign-In</span>
+          </Link>
           {auth.isValid ? (
             <Link
               href="/admin"
@@ -164,7 +163,7 @@ export default async function CasesPortalPage({ searchParams }: CasesPageProps) 
             </div>
             <div>
               <label className="block text-xs font-semibold text-neutral-300 mb-1.5">
-                Client Verifier (Registered Phone or Email PIN)
+                Client Verifier (Registered Mobile Number)
               </label>
               <input
                 type="text"
@@ -252,13 +251,13 @@ export default async function CasesPortalPage({ searchParams }: CasesPageProps) 
                       </span>
                     </td>
                     <td className="py-4 px-4 text-right">
-                      <a
-                        href="/cases.html?session=admin"
+                      <Link
+                        href={`/admin/cases/${c.case_id}`}
                         className="px-3 py-1.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-300 hover:text-gold border border-neutral-800 transition-colors inline-flex items-center gap-1.5 text-xs"
                       >
                         <FolderLock className="w-3.5 h-3.5 text-gold" />
                         <span>Manage Docket</span>
-                      </a>
+                      </Link>
                     </td>
                   </tr>
                 ))}

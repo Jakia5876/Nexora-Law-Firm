@@ -4,66 +4,60 @@ This document provides definitive guidance for AI coding agents (Claude, Gemini,
 
 ---
 
-## Build & Test Architecture
-- Package manager: npm (lockfile v3 pinned)
-- Layout: Flat Next.js App Router structure at repository root.
-- Tests: Vitest suite configured, run with `npm run test` or `npm run lint`
-
----
-
 ## 📁 Project Architecture & App Router Structure
 
-Nexora Law Firm features a production-grade full-stack architecture:
-1. **Next.js App Router Application (`./`)**: Full-stack Next.js web application utilizing React Server Components, Server Actions, Edge Middleware, and Supabase database isolation.
+Nexora Law Firm is a single **Next.js App Router application** (repository root):
+1. **Application**: Full-stack Next.js web application utilizing React Server Components, Server Actions, Edge Middleware, and Supabase database isolation.
 
 ```
 Nexora-Law-Firm/
-├── app/
-│   ├── layout.tsx                 # Root layout with fonts, metadata, Vibe96 verification
-│   ├── page.tsx                   # Public homepage & hero presentation
-│   ├── globals.css                # Global Tailwind CSS directives & color tokens
-│   ├── practice-areas/
-│   │   ├── page.tsx               # Practice areas directory
-│   │   └── [slug]/page.tsx        # Dynamic individual practice area page
-│   ├── attorneys/page.tsx         # Attorney roster & bios
-│   ├── cases/page.tsx             # Public case status inquiry portal
-│   ├── admin/
-│   │   ├── page.tsx               # Role-gated admin case dashboard
-│   │   └── login/page.tsx         # Admin authentication login
-│   ├── actions/
-│   │   ├── intake.ts              # Public consultation intake server action
-│   │   ├── cases.ts               # Role-verified case management server actions
-│   │   └── admin.ts               # Admin session authentication & cookie actions
-│   └── api/
-│       ├── intake/route.ts        # POST endpoint for consultation intake
-│       └── admin/cases/route.ts   # Role-gated administrative case API
-├── components/
-│   ├── Navbar.tsx                 # Responsive navigation bar
-│   ├── Footer.tsx                 # Site footer with practice links & disclaimers
-│   └── ContactForm.tsx            # Isolated public intake consultation form
-├── lib/
-│   ├── supabase.ts                # Client & admin Supabase SDK initializers
-│   ├── auth.ts                    # Server-side admin role & session verification
-│   └── config.ts                  # Central configuration
-├── middleware.ts                  # Edge middleware route guard for /admin/*
-├── .env.example                   # Environment configuration template
-├── package.json                   # Pinned patched dependencies (Next.js, Supabase)
-├── package-lock.json              # Committed lockfile (0 audit vulnerabilities)
-├── tailwind.config.ts             # Tailwind CSS theme extension
-├── tsconfig.json                  # Strict TypeScript configuration
-├── next.config.mjs                # Next.js standalone output configuration
+├── (repository root)                  # Next.js App Router Application
+│   ├── app/
+│   │   ├── layout.tsx                 # Root layout with fonts, metadata, Vibe96 verification
+│   │   ├── page.tsx                   # Public homepage & hero presentation
+│   │   ├── globals.css                # Global Tailwind CSS directives & color tokens
+│   │   ├── practice-areas/
+│   │   │   ├── page.tsx               # Practice areas directory
+│   │   │   └── [slug]/page.tsx        # Dynamic individual practice area page
+│   │   ├── attorneys/page.tsx         # Attorney roster & bios
+│   │   ├── cases/page.tsx             # Public case status inquiry portal
+│   │   ├── admin/
+│   │   │   ├── page.tsx               # Role-gated admin case dashboard
+│   │   │   └── login/page.tsx         # Admin authentication login
+│   │   ├── actions/
+│   │   │   ├── intake.ts              # Public consultation intake server action
+│   │   │   ├── cases.ts               # Role-verified case management server actions
+│   │   │   └── admin.ts               # Admin session authentication & cookie actions
+│   │   └── api/
+│   │       ├── intake/route.ts        # POST endpoint for consultation intake
+│   │       └── admin/cases/route.ts   # Role-gated administrative case API
+│   ├── components/
+│   │   ├── Navbar.tsx                 # Responsive navigation bar
+│   │   ├── Footer.tsx                 # Site footer with practice links & disclaimers
+│   │   └── ContactForm.tsx            # Isolated public intake consultation form
+│   ├── lib/
+│   │   ├── supabase.ts                # Client & admin Supabase SDK initializers
+│   │   ├── config.ts                  # Typed env + session/throttle settings (single source)
+│   │   └── auth/                      # token.ts (sign/verify), password.ts (scrypt), revocation.ts, session.ts, index.ts
+│   ├── middleware.ts                  # Edge middleware route guard for /admin/* (uses lib/auth/session)
+│   ├── .env.example                   # Environment configuration template
+│   ├── package.json                   # Pinned patched dependencies (Next.js, Supabase)
+│   ├── package-lock.json              # Committed lockfile (0 audit vulnerabilities)
+│   ├── tailwind.config.ts             # Tailwind CSS theme extension
+│   ├── tsconfig.json                  # Strict TypeScript configuration
+│   └── Dockerfile                     # Production Node.js 20 container image
 ├── database/
-│   ├── schema.sql                 # Complete PostgreSQL DDL (tables, FKs, RLS, indexes)
-│   └── seed.sql                   # Initial seed data (admin, attorneys, practices, demo)
+│   ├── schema.sql                     # Complete PostgreSQL DDL (tables, FKs, RLS, indexes)
+│   └── seed.sql                       # Initial seed data (admin, attorneys, practices, demo)
 ├── docs/
-│   ├── api.md                     # REST API & Server Actions documentation
-│   ├── erd.md                     # Entity-Relationship Diagram & RLS policy notes
-│   └── architecture.md            # System design & multi-layer architecture guide
-├── CHANGELOG.md                   # Version history starting at 1.0.0
-├── HowToSetup.md                  # Deployment instructions (VPS, Docker, Cloud)
-├── LICENSE-NOTE.md                # Commercial licensing and third-party notices
-├── docker-compose.yml             # Container orchestration (Next.js server)
-└── Dockerfile                     # Next.js production runtime container
+│   ├── erd.md                         # Entity-Relationship Diagram & RLS policy notes
+│   └── architecture.md                # System design & multi-layer architecture guide
+├── .env.example                       # Root environment variable documentation
+├── CHANGELOG.md                       # Version history starting at 1.0.0
+├── HowToSetup.md                      # Deployment instructions (VPS, Docker, Cloud)
+├── LICENSE-NOTE.md                    # Commercial licensing and third-party notices
+├── docker-compose.yml                 # Multi-container orchestration (Next.js server)
+└── Dockerfile                         # Next.js production runtime container
 ```
 
 ---
@@ -82,9 +76,11 @@ Nexora-Law-Firm/
 ## 🔐 Security, Authorization & Intake Data Isolation
 
 ### 1. Data Isolation Model
-- **Public Consultation Intake**: The `contacts` table allows `anon` role **INSERT ONLY**. Anonymous visitors can submit consultations, but cannot read, list, update, or delete records (`USING (false)` for anon reads).
+- **Public Consultation Intake**: The `contacts` table allows `anon` role **INSERT ONLY**. Anonymous visitors can submit consultations, but cannot read, list, update, or delete records (no SELECT/UPDATE/DELETE policy exists for anon).
 - **Role-Gated Mutations**: All modifications to `cases`, `hearings`, `documents`, and `contacts` require an authenticated session verified server-side.
-- **Admin Verification (`lib/auth.ts`)**: Every server action and API mutation executes `verifyAdminSession()` which checks HTTP-only cookies and cryptographically validates the admin role.
+- **Admin Verification (`lib/auth/`)**: Every server action calls `requireAdmin()` and every API route handler calls `verifyAdminSession()` as its first statement (middleware is a second layer, not the only one). `verifyToken` is the single verifier: HS256 signature + expiry, then the `revoked_tokens` lookup, which **fails closed** on any database error.
+- **Revocation store**: `revoked_tokens` is read/written only with the server-side service-role client; RLS is on with no policies. Rows are purged on logout once expired.
+- **Private tables have no RLS policies**: all private data is accessed server-side with the service-role key after the admin check. Only `contacts` (anon INSERT) and published site content (public SELECT) have policies.
 
 ### 2. Practice Content Location
 - **Database Tables**: Practice areas are stored in `practice_areas` with indexed `slug`, `status`, and `created_at`.
@@ -115,6 +111,8 @@ Nexora-Law-Firm/
 
 ### Next.js Application
 ```bash
+# Navigate to Next.js project
+
 # Run ESLint / Next lint
 npm run lint
 
@@ -137,14 +135,28 @@ The project requires the following environment variables documented in `.env.exa
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public / Client | Supabase Anonymous Public API Key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server-Side Only | Administrative bypass key for server actions & seeding |
 | `SESSION_SECRET` | Server-Side Only | Cryptographic secret for signing HMAC-SHA256 JWT sessions |
-| `ADMIN_EMAIL` | Server-Side Only | Default administrator identification (`admin@example.com`) |
-| `ADMIN_DEFAULT_PASSWORD` | Server-Side Only | Initial deployment administrator password placeholder |
+| `ADMIN_EMAIL` | Server-Side Only | Administrator login email (e.g. `admin@example.com`) |
+| `ADMIN_PASSWORD_HASH` | Server-Side Only | Recommended: scrypt hash from `npm run hash-password` |
+| `ADMIN_DEFAULT_PASSWORD` | Server-Side Only | Fallback plaintext password, used only when no hash is set |
 
 ---
 
 ## 👥 Administrator Setup & Access
 
 In accordance with production security standards:
-- **Admin Portal**: `/admin/login` or `/cases`
-- **Administrator Email**: `admin@example.com`
-- **Password**: Set via the `ADMIN_DEFAULT_PASSWORD` environment variable during deployment; must be changed upon first login. Zero hardcoded passwords exist in codebase or documentation.
+- **Admin Portal**: `/admin/login`
+- **Administrator Email**: set via `ADMIN_EMAIL` (no default login exists)
+- **Password**: Set `ADMIN_PASSWORD_HASH` (preferred) or `ADMIN_DEFAULT_PASSWORD` during deployment. Zero passwords exist in the codebase or documentation.
+
+## 🛠️ Commands & Conventions
+
+| Command | Purpose |
+|---|---|
+| `npm run lint` | Type check (`tsc --noEmit`) |
+| `npm test` | Auth unit tests (Node test runner + tsx) |
+| `npm run audit:prod` | `npm audit --omit=dev` (last result: 0 vulnerabilities) |
+| `npm run hash-password -- "<password>"` | Generate `ADMIN_PASSWORD_HASH` |
+
+- Naming: files `kebab-case` or Next.js conventions, React components `PascalCase`, server actions end in `Action`, DB columns `snake_case`.
+- Service-role client (`getServiceSupabase`) is server-only and may be used only after `requireAdmin()` / `verifyAdminSession()`.
+- `package.json` `overrides` pins `@eslint/plugin-kit` to a patched release (dev tooling advisory); remove it once `eslint` ships the fix.

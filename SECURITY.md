@@ -91,3 +91,16 @@ This project has minimal dependencies since it is a zero-build static site:
 | Google Fonts | N/A | fonts.googleapis.com | ✅ No known CVEs |
 
 All CDN resources are loaded from trusted providers. For production, consider pinning CDN URLs to specific versions.
+
+## Authentication model (v1.0.6)
+- Single administrator identified by `ADMIN_EMAIL`; password verified against `ADMIN_PASSWORD_HASH` (scrypt) or, as a fallback, `ADMIN_DEFAULT_PASSWORD`.
+- Sessions are HS256 JWTs (8 h) in an HTTP-only, SameSite=Strict cookie, with a unique `jti` revoked on logout.
+- Revocation lookups fail closed. Login is throttled (5 attempts / 15 min per IP + email).
+- Every server action calls `requireAdmin()`; every API handler calls `verifyAdminSession()`.
+- Report vulnerabilities privately to the contact in this file.
+
+## Client portal (v1.1.0)
+- Client sessions use a separate cookie and JWT role; they are rejected by every admin guard (covered by tests).
+- Each client page checks the `client_case_access` list for the exact case id; unknown or unshared ids return 404.
+- Client passwords are scrypt hashes. Temporary passwords are shown once to the admin and not stored in readable form.
+- Notification emails never contain case details; details are shown only after sign-in.

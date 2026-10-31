@@ -1,10 +1,22 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { ADMIN_COOKIE_NAME, verifyToken, buildLoginRedirect } from './lib/auth';
+import { ADMIN_COOKIE_NAME, CLIENT_COOKIE_NAME, verifyToken, verifyClientToken, buildLoginRedirect } from './lib/auth/session';
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isAdminPage = pathname.startsWith('/admin') && pathname !== '/admin/login';
   const isAdminApi = pathname.startsWith('/api/admin');
+  const isClientPage = pathname.startsWith('/client') && pathname !== '/client/login';
+
+  if (isClientPage) {
+    const clientToken = request.cookies.get(CLIENT_COOKIE_NAME)?.value;
+    const { isValid: clientValid } = clientToken ? await verifyClientToken(clientToken) : { isValid: false };
+    if (!clientValid) {
+      const response = NextResponse.redirect(buildLoginRedirect(request.url, pathname, clientToken ? 'invalid_session' : undefined, '/client/login'));
+      if (clientToken) response.cookies.delete(CLIENT_COOKIE_NAME);
+      return response;
+    }
+    return NextResponse.next();
+  }
 
   if (!isAdminPage && !isAdminApi) {
     return NextResponse.next();
@@ -36,5 +48,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*'],
+  matcher: ['/admin/:path*', '/api/admin/:path*', '/client/:path*'],
 };

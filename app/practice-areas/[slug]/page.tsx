@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowLeft, ShieldCheck, Scale, CheckCircle2 } from 'lucide-react';
 import ContactForm from '@/components/ContactForm';
+import { CONFIG } from '@/lib/config';
 
 export default async function PracticeAreaDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
@@ -25,7 +26,7 @@ export default async function PracticeAreaDetailPage({ params }: { params: Promi
         <h1 className="text-3xl sm:text-5xl font-serif font-bold text-white">{formattedTitle}</h1>
 
         <p className="text-neutral-300 text-sm sm:text-base leading-relaxed font-light">
-          Nexora Law Firm provides distinguished counsel in {formattedTitle}. Our partners combine deep regulatory expertise, assertive courtroom advocacy, and pragmatic commercial negotiation to secure optimal client outcomes.
+          {CONFIG.firm.name} provides distinguished counsel in {formattedTitle}. Our partners combine deep regulatory expertise, assertive courtroom advocacy, and pragmatic commercial negotiation to secure optimal client outcomes.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-neutral-800">

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CONFIG } from '@/lib/config';
 import { Scale, Phone, Mail, MapPin } from 'lucide-react';
 
 export default function Footer() {
@@ -10,7 +11,7 @@ export default function Footer() {
             <div className="w-8 h-8 rounded-lg bg-burgundy/40 border border-gold/40 flex items-center justify-center text-gold">
               <Scale className="w-4 h-4" />
             </div>
-            <span className="font-serif font-bold text-white text-base">NEXORA LAW FIRM</span>
+            <span className="font-serif font-bold text-white text-base uppercase">{CONFIG.firm.name}</span>
           </div>
           <p className="text-neutral-400 text-xs leading-relaxed">
             Premier legal counsel in Corporate Litigation, Cross-Border M&A, Intellectual Property, and White-Collar Defense.
@@ -22,8 +23,8 @@ export default function Footer() {
           <ul className="space-y-2.5">
             <li><Link href="/practice-areas" className="hover:text-gold transition-colors">Practice Areas</Link></li>
             <li><Link href="/attorneys" className="hover:text-gold transition-colors">Attorneys & Partners</Link></li>
-            <li><Link href="/cases" className="hover:text-gold transition-colors">Client Case Portal</Link></li>
-            <li><Link href="/admin" className="hover:text-gold transition-colors">Role-Gated Management</Link></li>
+            <li><Link href="/client" className="hover:text-gold transition-colors">Client Portal</Link></li>
+            <li><Link href="/admin" className="hover:text-gold transition-colors">Staff Console</Link></li>
           </ul>
         </div>
 

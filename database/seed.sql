@@ -14,8 +14,8 @@ VALUES (
     'Managing Partner (Admin)',
     'Nexora Law Firm Chambers, Suite 500, New York, NY 10001',
     '+1-800-555-0199',
-    '$2a$12$e8UvVv4.9v2Z0jQ5O4UoO.fPzB2QW4I5Q2U5I2O5P2Q5W4I5Q2U5I',
-    'admin@nexoralaw.com',
+    '!login-disabled',
+    'admin@example.com',
     'admin',
     true
 ) ON CONFLICT (user_id) DO NOTHING;
@@ -27,8 +27,8 @@ VALUES (
     'Firm Counsel (Senior Associate)',
     'Nexora Chambers, Level 4, Financial District',
     '+1-800-555-0198',
-    '$2a$12$e8UvVv4.9v2Z0jQ5O4UoO.fPzB2QW4I5Q2U5I2O5P2Q5W4I5Q2U5I',
-    'counsel@nexoralaw.com',
+    '!login-disabled',
+    'counsel@example.com',
     'admin',
     true
 ) ON CONFLICT (user_id) DO NOTHING;
@@ -40,7 +40,7 @@ VALUES (
     'Hon. Rafael Del Rosario',
     'Del Rosario Corporate Holdings, 120 Broadway',
     '+1-800-555-0120',
-    '$2a$12$e8UvVv4.9v2Z0jQ5O4UoO.fPzB2QW4I5Q2U5I2O5P2Q5W4I5Q2U5I',
+    '!login-disabled',
     'client@nexoralaw.com',
     'client',
     true
@@ -187,9 +187,7 @@ SELECT setval(pg_get_serial_sequence('public.subscriptions', 'subscription_id'),
 -- ==============================================================================
 -- 11. DEMO CLIENT & CASE REFERENCE (Datasheet / Audit Verification)
 -- ==============================================================================
--- Seed Demo Accounts and Case Data
-INSERT INTO cases (case_number, title, status, client_name, client_email, created_at)
-VALUES
-('NEX-2026-001', 'Corporate Acquisition Filing', 'in_progress', 'Demo Client', 'client@example.com', NOW())
-ON CONFLICT (case_number) DO NOTHING;
-
+-- Demo case used by the datasheet (client verifies with case number + mobile number)
+INSERT INTO public.cases (court_id, case_no, under_section, filing_date, plaintiff_name, defendants_name, assistant_id, client_mobile, user_id, note, on_behalf, case_type_id, case_no_note, status)
+SELECT 1, 'NEX-2026-001', 'Corporate Acquisition Filing', CURRENT_DATE, 'Demo Client', 'Demo Respondent Ltd.', 1, '+1-800-555-0100', 1, 'Demo record for datasheet verification', 'Plaintiff', 1, 'Corporate legal review', 'active'
+WHERE NOT EXISTS (SELECT 1 FROM public.cases WHERE case_no = 'NEX-2026-001');
