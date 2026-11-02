@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibe96 Standard License | Nexora Law Firm</title>
+  <meta name="description" content="What you may and may not do with source code bought on Vibe96: one end product, commercial use allowed, no resale or redistribution.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+            geist: ['Geist', 'sans-serif'],
+            montserrat: ['Montserrat', 'sans-serif'],
+            poppins: ['Poppins', 'sans-serif'],
+            instrument: ['"Instrument Serif"', 'serif'],
+            merriweather: ['Merriweather', 'serif']
+          },
+          colors: {
+            'dark-900': '#0d0d11',
+            'dark-800': '#15151b',
+            'burgundy': '#800020',
+            'burgundy-light': '#9b1b30',
+            'gold': '#D4AF37',
+            'gold-light': '#f3cf65'
+          },
+          animation: {
+            'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            'fade-in': 'fadeIn 0.7s ease-in-out forwards',
+            'blur-in': 'blurIn 0.8s ease-out forwards'
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(24px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' }
+            },
+            blurIn: {
+              '0%': { opacity: '0', filter: 'blur(10px)' },
+              '100%': { opacity: '1', filter: 'blur(0)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background-color: #64748b; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background-color: #475569; }
+
+    .scrollbar-none::-webkit-scrollbar { display: none; }
+    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .reveal-on-scroll {
+      opacity: 0; filter: blur(5px); transform: translateY(20px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-on-scroll.is-revealed { opacity: 1; filter: blur(0); transform: translateY(0); }
+
+    h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+
+    .legal-content h2 {
+      font-size: 1.5rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem;
+      padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .legal-content h3 {
+      font-size: 1.125rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem;
+    }
+    .legal-content ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; }
+    .legal-content ul li { margin-bottom: 0.5rem; line-height: 1.75; }
+    .legal-content p { margin-bottom: 1rem; line-height: 1.75; }
+
+    .toc-link { transition: all 0.2s ease; }
+    .toc-link:hover { color: #D4AF37; transform: translateX(4px); }
+
+    .allowed-item { border-left: 3px solid #22c55e; }
+    .not-allowed-item { border-left: 3px solid #ef4444; }
+  </style>
+</head>
+<body class="bg-white text-neutral-900 transition-colors duration-300 dark:bg-dark-900 dark:text-neutral-100 antialiased selection:bg-burgundy selection:text-white">
+
+  <!-- VIBE96 TOP TEMPLATE SWITCHER BAR -->
+  <aside aria-label="Template switcher" class="fixed top-0 inset-x-0 z-[60] h-10 bg-neutral-950/95 text-white backdrop-blur-md border-b border-neutral-800 text-xs px-3 sm:px-6 flex items-center justify-between overflow-x-auto scrollbar-none whitespace-nowrap">
+    <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+      <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-burgundy text-white font-medium text-[10px] sm:text-[11px] uppercase tracking-wider">
+        <i data-lucide="scale" class="w-3.5 h-3.5 text-gold"></i> Nexora Law Firm
+      </span>
+      <span class="hidden md:inline text-neutral-400">Legal:</span>
+      <strong class="text-neutral-200 hidden sm:inline text-xs">Standard License</strong>
+    </div>
+    <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+      <a href="service-terms.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">Service Terms</a>
+      <a href="license.html" class="px-2 sm:px-2.5 py-1 rounded bg-burgundy text-white font-semibold text-[10px] sm:text-xs transition-all">License</a>
+      <a href="seller-agreement.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">Seller Agreement</a>
+      <a href="privacy.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] sm:text-xs transition-all">Privacy Policy</a>
+      <a href="index.html" class="px-2 sm:px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-gold font-medium text-[10px] sm:text-xs transition-all">← Back</a>
+    </div>
+  </aside>
+
+  <div class="min-h-screen flex flex-col relative pt-10">
+
+    <!-- NAVBAR -->
+    <header class="fixed top-10 inset-x-0 h-16 sm:h-20 lg:h-24 z-50 transition-all duration-300 text-neutral-900 dark:text-white">
+      <div class="absolute inset-0 transition-all duration-300 pointer-events-none backdrop-blur-md bg-white/85 dark:bg-dark-900/85 shadow-md"></div>
+      <div class="relative max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between gap-4">
+        <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 group min-w-0">
+          <div class="relative w-9 h-9 sm:w-11 sm:h-11 rounded-full border border-gold/40 shadow-md bg-gradient-to-br from-neutral-900 via-neutral-950 to-burgundy flex-shrink-0 flex items-center justify-center ring-1 ring-gold/20 group-hover:border-gold transition-all">
+            <span class="font-serif font-extrabold text-gold text-base sm:text-lg tracking-wider">N</span>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <span class="font-serif font-bold tracking-tight text-sm sm:text-base lg:text-xl leading-tight transition-colors truncate">
+              Nexora Law Firm
+            </span>
+            <span class="text-[9px] sm:text-[10px] lg:text-[11px] tracking-wider uppercase opacity-80 font-medium truncate">Advocates &amp; Legal Consultants</span>
+          </div>
+        </a>
+
+        <nav class="hidden lg:flex items-center gap-6 xl:gap-8 text-xs xl:text-sm font-medium tracking-wide">
+          <a href="index.html#services" class="hover:text-gold transition-colors">Services</a>
+          <a href="index.html#about" class="hover:text-gold transition-colors">About</a>
+          <a href="index.html#practice-areas" class="hover:text-gold transition-colors">Practice Areas</a>
+          <a href="index.html#contact" class="hover:text-gold transition-colors">Contact</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a href="index.html#contact" class="hidden sm:inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-burgundy hover:bg-burgundy-light text-white text-xs uppercase tracking-wider font-semibold shadow-lg hover:shadow-burgundy/30 transition-all duration-300 flex-shrink-0">
+            <span>Inquire Now</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
+          <button id="legal-mobile-menu-btn" class="lg:hidden p-2 rounded-lg bg-neutral-200 dark:bg-white/10 hover:bg-neutral-300 dark:hover:bg-white/20 transition-colors flex-shrink-0" aria-label="Toggle navigation menu">
+            <i data-lucide="menu" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Legal Mobile Menu Drawer -->
+      <div id="legal-mobile-menu" class="hidden lg:hidden fixed inset-x-0 top-[calc(2.5rem+4rem)] sm:top-[calc(2.5rem+5rem)] lg:top-[calc(2.5rem+6rem)] max-h-[calc(100vh-7rem)] overflow-y-auto bg-neutral-950/98 backdrop-blur-2xl border-b border-neutral-800 text-white px-6 py-6 transition-all duration-300 shadow-2xl z-40">
+        <div class="flex flex-col gap-3 text-base font-medium">
+          <a href="index.html" class="legal-mobile-link py-2 border-b border-neutral-800/60 hover:text-gold flex items-center justify-between">
+            <span>Home</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-neutral-500"></i>
+          </a>
+          <a href="index.html#services" class="legal-mobile-link py-2 border-b border-neutral-800/60 hover:text-gold flex items-center justify-between">
+            <span>Services</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-neutral-500"></i>
+          </a>
+          <a href="index.html#practice-areas" class="legal-mobile-link py-2 border-b border-neutral-800/60 hover:text-gold flex items-center justify-between">
+            <span>Practice Areas</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-neutral-500"></i>
+          </a>
+          <a href="index.html#contact" class="legal-mobile-link py-2 border-b border-neutral-800/60 hover:text-gold flex items-center justify-between">
+            <span>Contact Firm</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-neutral-500"></i>
+          </a>
+          
+          <div class="pt-3 mt-1 border-t border-neutral-800/80">
+            <span class="text-[11px] uppercase tracking-wider text-neutral-400 font-semibold block mb-2">Legal Documents</span>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <a href="service-terms.html" class="py-1.5 px-2.5 rounded bg-neutral-900 border border-neutral-800 hover:text-gold">Service Terms</a>
+              <a href="license.html" class="py-1.5 px-2.5 rounded bg-burgundy text-white font-semibold">License</a>
+              <a href="seller-agreement.html" class="py-1.5 px-2.5 rounded bg-neutral-900 border border-neutral-800 hover:text-gold">Seller Agreement</a>
+              <a href="privacy.html" class="py-1.5 px-2.5 rounded bg-neutral-900 border border-neutral-800 hover:text-gold">Privacy Policy</a>
+            </div>
+          </div>
+
+          <a href="index.html#contact" class="legal-mobile-link mt-3 inline-flex items-center justify-center gap-2 py-3 rounded-full bg-burgundy hover:bg-burgundy-light text-white font-semibold text-sm shadow-lg transition-all">
+            <span>Inquire Now</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO BANNER -->
+    <section class="relative pt-28 sm:pt-36 lg:pt-40 pb-12 sm:pb-16 overflow-hidden">
+      <div class="absolute inset-0 z-0 bg-gradient-to-br from-neutral-950 via-dark-900 to-neutral-900"></div>
+      <div class="absolute inset-0 z-0 opacity-10">
+        <div class="absolute top-20 right-1/4 w-96 h-96 rounded-full bg-gold blur-[120px]"></div>
+        <div class="absolute bottom-10 left-1/4 w-64 h-64 rounded-full bg-burgundy blur-[100px]"></div>
+      </div>
+
+      <div class="relative z-10 max-w-4xl mx-auto px-6 text-center text-white">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel text-xs uppercase tracking-widest text-gold mb-6 border border-gold/30 animate-fade-in">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+          <span>Legal</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl font-serif font-bold tracking-tight text-white leading-[1.15] mb-6 animate-fade-in-up">
+          Vibe96 Standard <br class="hidden sm:inline">
+          <span class="italic font-normal text-gold">License</span>
+        </h1>
+
+        <p class="text-base sm:text-lg text-neutral-300 max-w-2xl mx-auto font-light mb-4 leading-relaxed animate-blur-in">
+          Every project bought on Vibe96 comes with this license. It sets out what you may do with the source code you receive.
+        </p>
+
+        <p class="text-xs text-neutral-500 animate-blur-in">
+          Version 1.2 · Applies to new purchases; earlier purchases keep the version shown on their license certificate.
+        </p>
+      </div>
+
+      <div class="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white dark:from-dark-900 to-transparent pointer-events-none"></div>
+    </section>
+
+    <!-- CONTENT -->
+    <main class="py-16 px-6">
+      <div class="max-w-4xl mx-auto">
+
+        <!-- Quick Summary Cards -->
+        <div class="reveal-on-scroll mb-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Allowed -->
+          <div class="p-5 rounded-2xl border border-green-500/20 bg-green-500/5 dark:bg-green-500/5">
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-green-600 dark:text-green-400 mb-4 flex items-center gap-2">
+              <i data-lucide="check-circle" class="w-4 h-4"></i> You may
+            </h3>
+            <div class="space-y-2.5 text-sm text-neutral-700 dark:text-neutral-300">
+              <div class="allowed-item pl-3 py-1">Use, change and build on the source code</div>
+              <div class="allowed-item pl-3 py-1">Launch one end product with it — commercially, including charging your own users</div>
+              <div class="allowed-item pl-3 py-1">Keep development, staging and backup copies</div>
+            </div>
+          </div>
+
+          <!-- Not Allowed -->
+          <div class="p-5 rounded-2xl border border-red-500/20 bg-red-500/5 dark:bg-red-500/5">
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-red-600 dark:text-red-400 mb-4 flex items-center gap-2">
+              <i data-lucide="x-circle" class="w-4 h-4"></i> You may not
+            </h3>
+            <div class="space-y-2.5 text-sm text-neutral-700 dark:text-neutral-300">
+              <div class="not-allowed-item pl-3 py-1">Resell, share or publish the source code</div>
+              <div class="not-allowed-item pl-3 py-1">Use one license for several products</div>
+              <div class="not-allowed-item pl-3 py-1">Sell it on as a kit, template or script</div>
+              <div class="not-allowed-item pl-3 py-1">No refunds — try the live demo before you buy</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Legal Content -->
+        <div class="legal-content text-neutral-700 dark:text-neutral-300 text-sm reveal-on-scroll">
+
+          <h3 class="text-neutral-900 dark:text-white">1. Who this license is between</h3>
+          <p>This license is granted by the seller who listed it ("the Seller"), the owner of the Product. Royex Technologies LLC, Dubai, United Arab Emirates, which owns and operates the Vibe96 marketplace ("Vibe96") issues it on the Seller's behalf as the authorized marketplace. "You" means the person or company named on the license record as the licensee.</p>
+
+          <h3 class="text-neutral-900 dark:text-white">2. What you may do</h3>
+          <p>For as long as this license is active, you may, anywhere in the world:</p>
+          <ul>
+            <li>use, copy and modify the Product's source code, and combine it with your own code;</li>
+            <li>build and run <strong>one End Product</strong> with it. An End Product is a single website, web application, SaaS service, internal system or mobile app, under one name or brand, including its own production, development, staging, test and backup copies;</li>
+            <li>use the End Product commercially — sell it, charge its users or run it for your business;</li>
+            <li>let employees and contractors work on the code for you, as long as they only use it for your End Product.</li>
+          </ul>
+
+          <h3 class="text-neutral-900 dark:text-white">3. What you may not do</h3>
+          <ul>
+            <li>sell, sublicense, rent, share, give away or otherwise distribute the source code, or a modified version of it, to anyone else;</li>
+            <li>publish the source code — for example in a public repository, a tutorial, a template gallery or another marketplace;</li>
+            <li>use the Product for more than one End Product (each further End Product needs its own license);</li>
+            <li>offer the Product, or something built mainly from it, as a starter kit, template, script, white-label product or anything else that lets others build their own products from it;</li>
+            <li>remove copyright or license notices from the source files;</li>
+            <li>use the Product for anything unlawful.</li>
+          </ul>
+          <p>Your End Product's users receive only the running product — never the source code.</p>
+
+          <h3 class="text-neutral-900 dark:text-white">4. Ownership</h3>
+          <p>The Seller keeps the copyright and all other rights in the Product. This license is a permission to use it, not a sale of the Product itself. You own your own changes, your content and your data.</p>
+
+          <h3 class="text-neutral-900 dark:text-white">5. Third-party components and services</h3>
+          <p>The Product may include open-source libraries. Each one stays under its own license, and those terms apply alongside this one. Third-party services the Product connects to — for example payment, e-mail, maps or AI models — need your own accounts and are governed by their providers' terms and fees.</p>
+
+          <h3 class="text-neutral-900 dark:text-white">6. Updates and support</h3>
+          <p>You receive new versions of the Product published by the Seller until the updates until date on your license record, and support from the Seller through Vibe96 until the support until date. After those dates you may keep using the versions you have, under this license, for as long as it stays active.</p>
+
+          <h3 class="text-neutral-900 dark:text-white">7. The review and audit report</h3>
+          <p>Vibe96's audit score, report and review describe the code as it was checked at a point in time. They help you judge the Product; they are not a guarantee that it is secure, complete, error-free or right for your purpose. You are responsible for testing, securing and running your End Product, and for meeting any laws that apply to it.</p>
+
+          <h3 class="text-neutral-900 dark:text-white">8. No warranty</h3>
+          <p>Apart from what the listing describes and any rights you have by law, the Product is provided "as is", without any other warranty.</p>
+
+          <h3 class="text-neutral-900 dark:text-white">9. Liability</h3>
+          <p>Neither the Seller nor Vibe96 is liable for indirect or consequential loss, such as lost profits, revenue, data or business. Their total liability for the Product is limited to the amount you paid for this license. Nothing in this license limits liability that cannot be limited by law.</p>
+
+          <h3 class="text-neutral-900 dark:text-white">9A. Claims that the Product infringes someone else's rights</h3>
+          <p>If a third party claims your permitted use of the Product infringes their rights, the Seller will, at its cost, defend or settle the claim, change the Product so it no longer infringes, or, if neither is possible, refund the price and end the license. This does not cover your changes or use outside this license, and is not limited by clause 9.</p>
+
+          <h3 class="text-neutral-900 dark:text-white">10. Refunds</h3>
+          <p>All purchases are final and Vibe96 does not give refunds. If the Product is not as described or does not work as documented, report it within the support period: the Seller must fix it, and Vibe96 support can step in. Try the live demo before you buy. Nothing in this clause removes rights you have by law that cannot be excluded. A purchase that is reversed (for example by a chargeback) ends this license.</p>
+
+          <h3 class="text-neutral-900 dark:text-white">11. Transfer</h3>
+          <p>This license is not transferable, with two exceptions: (a) if you built the End Product for a client, you may transfer the license once to that client; and (b) it moves with the End Product if you sell the End Product or the business that runs it. In both cases, tell Vibe96 so the license record can be updated.</p>
+
+          <h3 class="text-neutral-900 dark:text-white">12. How this license ends</h3>
+          <p>This license does not expire. It ends if you break clause 3 and do not put it right within 14 days of being told, or if the purchase is reversed. When it ends, you must stop using the Product and delete every copy of its source code.</p>
+
+          <h3 class="text-neutral-900 dark:text-white">13. Law</h3>
+          <p>This license is governed by the laws of the Dubai International Financial Centre, and the DIFC Courts have exclusive jurisdiction.</p>
+
+          <!-- Version Badge -->
+          <div class="mt-10 p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-dark-800">
+            <div class="flex items-start gap-3">
+              <div class="p-2 rounded-lg bg-burgundy text-white flex-shrink-0">
+                <i data-lucide="badge-check" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <p class="text-neutral-900 dark:text-white font-semibold text-sm">Vibe96 Standard License · version 1.2</p>
+                <p class="text-neutral-500 text-xs mt-1">
+                  Your own license record, with its key and dates, is in your account.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-neutral-950 text-neutral-400 text-xs border-t border-neutral-800 py-12 px-6 mt-auto">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+          <div class="md:col-span-1">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-8 h-8 rounded-full border border-gold/40 flex-shrink-0 bg-neutral-900 flex items-center justify-center">
+                <span class="font-serif font-extrabold text-gold text-sm">N</span>
+              </div>
+              <span class="font-serif font-bold text-neutral-200 text-sm">Nexora Law Firm</span>
+            </div>
+            <p class="text-neutral-500 text-[11px] leading-relaxed">
+              Nexora Law Firm &amp; Associates — Armed with Skill and Heart.
+            </p>
+          </div>
+          <div>
+            <h4 class="text-neutral-300 font-semibold text-xs uppercase tracking-wider mb-3">Firm</h4>
+            <div class="flex flex-col gap-2">
+              <a href="index.html" class="hover:text-white transition-colors">Home</a>
+              <a href="index.html#services" class="hover:text-white transition-colors">Services</a>
+              <a href="index.html#about" class="hover:text-white transition-colors">About</a>
+              <a href="index.html#contact" class="hover:text-white transition-colors">Contact</a>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-neutral-300 font-semibold text-xs uppercase tracking-wider mb-3">Templates</h4>
+            <div class="flex flex-col gap-2">
+              <a href="index.html" class="hover:text-white transition-colors">Full-Service Firm</a>
+              <a href="accelerator.html" class="hover:text-white transition-colors">Growth Blueprint</a>
+              <a href="odegard.html" class="hover:text-white transition-colors">Odegard Injury</a>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-neutral-300 font-semibold text-xs uppercase tracking-wider mb-3">Legal</h4>
+            <div class="flex flex-col gap-2">
+              <a href="service-terms.html" class="hover:text-white transition-colors">Service Terms</a>
+              <a href="license.html" class="text-gold hover:text-gold-light transition-colors font-medium">License</a>
+              <a href="seller-agreement.html" class="hover:text-white transition-colors">Seller Agreement</a>
+              <a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a>
+            </div>
+          </div>
+        </div>
+        <div class="pt-6 border-t border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span class="text-[11px] text-neutral-500">© 2025 Nexora Law Firm. All Rights Reserved. Powered by <a href="https://vibe96.com" class="text-gold hover:underline">Vibe96</a>.</span>
+          <a href="mailto:support@vibe96.com" class="text-gold hover:underline text-[11px]">support@vibe96.com</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-revealed'); });
+    }, { threshold: 0.1 });
+    revealElements.forEach(el => observer.observe(el));
+
+    // Mobile menu toggle
+    const legalMobileBtn = document.getElementById('legal-mobile-menu-btn');
+    const legalMobileMenu = document.getElementById('legal-mobile-menu');
+    if (legalMobileBtn && legalMobileMenu) {
+      legalMobileBtn.addEventListener('click', () => {
+        legalMobileMenu.classList.toggle('hidden');
+      });
+      document.querySelectorAll('.legal-mobile-link').forEach(link => {
+        link.addEventListener('click', () => {
+          legalMobileMenu.classList.add('hidden');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

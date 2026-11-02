@@ -1,162 +1,117 @@
 # Nexora Law Firm — Agent & Contributor Guide
 
-This document provides definitive guidance for AI coding agents (Claude, Gemini, GPT-4, Copilot) and human contributors working on the Nexora Law Firm project.
+This document provides guidance for AI coding agents (Claude, Gemini, GPT-4, Copilot, etc.) and human contributors working on the Nexora Law Firm project.
 
 ---
 
-## 📁 Project Architecture & App Router Structure
-
-Nexora Law Firm is a single **Next.js App Router application** (repository root):
-1. **Application**: Full-stack Next.js web application utilizing React Server Components, Server Actions, Edge Middleware, and Supabase database isolation.
+## 📁 Project Structure
 
 ```
-Nexora-Law-Firm/
-├── (repository root)                  # Next.js App Router Application
-│   ├── app/
-│   │   ├── layout.tsx                 # Root layout with fonts, metadata, Vibe96 verification
-│   │   ├── page.tsx                   # Public homepage & hero presentation
-│   │   ├── globals.css                # Global Tailwind CSS directives & color tokens
-│   │   ├── practice-areas/
-│   │   │   ├── page.tsx               # Practice areas directory
-│   │   │   └── [slug]/page.tsx        # Dynamic individual practice area page
-│   │   ├── attorneys/page.tsx         # Attorney roster & bios
-│   │   ├── cases/page.tsx             # Public case status inquiry portal
-│   │   ├── admin/
-│   │   │   ├── page.tsx               # Role-gated admin case dashboard
-│   │   │   └── login/page.tsx         # Admin authentication login
-│   │   ├── actions/
-│   │   │   ├── intake.ts              # Public consultation intake server action
-│   │   │   ├── cases.ts               # Role-verified case management server actions
-│   │   │   └── admin.ts               # Admin session authentication & cookie actions
-│   │   └── api/
-│   │       ├── intake/route.ts        # POST endpoint for consultation intake
-│   │       └── admin/cases/route.ts   # Role-gated administrative case API
-│   ├── components/
-│   │   ├── Navbar.tsx                 # Responsive navigation bar
-│   │   ├── Footer.tsx                 # Site footer with practice links & disclaimers
-│   │   └── ContactForm.tsx            # Isolated public intake consultation form
-│   ├── lib/
-│   │   ├── supabase.ts                # Client & admin Supabase SDK initializers
-│   │   ├── config.ts                  # Typed env + session/throttle settings (single source)
-│   │   └── auth/                      # token.ts (sign/verify), password.ts (scrypt), revocation.ts, session.ts, index.ts
-│   ├── middleware.ts                  # Edge middleware route guard for /admin/* (uses lib/auth/session)
-│   ├── .env.example                   # Environment configuration template
-│   ├── package.json                   # Pinned patched dependencies (Next.js, Supabase)
-│   ├── package-lock.json              # Committed lockfile (0 audit vulnerabilities)
-│   ├── tailwind.config.ts             # Tailwind CSS theme extension
-│   ├── tsconfig.json                  # Strict TypeScript configuration
-│   └── Dockerfile                     # Production Node.js 20 container image
+.
+├── index.html              # Main landing page & client portal login
+├── cases.html              # Case management dashboard (authenticated)
+├── accelerator.html        # Corporate & acquisition practice page
+├── odegard.html            # Trial & personal injury practice page
+├── service-terms.html      # Hosting & support terms of service
+├── license.html            # Commercial licensing terms
+├── seller-agreement.html   # Marketplace & vendor agreement
+├── privacy.html            # Data protection & privacy policy
+├── supabase-setup.sql      # Full PostgreSQL schema + seed data
 ├── database/
-│   ├── schema.sql                     # Complete PostgreSQL DDL (tables, FKs, RLS, indexes)
-│   └── seed.sql                       # Initial seed data (admin, attorneys, practices, demo)
-├── docs/
-│   ├── erd.md                         # Entity-Relationship Diagram & RLS policy notes
-│   └── architecture.md                # System design & multi-layer architecture guide
-├── .env.example                       # Root environment variable documentation
-├── CHANGELOG.md                       # Version history starting at 1.0.0
-├── HowToSetup.md                      # Deployment instructions (VPS, Docker, Cloud)
-├── LICENSE-NOTE.md                    # Commercial licensing and third-party notices
-├── docker-compose.yml                 # Multi-container orchestration (Next.js server)
-└── Dockerfile                         # Next.js production runtime container
+│   ├── schema.sql          # Database schema (tables, indexes, triggers)
+│   └── seed.sql            # Initial seed data for development
+├── .env.example            # Environment variable template
+├── CHANGELOG.md            # Version history and release notes
+├── AGENTS.md               # This file — agent & contributor guide
+├── README.md               # Project overview
+└── vercel.json             # Vercel deployment config
 ```
 
 ---
 
-## 🛠️ Tech Stack & Pinned Dependencies
+## 🛠️ Tech Stack
 
-- **Framework**: Next.js 16.4.3 (App Router, Server Actions, Server Components)
-- **UI Library**: React 19.3.1
-- **Styling**: Tailwind CSS 3.4.14 + PostCSS 8.5.32
-- **Icons**: Lucide React 0.453.0 & Lucide CDN for static previews
-- **Database / Backend**: Supabase (`@supabase/supabase-js` 2.118.0)
-- **Runtime**: Node.js >= 20.x
-
----
-
-## 🔐 Security, Authorization & Intake Data Isolation
-
-### 1. Data Isolation Model
-- **Public Consultation Intake**: The `contacts` table allows `anon` role **INSERT ONLY**. Anonymous visitors can submit consultations, but cannot read, list, update, or delete records (no SELECT/UPDATE/DELETE policy exists for anon).
-- **Role-Gated Mutations**: All modifications to `cases`, `hearings`, `documents`, and `contacts` require an authenticated session verified server-side.
-- **Admin Verification (`lib/auth/`)**: Every server action calls `requireAdmin()` and every API route handler calls `verifyAdminSession()` as its first statement (middleware is a second layer, not the only one). `verifyToken` is the single verifier: HS256 signature + expiry, then the `revoked_tokens` lookup, which **fails closed** on any database error.
-- **Revocation store**: `revoked_tokens` is read/written only with the server-side service-role client; RLS is on with no policies. Rows are purged on logout once expired.
-- **Private tables have no RLS policies**: all private data is accessed server-side with the service-role key after the admin check. Only `contacts` (anon INSERT) and published site content (public SELECT) have policies.
-
-### 2. Practice Content Location
-- **Database Tables**: Practice areas are stored in `practice_areas` with indexed `slug`, `status`, and `created_at`.
-- **Dynamic Routing**: Managed in `app/practice-areas/[slug]/page.tsx` with static fallback previews for Corporate, Trial, Intellectual Property, and Real Estate.
-- **Attorney Profiles**: Stored in `attorneys` table and rendered via `app/attorneys/page.tsx`.
+- **Frontend**: HTML5, Vanilla CSS, Tailwind CSS (CDN)
+- **Icons**: Lucide Icons (CDN)
+- **Fonts**: Google Fonts — Playfair Display, Inter
+- **Backend**: Supabase (PostgreSQL + Auth + Storage + RLS)
+- **Deployment**: Vercel (static hosting)
 
 ---
 
-## 🎨 Tailwind CSS Conventions
+## ⚙️ Environment Variables
 
-- **Primary Colors**:
-  - `primary-navy`: `#0A192F` (Deep institutional navy)
-  - `primary-dark`: `#07101E` (Dark background)
-  - `primary-light`: `#112240` (Card container fill)
-  - `accent-gold`: `#D4AF37` (Legal prestige gold)
-  - `accent-hover`: `#B5952F` (Interactive gold hover state)
-- **Typography**:
-  - Headings: Serif font (`Playfair Display`, `Georgia`, serif) for authority and elegance.
-  - Body / UI: Clean sans-serif (`Inter`, system-ui, sans-serif) for legibility.
-- **Component Classes**:
-  - Buttons: `bg-[#D4AF37] hover:bg-[#B5952F] text-[#0A192F] font-semibold px-6 py-3 rounded transition-all`
-  - Cards: `bg-[#112240] border border-slate-700/60 rounded-xl p-6 shadow-xl`
-  - Form Inputs: `w-full bg-[#07101E] border border-slate-700 rounded-lg px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-[#D4AF37]`
+Copy `.env.example` to `.env` and fill in your Supabase credentials:
 
----
-
-## 🧪 Linting, Testing & Security Audits
-
-### Next.js Application
 ```bash
-# Navigate to Next.js project
-
-# Run ESLint / Next lint
-npm run lint
-
-# Security audit check (ensures 0 vulnerabilities)
-npm audit
-
-# Production build verification
-npm run build
+cp .env.example .env
 ```
 
----
+Required variables:
+- `SUPABASE_URL` — Your Supabase project URL
+- `SUPABASE_ANON_KEY` — Your Supabase anon/public key
 
-## 🔑 Environment Variables
-
-The project requires the following environment variables documented in `.env.example`:
-
-| Variable | Scope | Description |
-|---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Public / Client | Supabase Project URL (`https://your-project.supabase.co`) |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public / Client | Supabase Anonymous Public API Key |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server-Side Only | Administrative bypass key for server actions & seeding |
-| `SESSION_SECRET` | Server-Side Only | Cryptographic secret for signing HMAC-SHA256 JWT sessions |
-| `ADMIN_EMAIL` | Server-Side Only | Administrator login email (e.g. `admin@example.com`) |
-| `ADMIN_PASSWORD_HASH` | Server-Side Only | Recommended: scrypt hash from `npm run hash-password` |
-| `ADMIN_DEFAULT_PASSWORD` | Server-Side Only | Fallback plaintext password, used only when no hash is set |
+These are embedded directly in `index.html` and `cases.html` as inline JS constants (since this is a static site with no build step). Update them in the `<script>` sections of those files.
 
 ---
 
-## 👥 Administrator Setup & Access
+## 🗄️ Database Setup
 
-In accordance with production security standards:
-- **Admin Portal**: `/admin/login`
-- **Administrator Email**: set via `ADMIN_EMAIL` (no default login exists)
-- **Password**: Set `ADMIN_PASSWORD_HASH` (preferred) or `ADMIN_DEFAULT_PASSWORD` during deployment. Zero passwords exist in the codebase or documentation.
+1. Go to your [Supabase Dashboard](https://app.supabase.com)
+2. Open the **SQL Editor**
+3. Run `database/schema.sql` first to create all tables, indexes, triggers, and RLS policies
+4. Then run `database/seed.sql` to insert default admin, courts, case types, and assistant data
 
-## 🛠️ Commands & Conventions
+Or run the combined `supabase-setup.sql` file which includes both schema and seed in one step.
 
-| Command | Purpose |
-|---|---|
-| `npm run lint` | Type check (`tsc --noEmit`) |
-| `npm test` | Auth unit tests (Node test runner + tsx) |
-| `npm run audit:prod` | `npm audit --omit=dev` (last result: 0 vulnerabilities) |
-| `npm run hash-password -- "<password>"` | Generate `ADMIN_PASSWORD_HASH` |
+---
 
-- Naming: files `kebab-case` or Next.js conventions, React components `PascalCase`, server actions end in `Action`, DB columns `snake_case`.
-- Service-role client (`getServiceSupabase`) is server-only and may be used only after `requireAdmin()` / `verifyAdminSession()`.
-- `package.json` `overrides` pins `@eslint/plugin-kit` to a patched release (dev tooling advisory); remove it once `eslint` ships the fix.
+## 🔐 Security & RLS
+
+- Row Level Security (RLS) is enabled on all tables
+- Current policies use `USING (true)` for development — tighten these for production
+- Passwords in `seed.sql` are placeholder values — replace before any live deployment
+- Never commit real credentials to version control
+
+---
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+```bash
+vercel deploy
+```
+Or connect the GitHub repository to Vercel for automatic deployments.
+
+### Manual / GitHub Pages
+Upload all `.html` files and assets directly. No build step required.
+
+---
+
+## 🧪 Testing & Development
+
+Since this is a zero-build static site:
+1. Open `index.html` directly in a browser, or
+2. Use a local server: `npx serve .` or `python -m http.server 8080`
+3. Update Supabase credentials in the HTML files to point to your own project
+
+---
+
+## 📋 Contribution Guidelines
+
+- **HTML**: Follow existing indentation (2-space) and class naming conventions
+- **SQL**: Add `IF NOT EXISTS` guards for all DDL statements
+- **Commits**: Use conventional commits format: `feat:`, `fix:`, `docs:`, `chore:`
+- **Branching**: Use `feature/<name>` or `fix/<name>` branches
+- **Security**: Never hardcode real credentials; use placeholder values in examples
+
+---
+
+## 🤖 For AI Agents
+
+When modifying this project:
+1. **Read `README.md`** for project context and feature overview
+2. **Check `CHANGELOG.md`** before making changes to understand version history
+3. **Run schema.sql** before seed.sql — order matters due to foreign key dependencies
+4. **Preserve RLS policies** — do not remove security policies without explicit instruction
+5. **No build step** — this is a static HTML project, avoid adding build tooling unless requested
